@@ -6,6 +6,8 @@ public class PlaceGrid : MonoBehaviour
 {
     [SerializeField]
     private Place placePrefab;
+    [SerializeField]
+    private string boardName = "Board";
 
 
     [Header("Size")]
@@ -25,19 +27,21 @@ public class PlaceGrid : MonoBehaviour
     }
     private void Start()
     {
+        CreateBoard();
+    }
 
+    private void CreateBoard()
+    {
         GameObject boardObject = new GameObject();
         boardObject.AddComponent<Board>();
-        boardObject.gameObject.name = "Board";
+        boardObject.gameObject.name = boardName;
 
         Board board = boardObject.GetComponent<Board>();
-
 
         for (int y = 0; y < gridSize.y; y++)
         {
             for (int x = 0; x < gridSize.x; x++)
             {
-                //Place placePrefab = ((x + y) % 2 == 0) ? placePrefabA : placePrefabB;
 
                 Vector3 center = new Vector3(x, 0, y) * placeSize + transform.position;
                 Vector3 size = new Vector3(placeSize, 0, placeSize);
@@ -50,11 +54,10 @@ public class PlaceGrid : MonoBehaviour
                 instance.board = board;
 
                 places[x, y] = instance;
-                //board.Add(new Vector2Int(y, x), instance);
             }
         }
 
-        //PlaceManager.Instance.places = places;   // 나는 주소 복사를 원하는데 배열에 대해서는 값 복사가 일어나고 있을지도 모른다.
+        // 나는 주소 복사를 원하는데 배열에 대해서는 값 복사가 일어나고 있을지도 모른다.
         board.places = places;
     }
 
