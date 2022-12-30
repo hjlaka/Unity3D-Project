@@ -5,9 +5,8 @@ using UnityEngine;
 public class PlaceGrid : MonoBehaviour
 {
     [SerializeField]
-    private Place placePrefabA;
-    [SerializeField]
-    private Place placePrefabB;
+    private Place placePrefab;
+
 
     [Header("Size")]
     [SerializeField]
@@ -30,8 +29,7 @@ public class PlaceGrid : MonoBehaviour
         {
             for (int x = 0; x < gridSize.x; x++)
             {
-                Place placePrefab = ((x + y) % 2 == 0) ? placePrefabA : placePrefabB;
-
+                //Place placePrefab = ((x + y) % 2 == 0) ? placePrefabA : placePrefabB;
 
                 Vector3 center = new Vector3(x, 0, y) * placeSize + transform.position;
                 Vector3 size = new Vector3(placeSize, 0, placeSize);

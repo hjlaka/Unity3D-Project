@@ -16,7 +16,7 @@ public class Place : MonoBehaviour
 
     private void Awake()
     {
-        render = GetComponent<Renderer>();
+        render = GetComponentInChildren<Renderer>();
     }
 
     private void Start()
@@ -28,6 +28,8 @@ public class Place : MonoBehaviour
             case PlaceType.B: typeColor = Color.black;
                 break;
         }
+
+        render.material.color = typeColor;
     }
 
     private void OnMouseDown()
