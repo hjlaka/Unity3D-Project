@@ -41,6 +41,7 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(string.Format("{0} Å¬¸¯", gameObject.name));
         PlaceManager.Instance.selectedPiece = this;
+        PlaceManager.Instance.ShowPlaceable();
     }
 
     public void SetInPlace(Place place)
@@ -52,5 +53,10 @@ public class Piece : MonoBehaviour
     public void Move()
     {
         transform.position = place.transform.position;
+    }
+
+    private void MoveablePlace()
+    {
+
     }
 }
