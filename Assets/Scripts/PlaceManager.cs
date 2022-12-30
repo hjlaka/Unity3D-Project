@@ -8,7 +8,6 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public Place selectedPlace;
 
-    public Place[,] places;
 
     [SerializeField]
     private Color highlight;
@@ -16,28 +15,46 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void ShowPlaceable()
     {
-        Place curPlace = selectedPiece.place;
 
-        for(int i = 0; i < places.GetLength(0); i++)
+
+        Place curPlace = selectedPiece.place;
+        Vector2Int curIndex = curPlace.boardIndex;
+        Board curBoard = curPlace.board;
+
+        if (null == curBoard)
+            return;
+
+        for(int i = 0; i < curBoard.places.GetLength(0); i++)
         {
-            for (int j = 0; j < places.GetLength(1); j++)
+            for (int j = 0; j < curBoard.places.GetLength(1); j++)
             {
-                if (places[i, j].piece != null)
+                if (curBoard.places[i, j].piece != null)
                     continue;
 
-                places[i, j].ChangeColor(highlight);
+                // 이동할 수 있는 영역인지 계산
+                if (i != curIndex.x && j != curIndex.y)
+                    continue;
+
+                curBoard.places[i, j].ChangeColor(highlight);
             }
 
         }
     }
 
-    public void ShowPlaceableEnd()
+    public void ShowPlaceableEnd(Place oldPlace)
     {
-        for (int i = 0; i < places.GetLength(0); i++)
+        
+        Board oldBoard = oldPlace.board;
+
+        if (null == oldBoard)
+            return;
+
+
+            for (int i = 0; i < oldBoard.places.GetLength(0); i++)
         {
-            for (int j = 0; j < places.GetLength(1); j++)
+            for (int j = 0; j < oldBoard.places.GetLength(1); j++)
             {
-                places[i, j].ChangeColor();
+                oldBoard.places[i, j].ChangeColor();
             }
 
         }
@@ -53,11 +70,12 @@ public class PlaceManager : SingleTon<PlaceManager>
         
 
         ControlInit();
+        ShowPlaceableEnd(oldPlace);
     }
 
     private void ControlInit()
     {
         selectedPiece = null;
-        ShowPlaceableEnd();
+       
     }
 }

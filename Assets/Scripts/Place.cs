@@ -6,6 +6,9 @@ public class Place : MonoBehaviour
 {
     public enum PlaceType { A, B};
     public Piece piece;
+    public Board board;
+
+    public Vector2Int boardIndex;
 
     private Renderer render;
 

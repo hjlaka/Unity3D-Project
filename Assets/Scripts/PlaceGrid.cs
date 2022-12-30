@@ -15,16 +15,24 @@ public class PlaceGrid : MonoBehaviour
     private float placeSize;
 
 
-    private Place[,] board;
+    private Place[,] places;
 
     //private Dictionary<Vector2Int, Place> board = new Dictionary<Vector2Int, Place>();
 
     private void Awake()
     {
-        board = new Place[gridSize.x, gridSize.y];
+        places = new Place[gridSize.x, gridSize.y];
     }
     private void Start()
     {
+
+        GameObject boardObject = new GameObject();
+        boardObject.AddComponent<Board>();
+        boardObject.gameObject.name = "Board";
+
+        Board board = boardObject.GetComponent<Board>();
+
+
         for (int y = 0; y < gridSize.y; y++)
         {
             for (int x = 0; x < gridSize.x; x++)
@@ -33,18 +41,21 @@ public class PlaceGrid : MonoBehaviour
 
                 Vector3 center = new Vector3(x, 0, y) * placeSize + transform.position;
                 Vector3 size = new Vector3(placeSize, 0, placeSize);
-                Place instance = Instantiate(placePrefab, center, Quaternion.identity);
+                Place instance = Instantiate(placePrefab, center, Quaternion.identity, board.transform);
 
                 instance.type = ((x + y) % 2 == 0) ? Place.PlaceType.A : Place.PlaceType.B;
 
                 instance.gameObject.name = "Place" + x + y;
+                instance.boardIndex = new Vector2Int(x, y);
+                instance.board = board;
 
-                board[x, y] = instance;
+                places[x, y] = instance;
                 //board.Add(new Vector2Int(y, x), instance);
             }
         }
 
-        PlaceManager.Instance.places = board;   // 나는 주소 복사를 원하는데 배열에 대해서는 값 복사가 일어나고 있을지도 모른다.
+        //PlaceManager.Instance.places = places;   // 나는 주소 복사를 원하는데 배열에 대해서는 값 복사가 일어나고 있을지도 모른다.
+        board.places = places;
     }
 
     private void OnDrawGizmos()
