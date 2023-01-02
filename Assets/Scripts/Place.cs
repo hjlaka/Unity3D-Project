@@ -11,6 +11,8 @@ public class Place : MonoBehaviour
     public Vector2Int boardIndex;
 
     private Renderer render;
+    private bool isApprochable;
+    public bool IsApprochable { get { return isApprochable; } set { isApprochable = value; } }
 
 
     public PlaceType type;     // 스크립터블 오브젝트
@@ -24,7 +26,9 @@ public class Place : MonoBehaviour
 
     private void Start()
     {
-        switch(type)
+        IsApprochable = true;
+
+        switch (type)
         {
             case PlaceType.A: typeColor = Color.white;
                 break;
@@ -41,10 +45,13 @@ public class Place : MonoBehaviour
 
         // 기물이 선택된 상태에서 클릭시
 
-        if (null == PlaceManager.Instance.selectedPiece)
+        if (null == PlaceManager.Instance.SelectedPiece)
             return;
 
         if (piece != null)
+            return;
+
+        if (!isApprochable)
             return;
 
         PlaceManager.Instance.MovePieceTo(this);
