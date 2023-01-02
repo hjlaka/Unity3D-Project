@@ -34,11 +34,28 @@ public class Piece : MonoBehaviour
 
     public void AddAttack(Piece piece)
     {
+        Debug.Log(piece + "를 공격한다");
         attackTo.Add(piece);
     }
     public void AddDefence(Piece piece)
     {
+        Debug.Log(piece + "를 보호한다");
         defendFor.Add(piece);
+    }
+
+    public void BeAttacked(Piece piece)
+    {
+        Debug.Log(piece + "에게 공격 당한다");
+    }
+
+    public void BeThreatened(Piece piece)
+    {
+        Debug.Log(piece + "에게 위협 당한다");
+    }
+
+    public void BeDefended(Piece piece)
+    {
+        Debug.Log(piece + "에게 보호 받는다");
     }
 
 
@@ -87,12 +104,22 @@ public class Piece : MonoBehaviour
         
         else if(GameManager.Instance.state == GameManager.GameState.SELECTING_PLACE)
         {
-            // 같은 팀 기물이라면
-            PlaceManager.Instance.SelectedPieceInit();
-            PlaceManager.Instance.SelectPiece(this);
+            // 자신이라면
+            if(PlaceManager.Instance.SelectedPiece == this)
+                PlaceManager.Instance.SelectedPieceInit(PlaceManager.Instance.SelectedPiece.place);
 
+            // 같은 팀 기물이라면
+            else if (this.team.TeamId == PlaceManager.Instance.SelectedPiece.team.TeamId)
+            {
+                PlaceManager.Instance.SelectedPieceInit(PlaceManager.Instance.SelectedPiece.place);
+                PlaceManager.Instance.SelectPiece(this);
+            }
             // 다른 팀 기물이라면
-            // 공격할 수 있다면
+            else
+            {
+                // 공격할 수 있다면
+            }
+
         }
     }
 }
