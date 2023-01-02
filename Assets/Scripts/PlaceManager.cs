@@ -119,7 +119,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         place.piece = selectedPiece;
 
 
-        SelectedPieceInit();
+        SelectedPieceInit(oldPlace);
     }
 
     public void SelectPiece(Piece piece)
@@ -128,9 +128,9 @@ public class PlaceManager : SingleTon<PlaceManager>
         ShowPlaceable();
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
     }
-    public void SelectedPieceInit()
+    public void SelectedPieceInit(Place oldPlace)
     {
-        ShowPlaceableEnd(selectedPiece.place);
+        ShowPlaceableEnd(oldPlace);
         SelectedPiece = null;
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
         // 소리도 나야 한다면
