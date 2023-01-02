@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,20 @@ public class PlaceManager : SingleTon<PlaceManager>
 {
     [SerializeField]
     private Piece selectedPiece;
+
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
         set 
         { 
             selectedPiece = value;
+
+            if (value != null && SelectedPiece.place.board?.heatPointHUD != null)
+            {
+                SelectedPiece.place.board.heatPointHUD.gameObject.SetActive(true);
+
+            }
+                
         }
     }
 
@@ -27,6 +36,11 @@ public class PlaceManager : SingleTon<PlaceManager>
     private Color attackable;
 
 
+    public void ShowHUD()
+    {
+        Transform hud = SelectedPiece.place.board.heatPointHUD;
+        if(hud != null) hud.gameObject.SetActive(true);
+    }
     public void ShowPlaceable()
     {
         
@@ -154,6 +168,7 @@ public class PlaceManager : SingleTon<PlaceManager>
                 }
             }
         }
+        curBoard.UpdateHeatHUD();
     }
 
     public void ShowPlaceableEnd(Place oldPlace)

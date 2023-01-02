@@ -10,6 +10,8 @@ public class PlaceGrid : MonoBehaviour
     private string boardName = "Board";
     [SerializeField]
     private bool followRule = true;
+    [SerializeField]
+    private Transform HeatHUD;
 
 
     [Header("Size")]
@@ -63,6 +65,7 @@ public class PlaceGrid : MonoBehaviour
 
         // 나는 주소 복사를 원하는데 배열에 대해서는 값 복사가 일어나고 있을지도 모른다.
         board.places = places;
+        board.heatPointHUD = HeatHUD;
     }
 
     private void OnDrawGizmos()
