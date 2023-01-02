@@ -8,6 +8,8 @@ public class PlaceGrid : MonoBehaviour
     private Place placePrefab;
     [SerializeField]
     private string boardName = "Board";
+    [SerializeField]
+    private bool followRule = true;
 
 
     [Header("Size")]
@@ -37,6 +39,8 @@ public class PlaceGrid : MonoBehaviour
         boardObject.gameObject.name = boardName;
 
         Board board = boardObject.GetComponent<Board>();
+        board.Size = gridSize;
+        board.FollowRule = followRule;
 
         for (int y = 0; y < gridSize.y; y++)
         {
