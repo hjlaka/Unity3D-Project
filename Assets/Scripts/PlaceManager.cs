@@ -51,7 +51,12 @@ public class PlaceManager : SingleTon<PlaceManager>
 
                 Vector2Int index = curBoard.places[i, j].boardIndex;
                 // 이동할 수 있는 영역인지 계산
-                if (selectedPiece.IsMovable(index))
+
+                if (selectedPiece.place.boardIndex == index)
+                    continue;
+                //현재 위치
+
+                else if (selectedPiece.IsMovable(index))
                 {
                     // 이동할 수 있는 영역이라면
                     Piece account = curBoard.places[i, j].piece;
@@ -61,13 +66,15 @@ public class PlaceManager : SingleTon<PlaceManager>
                         // 아군 기물이라면
                         if (account.team.TeamId == selectedPiece.team.TeamId)
                         {
-                            selectedPiece.AddDefence(account);
+                            //selectedPiece.AddDefence(account);
+                            //account.BeDefended(selectedPiece);
                             continue;
                         }
                         // 적군 기물이라면
                         else
                         {
-                            selectedPiece.AddAttack(account);
+                            //selectedPiece.AddAttack(account);
+                            //account.BeAttacked(selectedPiece);
                             curBoard.places[i, j].ChangeColor(attackable);
                         }
                     }
@@ -87,6 +94,65 @@ public class PlaceManager : SingleTon<PlaceManager>
 
             }
 
+        }
+    }
+
+    public void PostPlaceAction()
+    {
+        Place newPlace = selectedPiece.place;
+        Vector2Int newIndex = newPlace.boardIndex;
+        Board curBoard = newPlace.board;
+
+        // 기물이 있는 곳이 보드가 아니라면 종료
+        if (null == curBoard)
+            return;
+
+        // 규칙을 따르지 않는 보드라면 종료
+        if (!curBoard.FollowRule)
+            return;
+
+        for (int i = 0; i < curBoard.places.GetLength(0); i++)
+        {
+            for (int j = 0; j < curBoard.places.GetLength(1); j++)
+            {
+                Vector2Int index = curBoard.places[i, j].boardIndex;
+                // 이동할 수 있는 영역인지 계산
+
+                //현재 위치
+                if (selectedPiece.place.boardIndex == index)
+                    continue;
+
+                else if (selectedPiece.IsMovable(index))
+                {
+                    // 이동할 수 있는 영역이라면
+                    Piece account = curBoard.places[i, j].piece;
+                    // 좌표에 기물이 있다면
+                    if (account != null)
+                    {
+                        // 아군 기물이라면
+                        if (account.team.TeamId == selectedPiece.team.TeamId)
+                        {
+                            selectedPiece.AddDefence(account);
+                            account.BeDefended(selectedPiece);
+                            //curBoard.places[i, j].ChangeColor(defended);
+                        }
+                        // 적군 기물이라면
+                        else
+                        {
+                            selectedPiece.AddAttack(account);
+                            account.BeAttacked(selectedPiece);
+                            //curBoard.places[i, j].ChangeColor(attackable);
+                        }
+                    }
+                    else
+                    {
+                        //curBoard.places[i, j].ChangeColor(highlight);
+                        //curBoard.places[i, j].IsApprochable = true;
+
+                        // 현재 아무것도 없는 칸도 보호받을 수 있다.
+                    }
+                }
+            }
         }
     }
 
@@ -115,8 +181,9 @@ public class PlaceManager : SingleTon<PlaceManager>
         Place oldPlace = selectedPiece.place;
         oldPlace.piece = null;
 
-        selectedPiece.SetInPlace(place);
+        selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
         place.piece = selectedPiece;
+        PostPlaceAction();
 
 
         SelectedPieceInit(oldPlace);
