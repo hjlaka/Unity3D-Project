@@ -59,22 +59,18 @@ public class PlaceManager : SingleTon<PlaceManager>
                 else if (selectedPiece.IsMovable(index))
                 {
                     // 이동할 수 있는 영역이라면
-                    Piece account = curBoard.places[i, j].piece;
+                    Piece account = curBoard.places[i, j].piece;               
                     // 좌표에 기물이 있다면
                     if (account != null)
                     {
                         // 아군 기물이라면
                         if (account.team.TeamId == selectedPiece.team.TeamId)
                         {
-                            //selectedPiece.AddDefence(account);
-                            //account.BeDefended(selectedPiece);
                             continue;
                         }
                         // 적군 기물이라면
                         else
                         {
-                            //selectedPiece.AddAttack(account);
-                            //account.BeAttacked(selectedPiece);
                             curBoard.places[i, j].ChangeColor(attackable);
                         }
                     }
@@ -125,7 +121,11 @@ public class PlaceManager : SingleTon<PlaceManager>
                 else if (selectedPiece.IsMovable(index))
                 {
                     // 이동할 수 있는 영역이라면
-                    Piece account = curBoard.places[i, j].piece;
+                    Place cell = curBoard.places[i, j];
+                    Piece account = cell.piece;
+                    
+                    cell.HeatPoint++;
+
                     // 좌표에 기물이 있다면
                     if (account != null)
                     {

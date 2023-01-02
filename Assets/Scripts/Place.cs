@@ -8,6 +8,20 @@ public class Place : MonoBehaviour
     public Piece piece;
     public Board board;
 
+    private int heatPoint;
+    public int HeatPoint
+    {
+        get
+        { 
+            return heatPoint; 
+        }
+        set
+        {
+            heatPoint = value;
+            Debug.Log(boardIndex + "의 과열도 증가: " + value);
+        }
+    }
+
     public Vector2Int boardIndex;
 
     private Renderer render;
