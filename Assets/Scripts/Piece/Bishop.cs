@@ -75,12 +75,14 @@ public class Bishop : Piece
                 AddDefence(targetPiece);
                 targetPiece.BeDefended(this);
                 PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+                DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
             }
             else
             {
                 AddThreat(targetPiece);
                 targetPiece.BeThreatened(this);
                 PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+                DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
             }
         }
         else
