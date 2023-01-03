@@ -18,11 +18,19 @@ public class Piece : MonoBehaviour
 
     private List<Piece> defendFor;
     private List<Piece> attackTo;
+    private List<Place> movableTo;
+
+    public List<Place> MovableTo
+    {
+        get { return movableTo; } private set { movableTo = value;  }
+    }
+
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
         attackTo = new List<Piece>();
+        movableTo = new List<Place>();
     }
 
     private void Start()
@@ -32,22 +40,15 @@ public class Piece : MonoBehaviour
         render.material.color = normal;
     }
 
-    /*public void AddAttack(Piece piece)
+    public void ClearMovable()
     {
-        Debug.Log(this + "가 " + piece + "를 공격한다");
-        attackTo.Add(piece);
-    }*/
+        movableTo.Clear();
+    }
 
-    /*public void EndAttack(Piece piece)
-{
-
-}*/
-
-    /*public void BeAttacked(Piece piece)
-{
-    Debug.Log(this + "가 " + piece + "에게 공격 당한다");
-}*/
-
+    public void AddMovable(Place place)
+    {
+        movableTo.Add(place);
+    }
     public void AddDefence(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
@@ -135,13 +136,13 @@ public class Piece : MonoBehaviour
         else if(GameManager.Instance.state == GameManager.GameState.SELECTING_PLACE)
         {
             // 자신이라면
-            if(PlaceManager.Instance.SelectedPiece == this)
-                PlaceManager.Instance.SelectedPieceInit(PlaceManager.Instance.SelectedPiece.place);
+            if (PlaceManager.Instance.SelectedPiece == this)
+                PlaceManager.Instance.CancleSelectPiece();
 
             // 같은 팀 기물이라면
             else if (this.team.TeamId == PlaceManager.Instance.SelectedPiece.team.TeamId)
             {
-                PlaceManager.Instance.SelectedPieceInit(PlaceManager.Instance.SelectedPiece.place);
+                PlaceManager.Instance.CancleSelectPiece();
                 PlaceManager.Instance.SelectPiece(this);
             }
             // 다른 팀 기물이라면

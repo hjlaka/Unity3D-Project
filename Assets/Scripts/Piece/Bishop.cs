@@ -63,6 +63,20 @@ public class Bishop : Piece
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
     }
 
+    private void DiagonalRB(Vector2Int curLocation, int boardWidth)
+    {
+        if (curLocation.x > boardWidth - 1) return;
+        if (curLocation.y < 0) return;
+
+        // 이동 가능 범위 등록
+        RecognizePiece(curLocation);
+
+        DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
+    }
+
+
+
+
     private void RecognizePiece(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
@@ -85,39 +99,13 @@ public class Bishop : Piece
         }
         else
         {
+            Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+            AddMovable(targetPlace);
             PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
         }
     }
 
-    private void DiagonalRB(Vector2Int curLocation, int boardWidth)
-    {
-        if (curLocation.x > boardWidth - 1) return;
-        if (curLocation.y < 0) return;
-
-        // 이동 가능 범위 등록
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        if (targetPiece != null)
-        {
-            if (targetPiece.team.TeamId == team.TeamId)
-            {
-                AddDefence(targetPiece);
-                targetPiece.BeDefended(this);
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
-            }
-            else
-            {
-                AddThreat(targetPiece);
-                targetPiece.BeThreatened(this);
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
-            }
-        }
-        else
-        {
-            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
-        }
-
-        DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
-    }
+   
 
     private void Influence()
     {

@@ -48,9 +48,6 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
     public void ShowPlaceable()
     {
-
-        
-
         Place curPlace = selectedPiece.place;
         Vector2Int curIndex = curPlace.boardIndex;
         Board curBoard = curPlace.board;
@@ -89,15 +86,14 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
 
-    public void ShowPlaceableEnd(Place oldPlace)
+    public void ShowPlaceableEnd()
     {
 
-
-
-        //List<Vector2Int> locationList = selectedPiece.MovableTo;
-
-
-      
+        List<Place> movableList = selectedPiece.MovableTo;
+        for(int i = 0; i < movableList.Count; i++)
+        {
+            movableList[i].ChangeColor();
+        }
 
 
     }
@@ -133,14 +129,27 @@ public class PlaceManager : SingleTon<PlaceManager>
         Place oldPlace = selectedPiece.place;
         oldPlace.piece = null;
 
-        ShowPlaceableEnd(oldPlace);
+        // 이전 표시된 영역 지우기
+
+        ShowPlaceableEnd();
+        selectedPiece.ClearMovable();
+
+       // Debug.Log(selectedPiece.MovableTo.Count.ToString());
 
         selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
         place.piece = selectedPiece;
         PostPlaceAction();
 
 
-        SelectedPieceInit(oldPlace);
+        StartCoroutine(WaitAndInit(1f));
+        
+    }
+
+    private IEnumerator WaitAndInit(float second)
+    {
+        yield return new WaitForSeconds(second);
+
+        CancleSelectPiece();
     }
 
     public void SelectPiece(Piece piece)
@@ -152,7 +161,14 @@ public class PlaceManager : SingleTon<PlaceManager>
         camController.SetFreeCam(selectedPiece.transform);
 
     }
-    public void SelectedPieceInit(Place oldPlace)
+
+    public void CancleSelectPiece()
+    {
+        ShowPlaceableEnd();
+        SelectedPieceInit();
+    }
+
+    public void SelectedPieceInit()
     {
         
         SelectedPiece = null;
