@@ -43,68 +43,66 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
     public void ShowPlaceable()
     {
+
         
 
         Place curPlace = selectedPiece.place;
         Vector2Int curIndex = curPlace.boardIndex;
         Board curBoard = curPlace.board;
-
-        // 기물이 있는 곳이 보드가 아니라면 종료
-        if (null == curBoard)
+       
+        if (null == curBoard)                   // 기물이 있는 곳이 보드가 아니라면 종료
             return;
 
-        // 규칙을 따르지 않는 보드라면 종료
-        if (!curBoard.FollowRule)
+        if (!curBoard.FollowRule)               // 규칙을 따르지 않는 보드라면 종료
             return;
 
-        for(int i = 0; i < curBoard.places.GetLength(0); i++)
-        {
-            for (int j = 0; j < curBoard.places.GetLength(1); j++)
-            {
+        selectedPiece.IsMovable(selectedPiece.place.boardIndex);
+
+        /* for(int i = 0; i < curBoard.places.GetLength(0); i++)
+         {
+             for (int j = 0; j < curBoard.places.GetLength(1); j++)
+             {
 
 
-                Vector2Int index = curBoard.places[i, j].boardIndex;
-                // 이동할 수 있는 영역인지 계산
+                 Vector2Int index = curBoard.places[i, j].boardIndex;
 
-                if (selectedPiece.place.boardIndex == index)
-                    continue;
-                //현재 위치
 
-                else if (selectedPiece.IsMovable(index))
-                {
-                    // 이동할 수 있는 영역이라면
-                    Piece account = curBoard.places[i, j].piece;               
-                    // 좌표에 기물이 있다면
-                    if (account != null)
-                    {
-                        // 아군 기물이라면
-                        if (account.team.TeamId == selectedPiece.team.TeamId)
-                        {
-                            continue;
-                        }
-                        // 적군 기물이라면
-                        else
-                        {
-                            curBoard.places[i, j].ChangeColor(attackable);
-                        }
-                    }
-                    else
-                    {
-                        curBoard.places[i, j].ChangeColor(highlight);
-                        //Debug.Log("이동 가능!: " + curBoard.places[i, j].gameObject.name);
-                        curBoard.places[i, j].IsApprochable = true;
-                    }
-                }
-                else
-                {
-                    //Debug.Log("이동 불가능!: " + curBoard.places[i, j].gameObject.name);
-                    // 이동할 수 있는 영역이 아니라면
-                    curBoard.places[i, j].IsApprochable = false;
-                }
+                 if (selectedPiece.place.boardIndex == index)        //현재 위치
+                     continue;
 
-            }
+                 else if (selectedPiece.IsMovable(index))            // 이동할 수 있는 영역인지 계산
+                 {
+                     // 이동할 수 있는 영역이라면
+                     Piece account = curBoard.places[i, j].piece;               
 
-        }
+                     if (account != null)                                    // 좌표에 기물이 있다면
+                     {
+
+                         if (account.team.TeamId == selectedPiece.team.TeamId)       // 아군 기물이라면
+                         {
+                             continue;
+                         }
+                         // 적군 기물이라면
+                         else
+                         {
+                             curBoard.places[i, j].ChangeColor(attackable);
+                         }
+                     }
+                     else
+                     {
+                         curBoard.places[i, j].ChangeColor(highlight);
+                         //Debug.Log("이동 가능!: " + curBoard.places[i, j].gameObject.name);
+                         curBoard.places[i, j].IsApprochable = true;
+                     }
+                 }
+                 else
+                 {
+                     // 이동할 수 있는 영역이 아니라면
+                     //Debug.Log("이동 불가능!: " + curBoard.places[i, j].gameObject.name);
+                     curBoard.places[i, j].IsApprochable = false;
+                 }
+             }
+         }*/
     }
 
     public void PostPlaceAction()
@@ -138,7 +136,7 @@ public class PlaceManager : SingleTon<PlaceManager>
                     Place cell = curBoard.places[i, j];
                     Piece account = cell.piece;
                     
-                    cell.HeatPoint++;
+                    //cell.HeatPoint++;
 
                     // 좌표에 기물이 있다면
                     if (account != null)
@@ -153,8 +151,8 @@ public class PlaceManager : SingleTon<PlaceManager>
                         // 적군 기물이라면
                         else
                         {
-                            selectedPiece.AddAttack(account);
-                            account.BeAttacked(selectedPiece);
+                            selectedPiece.AddThreat(account);
+                            account.BeThreatened(selectedPiece);
                             //curBoard.places[i, j].ChangeColor(attackable);
                         }
                     }
@@ -189,6 +187,11 @@ public class PlaceManager : SingleTon<PlaceManager>
             }
 
         }
+    }
+
+    public void ChangePlaceColor(Vector2Int location)
+    {
+        selectedPiece.place.board.places[location.x, location.y].ChangeColor(highlight);
     }
 
     public void MovePieceTo(Place place)
