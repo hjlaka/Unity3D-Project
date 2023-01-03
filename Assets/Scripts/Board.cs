@@ -33,13 +33,37 @@ public class Board : MonoBehaviour
         UpdateHeatHUD();
     }
 
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            ResetHeat();
+        }
+    }
+    public void ResetHeat()
+    {
+        if (null == heatPointHUD)
+            return;
+
+
+        for (int i = 0; i < size.x; i++)
+        {
+            for (int j = 0; j < size.y; j++)
+            {
+                places[i, j].HeatPoint = 0;
+                heatHUDList[(i * size.x) + j].text = "0";
+            }
+        }
+    }
+
     private void CreateHUD()
     {
         heatPointHUD.GetComponent<RectTransform>().sizeDelta = new Vector2(40 * size.x, 40 * size.y);
 
         for (int i = 0; i < size.x * size.y; i++)
         {
-            GameObject textUI = Instantiate(new GameObject(), heatPointHUD);
+            GameObject textUI = Instantiate(new GameObject());
+            textUI.transform.SetParent(heatPointHUD.transform, false);
             textUI.AddComponent<TextMeshProUGUI>();
             TextMeshProUGUI text = textUI.GetComponent<TextMeshProUGUI>();
             text.text = i.ToString();
