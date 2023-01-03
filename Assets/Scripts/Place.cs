@@ -18,7 +18,7 @@ public class Place : MonoBehaviour
         set
         {
             heatPoint = value;
-            Debug.Log(boardIndex + "의 과열도 증가: " + value);
+            //Debug.Log(boardIndex + "의 과열도 증가: " + value);
         }
     }
 
@@ -83,12 +83,5 @@ public class Place : MonoBehaviour
         render.material.color = typeColor;
     }
 
-
-    //{
-    // 기물 선택 상황에서
-
-    // 기물이 있는 경우
-    // 기물 선택
-    //}
 
 }

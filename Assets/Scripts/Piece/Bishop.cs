@@ -47,7 +47,6 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        //PlaceManager.Instance.ChangePlaceColor(curLocation);
         RecognizePiece(curLocation);
 
         DiagonalLB(curLocation + new Vector2Int(-1, -1));
@@ -59,7 +58,6 @@ public class Bishop : Piece
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        //PlaceManager.Instance.ChangePlaceColor(curLocation);
         RecognizePiece(curLocation);
 
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
@@ -97,7 +95,6 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        //PlaceManager.Instance.ChangePlaceColor(curLocation);
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         if (targetPiece != null)
         {
