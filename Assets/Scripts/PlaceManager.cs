@@ -9,6 +9,9 @@ public class PlaceManager : SingleTon<PlaceManager>
     [SerializeField]
     private Piece selectedPiece;
 
+    [SerializeField]
+    private CameraController camController;
+
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
@@ -119,7 +122,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (!curBoard.FollowRule)
             return;
 
-        for (int i = 0; i < curBoard.places.GetLength(0); i++)
+        /*for (int i = 0; i < curBoard.places.GetLength(0); i++)
         {
             for (int j = 0; j < curBoard.places.GetLength(1); j++)
             {
@@ -166,8 +169,30 @@ public class PlaceManager : SingleTon<PlaceManager>
                 }
             }
         }
-        curBoard.UpdateHeatHUD();
+        curBoard.UpdateHeatHUD();*/
     }
+
+    /*public void InfluenceToPlace(Vector2Int location)
+    {
+        Place curPlace = selectedPiece.place;
+        Vector2Int curIndex = curPlace.boardIndex;
+        Board curBoard = curPlace.board;
+
+        // 기물이 있는 곳이 보드가 아니라면 종료
+        if (null == curBoard)
+            return;
+
+        // 규칙을 따르지 않는 보드라면 종료
+        if (!curBoard.FollowRule)
+            return;
+
+        Place targetPlace = curBoard.places[location.x, location.y];
+
+
+    }*/
+
+
+
 
     public void ShowPlaceableEnd(Place oldPlace)
     {
@@ -212,6 +237,9 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = piece;
         ShowPlaceable();
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
+
+        camController.SetFreeCam(selectedPiece.transform);
+
     }
     public void SelectedPieceInit(Place oldPlace)
     {
@@ -220,5 +248,8 @@ public class PlaceManager : SingleTon<PlaceManager>
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
         // 소리도 나야 한다면
         // OnExitSelect?.Invoke();
+
+        camController.ChangeFreeCamPriority(10);
+        camController.ChangeVCamPriority(20);
     }
 }

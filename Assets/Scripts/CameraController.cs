@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private float padding;
+
+    [SerializeField]
+    private CinemachineVirtualCamera vCam;
+
+    [SerializeField]
+    private CinemachineFreeLook freeCam;
 
     private void Update()
     {
@@ -39,4 +46,22 @@ public class CameraController : MonoBehaviour
 
         transform.Translate(transform.forward * scroll * zoomSpeed * Time.deltaTime);       // 원하는대로 동작하지 않음
     }
+
+    public void ChangeFreeCamPriority(int priority)
+    {
+        freeCam.Priority = priority;
+    }
+
+    public void SetFreeCam(Transform target)
+    {
+        freeCam.LookAt = target;
+        freeCam.Follow = target;
+        ChangeFreeCamPriority(40);
+    }
+
+    public void ChangeVCamPriority(int priority)
+    {
+        vCam.Priority = priority;
+    }
+
 }
