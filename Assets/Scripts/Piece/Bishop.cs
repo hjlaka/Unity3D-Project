@@ -20,20 +20,12 @@ public class Bishop : Piece
 
         Vector2Int boardSize = place.board.Size;
 
-        DiagonalLB(location);
-        DiagonalLT(location, boardSize.y);
-        DiagonalRB(location, boardSize.x);
-        DiagonalRT(location, boardSize.y, boardSize.x);
+        DiagonalLB(location + new Vector2Int(-1, -1));
+        DiagonalLT(location + new Vector2Int(-1, 1), boardSize.y);
+        DiagonalRB(location + new Vector2Int(1, -1), boardSize.x);
+        DiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);
 
         return false;
-        /*if (Mathf.Abs(location.x - place.boardIndex.x) == Mathf.Abs(location.y - place.boardIndex.y))
-        {
-            //Debug.Log("[" + (location.x - place.boardIndex.x) + "][" + (location.y - place.boardIndex.y) + "]");
-            return true;
-        }
-
-        else
-            return false;*/
     }
 
     private void DiagonalLT(Vector2Int curLocation, int boardHeight)
@@ -43,7 +35,8 @@ public class Bishop : Piece
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        PlaceManager.Instance.ChangePlaceColor(curLocation);
+        RecognizePiece(curLocation);
+
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
     }
@@ -54,7 +47,8 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        PlaceManager.Instance.ChangePlaceColor(curLocation);
+        //PlaceManager.Instance.ChangePlaceColor(curLocation);
+        RecognizePiece(curLocation);
 
         DiagonalLB(curLocation + new Vector2Int(-1, -1));
     }
@@ -65,9 +59,34 @@ public class Bishop : Piece
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        PlaceManager.Instance.ChangePlaceColor(curLocation);
+        //PlaceManager.Instance.ChangePlaceColor(curLocation);
+        RecognizePiece(curLocation);
 
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
+    }
+
+    private void RecognizePiece(Vector2Int curLocation)
+    {
+        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
+        if (targetPiece != null)
+        {
+            if (targetPiece.team.TeamId == team.TeamId)
+            {
+                AddDefence(targetPiece);
+                targetPiece.BeDefended(this);
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+            }
+            else
+            {
+                AddThreat(targetPiece);
+                targetPiece.BeThreatened(this);
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+            }
+        }
+        else
+        {
+            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+        }
     }
 
     private void DiagonalRB(Vector2Int curLocation, int boardWidth)
@@ -76,7 +95,27 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        PlaceManager.Instance.ChangePlaceColor(curLocation);
+        //PlaceManager.Instance.ChangePlaceColor(curLocation);
+        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
+        if (targetPiece != null)
+        {
+            if (targetPiece.team.TeamId == team.TeamId)
+            {
+                AddDefence(targetPiece);
+                targetPiece.BeDefended(this);
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+            }
+            else
+            {
+                AddThreat(targetPiece);
+                targetPiece.BeThreatened(this);
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+            }
+        }
+        else
+        {
+            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+        }
 
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }

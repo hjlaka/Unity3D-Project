@@ -32,32 +32,62 @@ public class Piece : MonoBehaviour
         render.material.color = normal;
     }
 
-    public void AddAttack(Piece piece)
+    /*public void AddAttack(Piece piece)
     {
-        Debug.Log(piece + "를 공격한다");
+        Debug.Log(this + "가 " + piece + "를 공격한다");
         attackTo.Add(piece);
-    }
+    }*/
+
+    /*public void EndAttack(Piece piece)
+{
+
+}*/
+
+    /*public void BeAttacked(Piece piece)
+{
+    Debug.Log(this + "가 " + piece + "에게 공격 당한다");
+}*/
+
     public void AddDefence(Piece piece)
     {
-        Debug.Log(piece + "를 보호한다");
+        Debug.Log(this + "가 " + piece + "를 보호한다");
         defendFor.Add(piece);
     }
 
-    public void BeAttacked(Piece piece)
+    public void EndDefence(Piece piece)
     {
-        Debug.Log(piece + "에게 공격 당한다");
-    }
-
-    public void BeThreatened(Piece piece)
-    {
-        Debug.Log(piece + "에게 위협 당한다");
+        Debug.Log(this + "가 " + piece + "를 더이상 보호하지 않는다.");
     }
 
     public void BeDefended(Piece piece)
     {
-        Debug.Log(piece + "에게 보호 받는다");
+        Debug.Log(this + "가 " + piece + "에게 보호 받는다");
     }
 
+    public void EndDefended(Piece piece)
+    {
+        Debug.Log(this + "가 " + piece + "로부터 더이상 보호받지 않는다.");
+    }
+
+    public void AddThreat(Piece piece)
+    {
+        Debug.Log(this + "가 " + piece + "을 위협한다");
+    }
+
+    public void EndThreat(Piece piece)
+    {
+        Debug.Log(this + "가 " + piece + "를 더이상 위협하지 않는다.");
+    }
+
+    public void BeThreatened(Piece piece)
+    {
+        Debug.Log(this + "가 " + piece + "에게 위협 당한다");
+    }
+
+    public void EndThreatened(Piece piece)
+    {
+        Debug.Log(this + "가 " + piece + "로부터 더이상 위협받지 않는다.");
+    }
 
     public void SetInPlace(Place place)
     {

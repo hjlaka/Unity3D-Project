@@ -12,6 +12,8 @@ public class PlaceManager : SingleTon<PlaceManager>
     [SerializeField]
     private CameraController camController;
 
+    public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE}
+
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
@@ -191,6 +193,26 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     }*/
 
+    /*public void Recognize(Piece subject, Vector2Int location)
+    {
+        Board curBoard = subject.place.board;
+
+        Place targetPlace = curBoard.places[location.x, location.y];
+
+        if(targetPlace.piece != null)
+        {
+            Piece targetPiece = targetPlace.piece;
+            if(targetPiece.team.TeamId == selectedPiece.team.TeamId)
+            {
+                // 방어 기물로 등록
+
+            }
+            else
+            {
+                // 위협 기물로 등록
+            }
+        }
+    }*/
 
 
 
@@ -214,9 +236,30 @@ public class PlaceManager : SingleTon<PlaceManager>
         }
     }
 
-    public void ChangePlaceColor(Vector2Int location)
+    public void ChangePlaceColor(Vector2Int location, PlaceType placeType)
     {
-        selectedPiece.place.board.places[location.x, location.y].ChangeColor(highlight);
+        switch(placeType)
+        {
+            case PlaceType.DEFENCE:
+                selectedPiece.place.board.places[location.x, location.y].ChangeColor(Color.blue);
+                break;
+
+            case PlaceType.ATTACK:
+                selectedPiece.place.board.places[location.x, location.y].ChangeColor(Color.red);
+                break;
+
+            case PlaceType.NORMAL:
+                selectedPiece.place.board.places[location.x, location.y].ChangeColor();
+                break;
+
+            case PlaceType.MOVABLE:
+                selectedPiece.place.board.places[location.x, location.y].ChangeColor(highlight);
+                break;
+
+            case PlaceType.SPECIALMOVE:
+                selectedPiece.place.board.places[location.x, location.y].ChangeColor(Color.gray);
+                break;
+        }
     }
 
     public void MovePieceTo(Place place)
