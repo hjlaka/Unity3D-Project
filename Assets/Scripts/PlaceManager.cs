@@ -12,8 +12,13 @@ public class PlaceManager : SingleTon<PlaceManager>
     [SerializeField]
     private CameraController camController;
 
+
+    public UnityEvent OnSelectPiece;
+    public UnityEvent<Piece> OnFinishMove;
+
     public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE}
 
+    private Coroutine waitToInit;
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
@@ -86,10 +91,10 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
 
-    public void ShowPlaceableEnd()
+    public void ShowPlaceableEnd(Piece endedPiece)
     {
 
-        List<Place> movableList = selectedPiece.MovableTo;
+        List<Place> movableList = endedPiece.MovableTo;
         for(int i = 0; i < movableList.Count; i++)
         {
             movableList[i].ChangeColor();
@@ -131,25 +136,40 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 이전 표시된 영역 지우기
 
-        ShowPlaceableEnd();
+        ShowPlaceableEnd(SelectedPiece);
         selectedPiece.ClearMovable();
 
-       // Debug.Log(selectedPiece.MovableTo.Count.ToString());
+        // Debug.Log(selectedPiece.MovableTo.Count.ToString());
 
+
+        
         selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
         place.piece = selectedPiece;
         PostPlaceAction();
 
+        // 이전 기물 저장
+        Piece endedPiece = selectedPiece;
 
-        StartCoroutine(WaitAndInit(1f));
+        // 연산 초기화
+        SelectedPieceInit();
+
+        // 연출 진행
+        OnFinishMove?.Invoke(endedPiece);
+
         
+        waitToInit = StartCoroutine(PostInfluenceShowEnd(endedPiece));
+        //CancleSelectPiece();
+
+
     }
 
-    private IEnumerator WaitAndInit(float second)
-    {
-        yield return new WaitForSeconds(second);
 
-        CancleSelectPiece();
+    private IEnumerator PostInfluenceShowEnd(Piece endedPiece)
+    {
+        yield return new WaitForSeconds(1f);
+
+        ShowPlaceableEnd(endedPiece);
+
     }
 
     public void SelectPiece(Piece piece)
@@ -158,13 +178,16 @@ public class PlaceManager : SingleTon<PlaceManager>
         ShowPlaceable();
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
 
-        camController.SetFreeCam(selectedPiece.transform);
+        OnSelectPiece?.Invoke();
 
     }
 
     public void CancleSelectPiece()
     {
-        ShowPlaceableEnd();
+        if (null == selectedPiece) return;
+
+        // 선택된 기물을 바로 취소하는 경우
+        ShowPlaceableEnd(selectedPiece);
         SelectedPieceInit();
     }
 
@@ -174,7 +197,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = null;
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
 
-        camController.ChangeFreeCamPriority(10);
-        camController.ChangeVCamPriority(20);
+        //camController.ChangeFreeCamPriority(10);
+       // camController.ChangeVCamPriority(20);
     }
 }

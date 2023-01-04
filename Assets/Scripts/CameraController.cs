@@ -59,6 +59,11 @@ public class CameraController : MonoBehaviour
         ChangeFreeCamPriority(40);
     }
 
+    public void SetCamToSelectedPiece()
+    {
+        SetFreeCam(PlaceManager.Instance.SelectedPiece.transform);
+    }
+
     public void ChangeVCamPriority(int priority)
     {
         vCam.Priority = priority;
