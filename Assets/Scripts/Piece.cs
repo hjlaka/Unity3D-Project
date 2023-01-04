@@ -51,7 +51,10 @@ public class Piece : MonoBehaviour
         render.material.color = normal;
 
         if(place != null)
-            transform.position = place.transform.position;
+        {
+            SetInPlace(place);
+        }
+            
     }
 
     public void ClearMovable()
@@ -108,6 +111,7 @@ public class Piece : MonoBehaviour
     public void SetInPlace(Place place)
     {
         this.place = place;
+        place.piece = this;
         Move();
     }
 

@@ -180,7 +180,6 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         
         selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
-        place.piece = selectedPiece;
 
 
         // 새로운 자리 과열도 추가
