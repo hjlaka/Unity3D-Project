@@ -157,9 +157,6 @@ public class Piece : MonoBehaviour
             PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
         }
     }
-    public virtual void LookAttackRange() { }
-
-    public virtual void ShowMovable() { }
 
     private void OnMouseOver()
     {

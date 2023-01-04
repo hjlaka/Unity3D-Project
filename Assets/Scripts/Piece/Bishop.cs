@@ -5,16 +5,6 @@ using UnityEngine;
 public class Bishop : Piece
 {
 
-    public override void PieceAction()
-    {
-        base.PieceAction();
-
-    }
-
-    public override void LookAttackRange() 
-    {
-
-    }
     public override bool IsMovable(Vector2Int location)
     {
 
@@ -74,11 +64,5 @@ public class Bishop : Piece
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }
 
-
-
-    private void Influence()
-    {
-
-    }
 
 }
