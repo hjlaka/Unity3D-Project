@@ -7,6 +7,8 @@ public class Place : MonoBehaviour
     public enum PlaceType { A, B};
     public Piece piece;
     public Board board;
+    [SerializeField]
+    private PlaceEffect effect;
 
     private int heatPoint;
     public int HeatPoint
@@ -18,7 +20,8 @@ public class Place : MonoBehaviour
         set
         {
             heatPoint = value;
-            //Debug.Log(boardIndex + "의 과열도 증가: " + value);
+            Debug.Log(boardIndex + "의 과열도 증가: " + value);
+            effect.Intencity = heatPoint * 0.2f;
         }
     }
 
@@ -36,6 +39,11 @@ public class Place : MonoBehaviour
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
+    }
+
+    private void ChangeEffect(float intencity)
+    {
+        effect.ChangeIntencity(intencity);
     }
 
     private void Start()
