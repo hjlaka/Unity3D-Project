@@ -17,8 +17,20 @@ public class Piece : MonoBehaviour
     private Color normal;
 
     private List<Piece> defendFor;
-    private List<Piece> attackTo;
+    private List<Piece> threatTo;
     private List<Place> movableTo;
+
+    public List<Piece> DefendFor
+    {
+        get { return defendFor; }
+        private set { defendFor = value; }
+    }
+    
+    public List<Piece> ThreatTo
+    {
+        get { return threatTo; }
+        private set { threatTo = value; }
+    }
 
     public List<Place> MovableTo
     {
@@ -29,15 +41,17 @@ public class Piece : MonoBehaviour
     {
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
-        attackTo = new List<Piece>();
+        threatTo = new List<Piece>();
         movableTo = new List<Place>();
     }
 
     private void Start()
     {
         normal = team.normal;
-        transform.position = place.transform.position;
         render.material.color = normal;
+
+        if(place != null)
+            transform.position = place.transform.position;
     }
 
     public void ClearMovable()
@@ -73,6 +87,7 @@ public class Piece : MonoBehaviour
     public void AddThreat(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
+        ThreatTo.Add(piece);
     }
 
     public void EndThreat(Piece piece)

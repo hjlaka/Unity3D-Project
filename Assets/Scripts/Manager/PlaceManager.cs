@@ -92,9 +92,22 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void ShowPlaceableEnd(Piece endedPiece)
     {
         List<Place> movableList = endedPiece.MovableTo;
+        List<Piece> defeceList = endedPiece.DefendFor;
+        List<Piece> threatList = endedPiece.ThreatTo;
+
         for(int i = 0; i < movableList.Count; i++)
         {
             movableList[i].ChangeColor();
+        }
+
+        for (int i = 0; i < defeceList.Count; i++)
+        {
+            defeceList[i].place.ChangeColor();
+        }
+
+        for (int i = 0; i < threatList.Count; i++)
+        {
+            threatList[i].place.ChangeColor();
         }
     }
 
