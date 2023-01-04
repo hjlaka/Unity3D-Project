@@ -155,7 +155,11 @@ public class Piece : MonoBehaviour
             {
                 AddDefence(targetPiece);
                 targetPiece.BeDefended(this);
-                
+
+                // TODO:
+                // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다. - 변수 이름 변경 필요
+                AddMovable(targetPlace);
+
 
                 //연출
                 PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
@@ -165,6 +169,9 @@ public class Piece : MonoBehaviour
             {
                 AddThreat(targetPiece);
                 targetPiece.BeThreatened(this);
+
+                // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
+                AddMovable(targetPlace);
 
 
                 //연출
