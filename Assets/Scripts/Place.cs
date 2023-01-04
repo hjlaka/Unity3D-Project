@@ -15,6 +15,7 @@ public class Place : MonoBehaviour
     [SerializeField]
     private PlaceEffect effect;
 
+    [SerializeField]
     private int heatPoint;
     public int HeatPoint
     {
@@ -25,7 +26,10 @@ public class Place : MonoBehaviour
         set
         {
             heatPoint = value;
-            effect.Intencity = heatPoint * 0.2f;
+
+            if(heatPoint < 0) heatPoint = 0;
+            if(effect != null)
+                effect.Intencity = heatPoint * 0.2f;
         }
     }
 

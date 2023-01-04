@@ -64,8 +64,6 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (!curBoard.FollowRule)               // 규칙을 따르지 않는 보드라면 종료
             return;
 
-        //selectedPiece.IsMovable(selectedPiece.place.boardIndex);
-
 
     }
 
@@ -158,6 +156,10 @@ public class PlaceManager : SingleTon<PlaceManager>
         WithDrawInfluence(SelectedPiece);
         selectedPiece.ClearMovable();
 
+        // 이전 자리 기물 과열도 제거
+        Debug.Log("이전자리:" + oldPlace + " 과열도: " + oldPlace.HeatPoint);
+        oldPlace.HeatPoint--;
+
         // Debug.Log(selectedPiece.MovableTo.Count.ToString());
 
         
@@ -166,7 +168,16 @@ public class PlaceManager : SingleTon<PlaceManager>
         
         selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
         place.piece = selectedPiece;
+
+
+        // 새로운 자리 과열도 추가
+        place.HeatPoint++;
+
+        // 위치 변경 후 영향권 연산
         PostPlaceAction();
+
+        
+
 
         // 이전 기물 저장
         Piece endedPiece = selectedPiece;
