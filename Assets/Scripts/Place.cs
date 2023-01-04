@@ -27,9 +27,12 @@ public class Place : MonoBehaviour
         {
             heatPoint = value;
 
-            if(heatPoint < 0) heatPoint = 0;
+            //if(heatPoint < 0) heatPoint = 0;
             if(effect != null)
                 effect.Intencity = heatPoint * 0.2f;
+
+
+            if (heatPoint >= 3) Debug.Log(heatPoint + " 과열된 자리! :" + this);
         }
     }
 

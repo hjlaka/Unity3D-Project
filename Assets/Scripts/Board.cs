@@ -13,7 +13,7 @@ public class Board : MonoBehaviour
     }
 
     private bool followRule;
-    public bool FollowRule { get; set; }
+    public bool FollowRule { get { return followRule; } set { followRule = value; } }
     public Transform heatPointHUD;
     private List<TextMeshProUGUI> heatHUDList;
     public Place[,] places;

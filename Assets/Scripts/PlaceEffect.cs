@@ -34,4 +34,11 @@ public class PlaceEffect : MonoBehaviour
         curColor.a = intencity;
         render.material.color = curColor;
     }
+
+    public void ChangeColor(Color color)
+    {
+        Color newColor = color;
+        newColor.a = intencity;
+        render.material.color = newColor;
+    }
 }

@@ -178,6 +178,7 @@ MonoBehaviour:
   piece: {fileID: 0}
   board: {fileID: 0}
   effect: {fileID: 3577202587211873082}
+  heatPoint: 0
   boardIndex: {x: 0, y: 0}
   type: 0
 --- !u!1 &9025236827243672835

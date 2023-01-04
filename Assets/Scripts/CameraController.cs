@@ -20,6 +20,12 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private CinemachineFreeLook freeCam;
 
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
     private void Update()
     {
         Move();   

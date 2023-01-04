@@ -20,7 +20,7 @@ public class GameManager : SingleTon<GameManager>
 
             case GameState.TURN_CHANGE:
                 break;
-                
+     
             default: 
                 state = GameState.TURN_CHANGE; 
                 break;
