@@ -17,6 +17,7 @@ public class Board : MonoBehaviour
     public Transform heatPointHUD;
     private List<TextMeshProUGUI> heatHUDList;
     public Place[,] places;
+    private float cellSize;
 
     private void Awake()
     {
@@ -29,6 +30,8 @@ public class Board : MonoBehaviour
         if (null == heatPointHUD)
             return;
 
+        //Debug.Log(heatPointHUD.GetComponent<GridLayoutGroup>());
+        //cellSize = heatPointHUD.GetComponent<GridLayout>().cellSize.x;
         CreateHUD();
         UpdateHeatHUD();
     }
@@ -58,7 +61,7 @@ public class Board : MonoBehaviour
 
     private void CreateHUD()
     {
-        heatPointHUD.GetComponent<RectTransform>().sizeDelta = new Vector2(40 * size.x, 40 * size.y);
+        heatPointHUD.GetComponent<RectTransform>().sizeDelta = new Vector2(20 * size.x, 20 * size.y);
 
         for (int i = 0; i < size.x * size.y; i++)
         {
@@ -67,7 +70,7 @@ public class Board : MonoBehaviour
             textUI.AddComponent<TextMeshProUGUI>();
             TextMeshProUGUI text = textUI.GetComponent<TextMeshProUGUI>();
             text.text = i.ToString();
-            text.fontSize = 30f;
+            text.fontSize = 20f;
             //TextMeshProUGUI text = heatPointHUD.GetChild(i).GetComponent<TextMeshProUGUI>();
             heatHUDList.Add(text);
         }
