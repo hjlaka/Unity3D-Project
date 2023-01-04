@@ -76,37 +76,6 @@ public class Bishop : Piece
 
 
 
-
-    private void RecognizePiece(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        if (targetPiece != null)
-        {
-            if (targetPiece.team.TeamId == team.TeamId)
-            {
-                AddDefence(targetPiece);
-                targetPiece.BeDefended(this);
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
-                DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
-            }
-            else
-            {
-                AddThreat(targetPiece);
-                targetPiece.BeThreatened(this);
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
-                DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
-            }
-        }
-        else
-        {
-            Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-            AddMovable(targetPlace);
-            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
-        }
-    }
-
-   
-
     private void Influence()
     {
 

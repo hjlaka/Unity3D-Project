@@ -108,7 +108,40 @@ public class Piece : MonoBehaviour
         return false;
     }
 
+    protected void RecognizePiece(Vector2Int curLocation)
+    {
+        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
+        if (targetPiece != null)
+        {
+            if (targetPiece.team.TeamId == team.TeamId)
+            {
+                AddDefence(targetPiece);
+                targetPiece.BeDefended(this);
+                
 
+                //연출
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+                DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
+            }
+            else
+            {
+                AddThreat(targetPiece);
+                targetPiece.BeThreatened(this);
+
+
+                //연출
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+                DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
+            }
+        }
+        else
+        {
+            Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+            AddMovable(targetPlace);
+            targetPlace.HeatPoint++;
+            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+        }
+    }
     public virtual void LookAttackRange() { }
 
     public virtual void ShowMovable() { }
