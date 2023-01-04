@@ -126,6 +126,9 @@ public class Piece : MonoBehaviour
     protected void RecognizePiece(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
+        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+        targetPlace.HeatPoint++;
+
         if (targetPiece != null)
         {
             if (targetPiece.team.TeamId == team.TeamId)
@@ -151,9 +154,8 @@ public class Piece : MonoBehaviour
         }
         else
         {
-            Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+           
             AddMovable(targetPlace);
-            targetPlace.HeatPoint++;
             PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
         }
     }

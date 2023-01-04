@@ -112,9 +112,22 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void WithDrawInfluence(Piece leftPiece)
     {
         List<Place> movableList = leftPiece.MovableTo;
+        List<Piece> defeceList = leftPiece.DefendFor;
+        List<Piece> threatList = leftPiece.ThreatTo;
+
         for (int i = 0; i < movableList.Count; i++)
         {
             movableList[i].HeatPoint--;
+        }
+
+        for (int i = 0; i < defeceList.Count; i++)
+        {
+            defeceList[i].place.HeatPoint--;
+        }
+
+        for (int i = 0; i < threatList.Count; i++)
+        {
+            threatList[i].place.HeatPoint--;
         }
     }
 
