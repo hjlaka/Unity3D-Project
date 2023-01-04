@@ -14,7 +14,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
     public UnityEvent OnSelectPiece;
-    public UnityEvent<Piece> OnFinishMove;
+    public UnityEvent OnNonSelectPiece;
 
     public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE}
 
@@ -154,7 +154,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPieceInit();
 
         // 연출 진행
-        OnFinishMove?.Invoke(endedPiece);
+        //OnFinishMove?.Invoke(endedPiece);
 
         
         waitToInit = StartCoroutine(PostInfluenceShowEnd(endedPiece));
@@ -197,7 +197,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = null;
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
 
-        //camController.ChangeFreeCamPriority(10);
-       // camController.ChangeVCamPriority(20);
+
+        OnNonSelectPiece?.Invoke();
     }
 }
