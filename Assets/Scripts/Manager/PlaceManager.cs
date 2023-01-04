@@ -169,6 +169,14 @@ public class PlaceManager : SingleTon<PlaceManager>
         WithDrawInfluence(SelectedPiece);
         selectedPiece.ClearMovable();
 
+        // 영향권 비교 후 변동 사항에 대해 연산하기
+        // =====임시 방편======
+
+        selectedPiece.ClearThreat();
+        selectedPiece.ClearDefence();
+
+        // ===================
+
         // 이전 자리 기물 과열도 제거
         Debug.Log("이전자리:" + oldPlace + " 과열도: " + oldPlace.HeatPoint);
         oldPlace.HeatPoint--;
@@ -198,7 +206,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPieceInit();
 
         //OnFinishMove?.Invoke();
-        place.board.UpdateHeatHUD();
+        place.board?.UpdateHeatHUD();
 
         // 연출 진행
         //OnFinishMove?.Invoke(endedPiece);

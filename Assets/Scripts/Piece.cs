@@ -34,7 +34,8 @@ public class Piece : MonoBehaviour
 
     public List<Place> MovableTo
     {
-        get { return movableTo; } private set { movableTo = value;  }
+        get { return movableTo; } 
+        private set { movableTo = value;  }
     }
 
     private void Awake()
@@ -59,8 +60,23 @@ public class Piece : MonoBehaviour
 
     public void ClearMovable()
     {
-        movableTo.Clear();
+        Debug.Log("이동 클리어" + MovableTo.Count);
+        MovableTo.Clear();
     }
+
+    // 임시 생성 
+    public void ClearThreat()
+    {
+        Debug.Log("위협 클리어" + ThreatTo.Count);
+        ThreatTo.Clear();
+    }
+
+    public void ClearDefence()
+    {
+        Debug.Log("방어 클리어" + DefendFor.Count);
+        DefendFor.Clear();
+    }
+    // 여기까지 임시 생성
 
     public void AddMovable(Place place)
     {
@@ -127,7 +143,7 @@ public class Piece : MonoBehaviour
         return false;
     }
 
-    protected void RecognizePiece(Vector2Int curLocation)
+    protected bool RecognizePiece(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
@@ -155,12 +171,16 @@ public class Piece : MonoBehaviour
                 PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
                 DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
             }
+
+            return true;
         }
         else
         {
            
             AddMovable(targetPlace);
             PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+
+            return false;
         }
     }
 

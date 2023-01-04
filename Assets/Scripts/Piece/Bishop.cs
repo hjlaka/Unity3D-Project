@@ -25,7 +25,7 @@ public class Bishop : Piece
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        RecognizePiece(curLocation);
+        if (RecognizePiece(curLocation)) return;
 
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
@@ -37,7 +37,7 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        RecognizePiece(curLocation);
+        if (RecognizePiece(curLocation)) return;
 
         DiagonalLB(curLocation + new Vector2Int(-1, -1));
     }
@@ -48,7 +48,7 @@ public class Bishop : Piece
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        RecognizePiece(curLocation);
+        if (RecognizePiece(curLocation)) return;
 
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
     }
@@ -59,7 +59,7 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        RecognizePiece(curLocation);
+        if (RecognizePiece(curLocation)) return;
 
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }
