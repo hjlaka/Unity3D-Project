@@ -5,16 +5,28 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject unitList;
+    private GameObject pieceCreateUI;
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.I))
         {
-            if(unitList.activeSelf)
-                unitList.SetActive(false);
-            else 
-                unitList.SetActive(true);
+            if (pieceCreateUI.activeSelf)
+            {
+                pieceCreateUI.SetActive(false);
+                //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+            }
+            else
+            {
+                if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
+                {
+                    pieceCreateUI.SetActive(true);
+                    //GameManager.Instance.state = GameManager.GameState.CREATEING_PIECE;
+                }
+            }
+                
+            
+            
         }
     }
 }
