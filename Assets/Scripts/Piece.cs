@@ -19,6 +19,7 @@ public class Piece : MonoBehaviour
     private List<Piece> defendFor;
     private List<Piece> threatTo;
     private List<Place> movableTo;
+    private List<Place> influenceable;
 
     public List<Piece> DefendFor
     {
@@ -38,12 +39,19 @@ public class Piece : MonoBehaviour
         private set { movableTo = value;  }
     }
 
+    public List<Place> Influenceable
+    {
+        get { return influenceable; }
+        private set { influenceable = value; }
+    }
+
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
         threatTo = new List<Piece>();
         movableTo = new List<Place>();
+        influenceable = new List<Place>();
     }
 
     private void Start()
@@ -76,11 +84,21 @@ public class Piece : MonoBehaviour
         Debug.Log("방어 클리어" + DefendFor.Count);
         DefendFor.Clear();
     }
+
+    public void ClearInfluence()
+    {
+        Debug.Log("영향권 클리어" + Influenceable.Count);
+        Influenceable.Clear();
+    }
     // 여기까지 임시 생성
 
     public void AddMovable(Place place)
     {
         movableTo.Add(place);
+    }
+    public void AddInfluence(Place place)
+    {
+        Influenceable.Add(place);
     }
     public void AddDefence(Piece piece)
     {
@@ -157,6 +175,7 @@ public class Piece : MonoBehaviour
         {
             Debug.Log("앞에 장애물 없다");
             //AddMovable(targetPlace); // 영향권과 움직일 수 있는 범위 분리하기
+            AddMovable(targetPlace);
             PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
 
             return false;
@@ -167,37 +186,13 @@ public class Piece : MonoBehaviour
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+        // TODO:
+        // 과열도는 영향권 범위의 변경과 함께 연산되도록 엮기
         targetPlace.HeatPoint++;
 
         if (targetPiece != null)
         {
-            if (targetPiece.team.TeamId == team.TeamId)
-            {
-                AddDefence(targetPiece);
-                targetPiece.BeDefended(this);
-
-                // TODO:
-                // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다. - 변수 이름 변경 필요
-                AddMovable(targetPlace);
-
-
-                //연출
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
-                DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
-            }
-            else
-            {
-                AddThreat(targetPiece);
-                targetPiece.BeThreatened(this);
-
-                // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
-                AddMovable(targetPlace);
-
-
-                //연출
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
-                DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
-            }
+            RecognizeDefendAndAttack(curLocation, targetPiece, targetPlace);
 
             return true;
         }
@@ -209,7 +204,37 @@ public class Piece : MonoBehaviour
     }
     // } 폰 움직임을 위해 추가 -----------------------------------------------------------
 
+    private void RecognizeDefendAndAttack(Vector2Int curLocation, Piece targetPiece, Place targetPlace)
+    {
+        if (targetPiece.team.TeamId == team.TeamId)
+        {
+            AddDefence(targetPiece);
+            targetPiece.BeDefended(this);
 
+            // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
+            AddInfluence(targetPlace);
+
+
+            //연출
+            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+            DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
+        }
+        else
+        {
+            AddThreat(targetPiece);
+            targetPiece.BeThreatened(this);
+
+            // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
+            // 공격할 수 있는 자리는 영향권 내 자리이다.
+            AddMovable(targetPlace);
+            AddInfluence(targetPlace);
+
+
+            //연출
+            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+            DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
+        }
+    }
 
     protected bool RecognizePiece(Vector2Int curLocation)
     {
@@ -219,44 +244,24 @@ public class Piece : MonoBehaviour
 
         if (targetPiece != null)
         {
-            if (targetPiece.team.TeamId == team.TeamId)
-            {
-                AddDefence(targetPiece);
-                targetPiece.BeDefended(this);
-
-                // TODO:
-                // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다. - 변수 이름 변경 필요
-                AddMovable(targetPlace);
-
-
-                //연출
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
-                DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
-            }
-            else
-            {
-                AddThreat(targetPiece);
-                targetPiece.BeThreatened(this);
-
-                // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
-                AddMovable(targetPlace);
-
-
-                //연출
-                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
-                DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
-            }
+            RecognizeDefendAndAttack(curLocation, targetPiece, targetPlace);
 
             return true;
         }
         else
         {
-           
-            AddMovable(targetPlace);
-            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+
+            RecognizeMovableVoidPlace(curLocation, targetPlace);
 
             return false;
         }
+    }
+
+    private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
+    {
+        AddMovable(targetPlace);
+        AddInfluence(targetPlace);
+        PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
     }
 
     private void OnMouseOver()
