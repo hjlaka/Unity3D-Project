@@ -27,7 +27,7 @@ public class Place : MonoBehaviour
         {
             heatPoint = value;
 
-            //if(heatPoint < 0) heatPoint = 0;
+            if(heatPoint < 0) heatPoint = 0;
             if(effect != null)
                 effect.Intencity = heatPoint * 0.2f;
 
@@ -76,8 +76,12 @@ public class Place : MonoBehaviour
     {
         //Debug.Log(string.Format("{0} 클릭", gameObject.name));
 
-        // 기물이 선택된 상태에서 클릭시
 
+        // 게임 상태 조건
+        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
+            return;
+
+        // 기물이 선택된 상태에서 클릭시
         if (null == PlaceManager.Instance.SelectedPiece)
             return;
 
