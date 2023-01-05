@@ -67,12 +67,20 @@ public class CameraController : MonoBehaviour
 
     public void SetCamToSelectedPiece()
     {
+        Debug.Log("카메라 기물 비추기");
         SetFreeCam(PlaceManager.Instance.SelectedPiece.transform);
     }
 
     public void ChangeVCamPriority(int priority)
     {
         vCam.Priority = priority;
+    }
+
+    public void SetCamToTopDownView()
+    {
+        Debug.Log("카메라 탑다운 뷰");
+        ChangeVCamPriority(20);
+        ChangeFreeCamPriority(10);
     }
 
 }
