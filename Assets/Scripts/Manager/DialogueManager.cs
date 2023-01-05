@@ -7,10 +7,15 @@ public class DialogueManager : SingleTon<DialogueManager>
 {
 
     [SerializeField]
+    private bool dialogueOn;
+
+    [SerializeField]
     private  DialogueUI dialogueUI;
 
     [SerializeField]
     private float delay;
+
+
 
     private TextMeshProUGUI dialogueText;
 
@@ -45,6 +50,12 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     public void StartDialogue()
     {
+        if (!dialogueOn)
+        {
+            GameManager.Instance.state = GameManager.GameState.TURN_FINISHED;
+            return;
+        }
+
         if (!SetDialogueText())
         {
             Debug.Log("대화 처음부터 없어요");
