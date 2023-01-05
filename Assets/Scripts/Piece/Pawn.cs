@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Pawn : Piece
 {
-    private bool isMoved;
+    [SerializeField]
+    private bool canDoubleMove;
 
     public override void PieceAction()
     {
@@ -14,30 +15,62 @@ public class Pawn : Piece
 
 
 
-    public override bool IsMovable(Vector2Int location)
+    public override void IsMovable(Vector2Int location)
     {
-        // 첫번째 움직임 : 앞으로 한 칸 이동
-        if (location.x == place.boardIndex.x && location.y == place.boardIndex.y + 1)
+        Vector2Int boardSize = place.board.Size;
+
+        MoveForward(location + new Vector2Int(0, 1), boardSize.y);
+    }
+
+    private void MoveForward(Vector2Int curLocation, int boardHeight)
+    {
+        // 앞으로 한 칸 이동할 수 있는가?
+        // 벽이라면
+        if (IsTopLocation(curLocation, boardHeight)) return;
+
+        // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
+        if (RecognizePieceMoveObstacle(curLocation)) return;
+
+        // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
+        MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
+    }
+
+
+    private bool IsTopLocation(Vector2Int curLocation, int boardHeight)
+    {
+        if (curLocation.y > boardHeight - 1) 
             return true;
-
-        // 두번째 움직임 : 앞으로 두 칸 이동
-        else if (location.x == place.boardIndex.x && location.y == place.boardIndex.y + 2)
-            return true;
-        // 세번째 움직임 : 적군 공격
-
-        // 또 다른 조건 식 : 판의 끝에 도달했는가?
-        return false;
+        else 
+            return false;
     }
 
-    private void MoveOnce()
+
+    private void MoveDoubleForward(Vector2Int curLocation, int boardHeight)
     {
-        // 앞으로 한 칸 이동
+        // 앞으로 두 칸 이동할 수 있는가?
+        if (canDoubleMove)
+        {
+            // 벽이라면
+            if (IsTopLocation(curLocation, boardHeight)) return;
+
+            // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
+            if (RecognizePieceMoveObstacle(curLocation)) return;
+
+        }
     }
 
-    private void MoveTwice()
+    public override void SetInPlace(Place place)
     {
-        // 앞으로 두 칸 이동
+        Place oldPlace = this.place;
+        if (oldPlace.board != place.board)
+            canDoubleMove = true;
+        else
+            canDoubleMove = false;
+
+        base.SetInPlace(place);
     }
+
+
 
     public bool IsAttackable()
     {

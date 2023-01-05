@@ -124,7 +124,7 @@ public class Piece : MonoBehaviour
         Debug.Log(this + "가 " + piece + "로부터 더이상 위협받지 않는다.");
     }
 
-    public void SetInPlace(Place place)
+    public virtual void SetInPlace(Place place)
     {
         this.place = place;
         place.piece = this;
@@ -138,10 +138,78 @@ public class Piece : MonoBehaviour
 
 
     public virtual void PieceAction() { }
-    public virtual bool IsMovable(Vector2Int location)
+    public virtual void IsMovable(Vector2Int location)
     {
-        return false;
     }
+
+
+    // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
+    protected bool RecognizePieceMoveObstacle(Vector2Int curLocation)
+    {
+        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
+        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+
+        if(targetPiece != null)
+        {
+            return true;
+        }
+        else
+        {
+            Debug.Log("앞에 장애물 없다");
+            //AddMovable(targetPlace); // 영향권과 움직일 수 있는 범위 분리하기
+            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+
+            return false;
+        }
+    }
+
+    protected bool RecognizePieceAttackable(Vector2Int curLocation)
+    {
+        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
+        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
+        targetPlace.HeatPoint++;
+
+        if (targetPiece != null)
+        {
+            if (targetPiece.team.TeamId == team.TeamId)
+            {
+                AddDefence(targetPiece);
+                targetPiece.BeDefended(this);
+
+                // TODO:
+                // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다. - 변수 이름 변경 필요
+                AddMovable(targetPlace);
+
+
+                //연출
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+                DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
+            }
+            else
+            {
+                AddThreat(targetPiece);
+                targetPiece.BeThreatened(this);
+
+                // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
+                AddMovable(targetPlace);
+
+
+                //연출
+                PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+                DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
+            }
+
+            return true;
+        }
+        else
+        {
+            // 기물이 없는 경우 이동할 수 없음
+            return false;
+        }
+    }
+    // } 폰 움직임을 위해 추가 -----------------------------------------------------------
+
+
 
     protected bool RecognizePiece(Vector2Int curLocation)
     {

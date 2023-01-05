@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bishop : Piece
 {
 
-    public override bool IsMovable(Vector2Int location)
+    public override void IsMovable(Vector2Int location)
     {
 
         Vector2Int boardSize = place.board.Size;
@@ -15,7 +15,6 @@ public class Bishop : Piece
         DiagonalRB(location + new Vector2Int(1, -1), boardSize.x);
         DiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);
 
-        return false;
     }
 
     private void DiagonalLT(Vector2Int curLocation, int boardHeight)
