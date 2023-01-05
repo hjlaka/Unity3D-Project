@@ -24,19 +24,6 @@ public class PieceCreateButton : MonoBehaviour
         Piece instance = Instantiate(piecePrefab);
         instance.team = team;
         instance.SetInPlace(creatingPlace);
-        // 기물 생성
-
-        // 기물을 선택상태로 변경
-        //PlaceManager.Instance.SelectPiece(instance);
-
-        // 게임 상태를 위치 선택 상태로 변경 (플레이스 매니저에서 처리)
-
-
-
-        // 다른 기물 선택시...? - 선택 중인 기물을 제거
-
-
-
         
     }
 
