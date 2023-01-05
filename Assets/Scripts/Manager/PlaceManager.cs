@@ -259,28 +259,17 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 이전 기물 저장
         Piece endedPiece = selectedPiece;
 
+
+
+
         StartCoroutine(EndTurn(endedPiece));        // 턴을 끝내는 연산을 진행할지 말지, 계속해서 확인
-
-
-        // 연산 초기화
-        //SelectedPieceInit();
-
-        
-        
-
-        // 연출 진행
-        //OnFinishMove?.Invoke(endedPiece);
-
-        // 연출 제거
-        //waitToInit = StartCoroutine(PostShowEnd(endedPiece));
-
 
     }
 
     private IEnumerator EndTurn(Piece endedPiece)
     {
         // 기본 대기 시간
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         while (GameManager.Instance.state != GameManager.GameState.TURN_FINISHED)
         {

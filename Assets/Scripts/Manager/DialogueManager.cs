@@ -12,9 +12,6 @@ public class DialogueManager : SingleTon<DialogueManager>
     [SerializeField]
     private float delay;
 
-    [SerializeField]
-    private float skipDelay;
-
     private TextMeshProUGUI dialogueText;
 
     private Queue<string> dialogueQueue;
@@ -28,12 +25,6 @@ public class DialogueManager : SingleTon<DialogueManager>
     }
 
 
-    public void AddDialogue(ref string talk)
-    {
-        dialogueQueue.Enqueue(talk);
-        Debug.Log("대화 추가했어요" + dialogueQueue.Count);
-    }
-
     private void Update()
     {
         if (GameManager.Instance.state != GameManager.GameState.IN_CONVERSATION) return;
@@ -43,10 +34,13 @@ public class DialogueManager : SingleTon<DialogueManager>
             Debug.Log("대화 다음으로 넘어가요");
             SetDialogueText();
         }
-
-        /*string talk = "너를 공격하겠어";
-        DialogueManager.Instance.AddDialogue(ref talk);*/
         
+    }
+
+    public void AddDialogue(ref string talk)
+    {
+        dialogueQueue.Enqueue(talk);
+        Debug.Log("대화 추가했어요" + dialogueQueue.Count);
     }
 
     public void StartDialogue()
@@ -59,56 +53,17 @@ public class DialogueManager : SingleTon<DialogueManager>
         else
         {
             Debug.Log("대화 시작해요");
-            GameManager.Instance.state = GameManager.GameState.IN_CONVERSATION;
-            dialogueUI.gameObject.SetActive(true);
-        }
-        //ShowDialogueUI();
-        //StartCoroutine(GetInputSkipKey());
-    }
-
-    private IEnumerator GetInputSkipKey()
-    {
-        while (true)
-        {
-            yield return null;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SetDialogueText();
-            }
-                break;
+            StartCoroutine(ShowDialogueUIWithDelay());
         }
     }
 
-    public void ShowDialogueUI()
-    {
-        if (dialogueUI.gameObject.activeSelf) return;
-        if (!SetDialogueText()) return;
-
-        StartCoroutine(ShowDialogueUIWithDelay());
-
-    }
 
     public IEnumerator ShowDialogueUIWithDelay()
     {
         yield return new WaitForSeconds(delay);
 
-
         dialogueUI.gameObject.SetActive(true);
-
-
-        bool nextConversation = true;
-        
-        while(nextConversation)
-        {
-            yield return new WaitForSeconds(skipDelay);
-
-            nextConversation = SetDialogueText();
-            Debug.Log(dialogueQueue.Count);
-        }
-        
-        EndConversation();
-
+        GameManager.Instance.state = GameManager.GameState.IN_CONVERSATION;
 
     }
 
@@ -124,7 +79,6 @@ public class DialogueManager : SingleTon<DialogueManager>
             
         dialogueText.text = dialogueQueue.Dequeue();
         return true;
-       // Debug.Log("");
     }
 
     private void EndConversation()
