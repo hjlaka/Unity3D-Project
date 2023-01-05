@@ -279,7 +279,10 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     private IEnumerator EndTurn(Piece endedPiece)
     {
-        while(GameManager.Instance.state != GameManager.GameState.TURN_FINISHED)
+        // 기본 대기 시간
+        yield return new WaitForSeconds(2f);
+
+        while (GameManager.Instance.state != GameManager.GameState.TURN_FINISHED)
         {
             yield return null;
 
@@ -288,7 +291,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         Debug.Log("턴을 끝낼 때가 되었군요");
 
         SelectedPieceInit();
-        PostShowEnd(endedPiece);
+        StartCoroutine(PostShowEnd(endedPiece));
 
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
 
@@ -319,6 +322,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     private IEnumerator PostShowEnd(Piece endedPiece)
     {
         yield return new WaitForSeconds(1f);
+        //yield return null;
 
         ShowMovableEnd(endedPiece);
         //ShowThreatAndDefenceEnd(endedPiece);
