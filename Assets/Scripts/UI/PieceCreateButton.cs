@@ -20,6 +20,7 @@ public class PieceCreateButton : MonoBehaviour
         if (creatingPlace == null || creatingPlace.piece != null) return;
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE) return;
 
+        Debug.Log("기물을 생성했습니다." + piecePrefab.name);
         Piece instance = Instantiate(piecePrefab);
         instance.team = team;
         instance.SetInPlace(creatingPlace);

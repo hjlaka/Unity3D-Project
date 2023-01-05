@@ -31,6 +31,7 @@ public class DialogueManager : SingleTon<DialogueManager>
     public void AddDialogue(ref string talk)
     {
         dialogueQueue.Enqueue(talk);
+        Debug.Log("대화 추가했어요" + dialogueQueue.Count);
     }
 
     private void Update()
