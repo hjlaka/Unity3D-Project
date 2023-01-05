@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : SingleTon<GameManager>
 {
-    public enum GameState { SELECTING_PIECE, SELECTING_PLACE, TURN_CHANGE }
+    public enum GameState { SELECTING_PIECE, SELECTING_PLACE, TURN_CHANGE, IN_CONVERSATION, TURN_FINISHED}
     public GameState state;
 
 
@@ -20,7 +20,13 @@ public class GameManager : SingleTon<GameManager>
 
             case GameState.TURN_CHANGE:
                 break;
-     
+
+            case GameState.IN_CONVERSATION:
+                break;
+
+            case GameState.TURN_FINISHED:
+                break;
+
             default: 
                 state = GameState.TURN_CHANGE; 
                 break;

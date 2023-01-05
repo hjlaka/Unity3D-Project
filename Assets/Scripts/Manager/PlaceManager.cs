@@ -235,9 +235,6 @@ public class PlaceManager : SingleTon<PlaceManager>
         // Debug.Log(selectedPiece.MovableTo.Count.ToString());
 
         
-
-
-        
         selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
 
 
@@ -246,29 +243,59 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 위치 변경 후 영향권 연산
         PostPlaceAction();
- 
+
+        place.board?.UpdateHeatHUD();
+
         // 영향권 연출
         PostShow(selectedPiece);
+
+        // 카메라 연출
+        OnFinishMove?.Invoke();
+
+        // 만약 진행할 이벤트가 있으면 실행
+        DialogueManager.Instance.StartDialogue();
 
 
         // 이전 기물 저장
         Piece endedPiece = selectedPiece;
 
+        StartCoroutine(EndTurn(endedPiece));        // 턴을 끝내는 연산을 진행할지 말지, 계속해서 확인
+
 
         // 연산 초기화
-        SelectedPieceInit();
+        //SelectedPieceInit();
 
-        //OnFinishMove?.Invoke();
-        place.board?.UpdateHeatHUD();
+        
+        
 
         // 연출 진행
         //OnFinishMove?.Invoke(endedPiece);
 
         // 연출 제거
-        waitToInit = StartCoroutine(PostShowEnd(endedPiece));
+        //waitToInit = StartCoroutine(PostShowEnd(endedPiece));
 
 
     }
+
+    private IEnumerator EndTurn(Piece endedPiece)
+    {
+        while(GameManager.Instance.state != GameManager.GameState.TURN_FINISHED)
+        {
+            yield return null;
+
+            // 차례가 끝났다는 신호가 들어오길 기다린다.
+        }
+        Debug.Log("턴을 끝낼 때가 되었군요");
+
+        SelectedPieceInit();
+        PostShowEnd(endedPiece);
+
+        GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+
+        // 카메라 연출
+        OnNonSelectPiece?.Invoke();
+    }
+
 
     private void PostShow(Piece finishedPiece)
     {
@@ -328,6 +355,13 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = null;
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
 
+        //StartCoroutine(EndPlaceCam());
+        
+    }
+
+    private IEnumerator EndPlaceCam()
+    {
+        yield return new WaitForSeconds(1f);
 
         OnNonSelectPiece?.Invoke();
     }
