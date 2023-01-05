@@ -24,13 +24,19 @@ public class Piece : MonoBehaviour
     public List<Piece> DefendFor
     {
         get { return defendFor; }
-        private set { defendFor = value; }
+        private set 
+        { 
+            defendFor = value;
+        }
     }
     
     public List<Piece> ThreatTo
     {
         get { return threatTo; }
-        private set { threatTo = value; }
+        private set 
+        { 
+            threatTo = value;
+        }
     }
 
     public List<Place> MovableTo
@@ -68,26 +74,26 @@ public class Piece : MonoBehaviour
 
     public void ClearMovable()
     {
-        Debug.Log("이동 클리어" + MovableTo.Count);
+        //Debug.Log("이동 클리어" + MovableTo.Count);
         MovableTo.Clear();
     }
 
     // 임시 생성 
     public void ClearThreat()
     {
-        Debug.Log("위협 클리어" + ThreatTo.Count);
+        //Debug.Log("위협 클리어" + ThreatTo.Count);
         ThreatTo.Clear();
     }
 
     public void ClearDefence()
     {
-        Debug.Log("방어 클리어" + DefendFor.Count);
+        //Debug.Log("방어 클리어" + DefendFor.Count);
         DefendFor.Clear();
     }
 
     public void ClearInfluence()
     {
-        Debug.Log("영향권 클리어" + Influenceable.Count);
+        //Debug.Log("영향권 클리어" + Influenceable.Count);
         Influenceable.Clear();
     }
     // 여기까지 임시 생성
@@ -104,6 +110,8 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
         defendFor.Add(piece);
+        string talk = "보호한다!";
+        DialogueManager.Instance.AddDialogue(ref talk);
     }
 
     public void EndDefence(Piece piece)
@@ -125,6 +133,8 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
         ThreatTo.Add(piece);
+        string talk = "공격한다!";
+        DialogueManager.Instance.AddDialogue(ref talk);
     }
 
     public void EndThreat(Piece piece)
@@ -322,7 +332,7 @@ public class Piece : MonoBehaviour
     {
         if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
         {
-            Debug.Log(string.Format("{0} 클릭", gameObject.name));
+            //Debug.Log(string.Format("{0} 클릭", gameObject.name));
             PlaceManager.Instance.SelectPiece(this);
         }
         
