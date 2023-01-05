@@ -8,5 +8,8 @@ public class DialogueData : ScriptableObject
 {
     public string dialogue;
 
-    public string description;
+    public string threatening;
+    public string defending;
+    public string attacking;
+
 }

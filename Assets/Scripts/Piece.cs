@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-
+    [Header("InGame")]
     public Place place;
-
     public TeamData team;
+    [SerializeField]
+    private Color mouseOver;
+
+    [Header("Charector")]
+    [SerializeField]
+    private DialogueData charactor;
 
     private Renderer render;
 
-    [SerializeField]
-    private Color mouseOver;
+    
+
     //[SerializeField]
     private Color normal;
 
@@ -110,8 +115,8 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
         defendFor.Add(piece);
-        string talk = "보호한다!";
-        DialogueManager.Instance.AddDialogue(ref talk);
+        //string talk = "보호한다!";
+        DialogueManager.Instance.AddDialogue(ref charactor.defending);
     }
 
     public void EndDefence(Piece piece)
@@ -133,8 +138,8 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
         ThreatTo.Add(piece);
-        string talk = "공격한다!";
-        DialogueManager.Instance.AddDialogue(ref talk);
+        //string talk = "공격한다!";
+        DialogueManager.Instance.AddDialogue(ref charactor.threatening);
     }
 
     public void EndThreat(Piece piece)
