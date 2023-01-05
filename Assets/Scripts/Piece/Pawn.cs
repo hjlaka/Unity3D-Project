@@ -20,29 +20,40 @@ public class Pawn : Piece
         Vector2Int boardSize = place.board.Size;
 
         MoveForward(location + new Vector2Int(0, 1), boardSize.y);
+
+        AttackDiagonalLT(location + new Vector2Int(-1, 1), boardSize.y);
+        AttackDiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);
     }
 
     private void MoveForward(Vector2Int curLocation, int boardHeight)
     {
-        // 앞으로 한 칸 이동할 수 있는가?
-        // 벽이라면
-        if (IsTopLocation(curLocation, boardHeight)) return;
 
-        // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
+        if (IsTopOutLocation(curLocation, boardHeight)) return;
+
         if (RecognizePieceMoveObstacle(curLocation)) return;
 
         // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
         MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
     }
 
-
-    private bool IsTopLocation(Vector2Int curLocation, int boardHeight)
+    private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
     {
-        if (curLocation.y > boardHeight - 1) 
-            return true;
-        else 
-            return false;
+        if (IsLeftOutLocation(curLocation) || IsTopOutLocation(curLocation, boardHeight)) 
+            return;
+
+        RecognizePieceOnlyInfluence(curLocation);
     }
+
+    private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
+    {
+        if (IsRightOutLocation(curLocation, boardWidth) || IsTopOutLocation(curLocation, boardHeight))
+            return;
+
+        RecognizePieceOnlyInfluence(curLocation);
+    }
+
+
+
 
 
     private void MoveDoubleForward(Vector2Int curLocation, int boardHeight)
@@ -51,7 +62,7 @@ public class Pawn : Piece
         if (canDoubleMove)
         {
             // 벽이라면
-            if (IsTopLocation(curLocation, boardHeight)) return;
+            if (IsTopOutLocation(curLocation, boardHeight)) return;
 
             // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
             if (RecognizePieceMoveObstacle(curLocation)) return;

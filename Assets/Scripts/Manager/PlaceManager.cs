@@ -112,23 +112,12 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void WithDrawInfluence(Piece leftPiece)
     {
         List<Place> influencable = leftPiece.Influenceable;
-        //List<Piece> defeceList = leftPiece.DefendFor;
-        //List<Piece> threatList = leftPiece.ThreatTo;
 
         for (int i = 0; i < influencable.Count; i++)
         {
             influencable[i].HeatPoint--;
         }
 
-        /*for (int i = 0; i < defeceList.Count; i++)
-        {
-            defeceList[i].place.HeatPoint--;
-        }
-
-        for (int i = 0; i < threatList.Count; i++)
-        {
-            threatList[i].place.HeatPoint--;
-        }*/
     }
 
     public void ChangePlaceColor(Vector2Int location, PlaceType placeType)
@@ -174,6 +163,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         selectedPiece.ClearThreat();
         selectedPiece.ClearDefence();
+        selectedPiece.ClearInfluence();
 
         // ===================
 

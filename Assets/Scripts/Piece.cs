@@ -160,6 +160,40 @@ public class Piece : MonoBehaviour
     {
     }
 
+    protected bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
+    {
+        if (curLocation.y > boardHeight - 1)
+            return true;
+        else
+            return false;
+    }
+
+    protected bool IsBottomOutLocation(Vector2Int curLocation)
+    {
+        if (curLocation.y < 0)
+            return true;
+        else
+            return false;
+    }
+
+    protected bool IsLeftOutLocation(Vector2Int curLocation)
+    {
+        if (curLocation.x < 0)
+            return true;
+        else
+            return false;
+    }
+
+    protected bool IsRightOutLocation(Vector2Int curLocation, int boardWidth)
+    {
+        if (curLocation.x > boardWidth - 1)
+            return true;
+        else
+            return false;
+    }
+
+    
+
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
     protected bool RecognizePieceMoveObstacle(Vector2Int curLocation)
@@ -182,7 +216,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    protected bool RecognizePieceAttackable(Vector2Int curLocation)
+    protected bool RecognizePieceOnlyInfluence(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
@@ -199,6 +233,8 @@ public class Piece : MonoBehaviour
         else
         {
             // 기물이 없는 경우 이동할 수 없음
+            // 영향권은 맞음
+            AddInfluence(targetPlace);
             return false;
         }
     }
