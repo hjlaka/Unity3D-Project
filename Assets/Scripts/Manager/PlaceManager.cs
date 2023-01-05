@@ -52,9 +52,9 @@ public class PlaceManager : SingleTon<PlaceManager>
         Transform hud = SelectedPiece.place.board.heatPointHUD;
         if(hud != null) hud.gameObject.SetActive(true);
     }
-    public void ShowPlaceable()
+    public void ShowMovable(Piece piece)
     {
-        Place curPlace = selectedPiece.place;
+        Place curPlace = piece.place;
         Vector2Int curIndex = curPlace.boardIndex;
         Board curBoard = curPlace.board;
        
@@ -64,6 +64,59 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (!curBoard.FollowRule)               // 규칙을 따르지 않는 보드라면 종료
             return;
 
+        // 연출
+        List<Place> movable = selectedPiece.MovableTo;
+        for(int i = 0; i < movable.Count; i++)
+        {
+            ChangePlaceColor(movable[i].boardIndex, PlaceType.MOVABLE);
+        }
+    }
+
+    public void ShowInfluence(Piece piece)
+    {
+        Place curPlace = selectedPiece.place;
+        Vector2Int curIndex = curPlace.boardIndex;
+        Board curBoard = curPlace.board;
+
+        if (null == curBoard)                   // 기물이 있는 곳이 보드가 아니라면 종료
+            return;
+
+        if (!curBoard.FollowRule)               // 규칙을 따르지 않는 보드라면 종료
+            return;
+
+        // 연출
+        List<Place> influencing = piece.Influenceable;
+        for (int i = 0; i < influencing.Count; i++)
+        {
+            //TODO: 영향권을 나타내는 색 따로 설정
+            ChangePlaceColor(influencing[i].boardIndex, PlaceType.MOVABLE);
+        }
+    }
+
+    public void ShowThreatAndDefence(Piece piece)
+    {
+        Place curPlace = piece.place;
+        Vector2Int curIndex = curPlace.boardIndex;
+        Board curBoard = curPlace.board;
+
+        if (null == curBoard)                   // 기물이 있는 곳이 보드가 아니라면 종료
+            return;
+
+        if (!curBoard.FollowRule)               // 규칙을 따르지 않는 보드라면 종료
+            return;
+
+        // 연출
+        List<Piece> defencing = selectedPiece.DefendFor;
+        List<Piece> threating = selectedPiece.ThreatTo;
+
+        for (int i = 0; i < defencing.Count; i++)
+        {
+            ChangePlaceColor(defencing[i].place.boardIndex, PlaceType.DEFENCE);
+        }
+        for (int i = 0; i < threating.Count; i++)
+        {
+            ChangePlaceColor(threating[i].place.boardIndex, PlaceType.ATTACK);
+        }
 
     }
 
@@ -83,20 +136,28 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         selectedPiece.IsMovable(selectedPiece.place.boardIndex);
 
-       
     }
 
-
-    public void ShowPlaceableEnd(Piece endedPiece)
+    private void ShowMovableEnd(Piece endedPiece)
     {
         List<Place> movableList = endedPiece.MovableTo;
-        List<Piece> defeceList = endedPiece.DefendFor;
-        List<Piece> threatList = endedPiece.ThreatTo;
-
-        for(int i = 0; i < movableList.Count; i++)
+        for (int i = 0; i < movableList.Count; i++)
         {
             movableList[i].ChangeColor();
         }
+    }
+    private void ShowInfluenceEnd(Piece endedPiece)
+    {
+        List<Place> influenceList = endedPiece.Influenceable;
+        for (int i = 0; i < influenceList.Count; i++)
+        {
+            influenceList[i].ChangeColor();
+        }
+    }
+    private void ShowThreatAndDefenceEnd(Piece endedPiece)
+    {
+        List<Piece> defeceList = endedPiece.DefendFor;
+        List<Piece> threatList = endedPiece.ThreatTo;
 
         for (int i = 0; i < defeceList.Count; i++)
         {
@@ -151,8 +212,8 @@ public class PlaceManager : SingleTon<PlaceManager>
         Place oldPlace = selectedPiece.place;
         oldPlace.piece = null;
 
-        // 이전 표시된 영역 지우기
-        ShowPlaceableEnd(SelectedPiece);
+        // 이전 표시된 영역 지우기 연출
+        PreShowEnd(selectedPiece);
 
         // 이전 영향력 제거
         WithDrawInfluence(SelectedPiece);
@@ -185,12 +246,14 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 위치 변경 후 영향권 연산
         PostPlaceAction();
-
-        
+ 
+        // 영향권 연출
+        PostShow(selectedPiece);
 
 
         // 이전 기물 저장
         Piece endedPiece = selectedPiece;
+
 
         // 연산 초기화
         SelectedPieceInit();
@@ -201,27 +264,47 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 연출 진행
         //OnFinishMove?.Invoke(endedPiece);
 
-
-        waitToInit = StartCoroutine(PostInfluenceShowEnd(endedPiece));
-        //CancleSelectPiece();
+        // 연출 제거
+        waitToInit = StartCoroutine(PostShowEnd(endedPiece));
 
 
     }
 
+    private void PostShow(Piece finishedPiece)
+    {
+        ShowInfluence(finishedPiece);
+        ShowThreatAndDefence(finishedPiece);
+    }
 
-    private IEnumerator PostInfluenceShowEnd(Piece endedPiece)
+    private void PreShow(Piece seleceted)
+    {
+        ShowMovable(seleceted);
+        //ShowInfluence(seleceted);
+        ShowThreatAndDefence(seleceted);
+    }
+    private void PreShowEnd(Piece endedPiece)
+    {
+        //ShowInfluence(endedPiece);
+        ShowMovableEnd(endedPiece);
+        ShowThreatAndDefenceEnd(endedPiece);
+    }
+
+    private IEnumerator PostShowEnd(Piece endedPiece)
     {
         yield return new WaitForSeconds(1f);
 
-        ShowPlaceableEnd(endedPiece);
-
+        ShowMovableEnd(endedPiece);
+        //ShowThreatAndDefenceEnd(endedPiece);
+        ShowInfluenceEnd(endedPiece);
     }
 
     public void SelectPiece(Piece piece)
     {
         SelectedPiece = piece;
-        ShowPlaceable();
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
+
+        // 연출
+        PreShow(piece);
 
         OnSelectPiece?.Invoke();
 
@@ -232,7 +315,10 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (null == selectedPiece) return;
 
         // 선택된 기물을 바로 취소하는 경우
-        ShowPlaceableEnd(selectedPiece);
+
+        //연출
+        PreShowEnd(selectedPiece);
+
         SelectedPieceInit();
     }
 

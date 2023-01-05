@@ -160,6 +160,12 @@ public class Piece : MonoBehaviour
     {
     }
 
+    public virtual List<Place> ReturnMovablePlaces(Vector2Int location)
+    {
+        return null;
+    }
+
+
     protected bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
     {
         if (curLocation.y > boardHeight - 1)
@@ -192,7 +198,7 @@ public class Piece : MonoBehaviour
             return false;
     }
 
-    
+
 
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
@@ -208,9 +214,9 @@ public class Piece : MonoBehaviour
         else
         {
             Debug.Log("앞에 장애물 없다");
-            //AddMovable(targetPlace); // 영향권과 움직일 수 있는 범위 분리하기
+
             AddMovable(targetPlace);
-            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+            //연출 이동
 
             return false;
         }
@@ -252,8 +258,8 @@ public class Piece : MonoBehaviour
 
 
             //연출
-            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
-            DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
+            //PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
+            //DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
         }
         else
         {
@@ -267,8 +273,8 @@ public class Piece : MonoBehaviour
 
 
             //연출
-            PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
-            DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
+            //PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
+            //DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
         }
     }
 
@@ -297,7 +303,7 @@ public class Piece : MonoBehaviour
     {
         AddMovable(targetPlace);
         AddInfluence(targetPlace);
-        PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
+        //PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
     }
 
     private void OnMouseOver()
