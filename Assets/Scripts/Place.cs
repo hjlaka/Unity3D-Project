@@ -13,6 +13,17 @@ public class Place : MonoBehaviour
         set { piece = value; }
     }
     public Board board;
+
+
+    [SerializeField]
+    private bool isMovableToCurPiece = false;
+    public bool IsMovableToCurPiece
+    {
+        get { return isMovableToCurPiece; }
+        set { isMovableToCurPiece = value; }
+    }
+
+
     [SerializeField]
     private PlaceEffect effect;
 

@@ -111,12 +111,32 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
 
 
+    private bool IsPlaceable(Place place, Piece piece)
+    {
+        if (place.board == null) return true;
+        if (place.board != piece.place.board) return true;
+        if (!place.board.FollowRule) return true;
+
+        else
+        {
+            //movable이어야 움직임 가능.
+            return place.IsMovableToCurPiece;
+        }
+
+    }
+
 
     public void MovePieceTo(Place place)
     {
         Place oldPlace = selectedPiece.place;
         oldPlace.piece = null;
         Board oldBoard = oldPlace.board;
+
+
+        // 움직일 수 있는 곳인지 확인
+        if (!IsPlaceable(place, SelectedPiece)) return;
+
+
 
         if (oldBoard != null)
         {

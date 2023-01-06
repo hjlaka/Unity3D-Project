@@ -98,10 +98,11 @@ public class Board : MonoBehaviour
             return;
 
         // ø¨√‚
-        List<Place> movable = piece.MovableTo;
-        for (int i = 0; i < movable.Count; i++)
+        List<Place> movablePlaces = piece.MovableTo;
+        for (int i = 0; i < movablePlaces.Count; i++)
         {
-            ChangePlaceColor(movable[i].boardIndex, PlaceType.MOVABLE);
+            ChangePlaceColor(movablePlaces[i].boardIndex, PlaceType.MOVABLE);
+            movablePlaces[i].IsMovableToCurPiece = true;
         }
     }
 
@@ -150,6 +151,7 @@ public class Board : MonoBehaviour
         for (int i = 0; i < movableList.Count; i++)
         {
             movableList[i].ChangeColor();
+            movableList[i].IsMovableToCurPiece = false;
         }
     }
     public void ShowInfluenceEnd(Piece endedPiece)
