@@ -141,6 +141,7 @@ public class Board : MonoBehaviour
         {
             ChangePlaceColor(threating[i].place.boardIndex, PlaceType.ATTACK);
             threating[i].place.IsAttackableByCurPiece = true;
+            threating[i].place.IsMovableToCurPiece = true;
         }
 
     }
@@ -177,6 +178,7 @@ public class Board : MonoBehaviour
         {
             threatList[i].place.ChangeColor();
             threatList[i].place.IsAttackableByCurPiece = false;
+            threatList[i].place.IsMovableToCurPiece = false;        // 공격 가능하면, 움직일 수도 있게 엮어도 좋을 듯
         }
     }
 
