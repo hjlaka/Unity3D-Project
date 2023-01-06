@@ -144,6 +144,7 @@ public class PlaceManager : SingleTon<PlaceManager>
             Debug.Log("움직일 수 없는 곳");
             return;
         }
+        Debug.Log("움직일 수 있는 곳");
 
 
 
@@ -151,6 +152,10 @@ public class PlaceManager : SingleTon<PlaceManager>
         {
             Debug.Log("이전 영역을 지웁니다");
             oldBoard.PreShowEnd(SelectedPiece);
+        }
+        else
+        {
+            Debug.Log("이전 영역을 지우지 않습니다. 보드가 없습니다.");
         }
         WithDrawInfluence(SelectedPiece);
         selectedPiece.ClearMovable();
@@ -229,10 +234,10 @@ public class PlaceManager : SingleTon<PlaceManager>
     {
         WithDrawInfluence(piece);
 
-        selectedPiece.ClearMovable();
-        selectedPiece.ClearThreat();
-        selectedPiece.ClearDefence();
-        selectedPiece.ClearInfluence();
+        piece.ClearMovable();
+        piece.ClearThreat();
+        piece.ClearDefence();
+        piece.ClearInfluence();
 
     }
     
@@ -250,6 +255,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 변화된 상황이 있을 수 있으므로 재 계산
         InitInfluence(piece);
+
         PostPlaceAction();
         UpdateHUD(piece.place.board);
 

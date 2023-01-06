@@ -361,8 +361,9 @@ public class Piece : MonoBehaviour
                 if(place.IsAttackableByCurPiece)
                 {
                     //АјАн 
+                    Place attackPlace = this.place;
                     PlaceManager.Instance.ExpelPiece(this);
-                    PlaceManager.Instance.MovePieceTo(this.place);
+                    PlaceManager.Instance.MovePieceTo(attackPlace);
                    
                 }
             }
