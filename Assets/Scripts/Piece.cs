@@ -121,6 +121,12 @@ public class Piece : MonoBehaviour
     public void AddInfluence(Place place)
     {
         Influenceable.Add(place);
+
+        if (team.direction == TeamData.Direction.DownToUp)
+            place.HeatPointBottomTeam++;
+        else
+            place.HeatPointTopTeam++;
+
     }
     public void AddDefence(Piece piece)
     {
@@ -254,7 +260,7 @@ public class Piece : MonoBehaviour
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
         // TODO:
         // 과열도는 영향권 범위의 변경과 함께 연산되도록 엮기
-        targetPlace.HeatPoint++;
+        //targetPlace.HeatPoint++;
 
         if (targetPiece != null)
         {
@@ -308,7 +314,7 @@ public class Piece : MonoBehaviour
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-        targetPlace.HeatPoint++;
+        //targetPlace.HeatPoint++;
 
         if (targetPiece != null)
         {

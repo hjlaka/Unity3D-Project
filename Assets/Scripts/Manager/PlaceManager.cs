@@ -130,6 +130,12 @@ public class PlaceManager : SingleTon<PlaceManager>
         Vector2Int newIndex = newPlace.boardIndex;
         Board curBoard = newPlace.board;
 
+        // 새로운 자리 과열도 추가
+        if (selectedPiece.team.direction == TeamData.Direction.DownToUp)
+            newPlace.HeatPointBottomTeam++;
+        else
+            newPlace.HeatPointTopTeam++;
+
         // 기물이 있는 곳이 보드가 아니라면 종료
         if (null == curBoard)
             return;
@@ -176,11 +182,29 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void WithDrawInfluence(Piece leftPiece)
     {
+        //TODO: 최적화
+        if (leftPiece.team.direction == TeamData.Direction.DownToUp)
+        {
+            leftPiece.place.HeatPointBottomTeam--;
+        }
+        else
+        {
+            leftPiece.place.HeatPointTopTeam--;
+        }
+        
+
         List<Place> influencable = leftPiece.Influenceable;
 
         for (int i = 0; i < influencable.Count; i++)
         {
-            influencable[i].HeatPoint--;
+            if (leftPiece.team.direction == TeamData.Direction.DownToUp)
+            {
+                influencable[i].HeatPointBottomTeam--;
+            }
+            else
+            {
+                influencable[i].HeatPointTopTeam--;
+            }
         }
 
     }
@@ -232,9 +256,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // ===================
 
-        // 이전 자리 기물 과열도 제거
-        Debug.Log("이전자리:" + oldPlace + " 과열도: " + oldPlace.HeatPoint);
-        oldPlace.HeatPoint--;
+
 
         // Debug.Log(selectedPiece.MovableTo.Count.ToString());
 
@@ -242,8 +264,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
 
 
-        // 새로운 자리 과열도 추가
-        place.HeatPoint++;
+
 
         // 위치 변경 후 영향권 연산
         PostPlaceAction();

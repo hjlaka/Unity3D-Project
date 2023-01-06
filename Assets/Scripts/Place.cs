@@ -16,7 +16,30 @@ public class Place : MonoBehaviour
     private PlaceEffect effect;
 
     [SerializeField]
+    private int heatPointTopTeam;
+    [SerializeField]
+    private int heatPointBottomTeam;
+
+    [SerializeField]
     private int heatPoint;
+
+
+    public int HeatPointTopTeam
+    {
+        get { return heatPointTopTeam; }
+        set { heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
+            Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
+        }
+    }
+
+    public int HeatPointBottomTeam
+    {
+        get { return heatPointBottomTeam; }
+        set { heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
+            Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
+        }
+    }
+
     public int HeatPoint
     {
         get
