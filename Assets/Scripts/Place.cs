@@ -14,13 +14,22 @@ public class Place : MonoBehaviour
     }
     public Board board;
 
-
+    [Header("Running Game")]
     [SerializeField]
     private bool isMovableToCurPiece = false;
+    [SerializeField]
+    private bool isAttackableByCurPiece = false;
+
     public bool IsMovableToCurPiece
     {
         get { return isMovableToCurPiece; }
         set { isMovableToCurPiece = value; }
+    }
+
+    public bool IsAttackableByCurPiece
+    {
+        get { return isAttackableByCurPiece; }
+        set { isAttackableByCurPiece = value; }
     }
 
 

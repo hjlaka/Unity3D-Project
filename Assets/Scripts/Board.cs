@@ -140,6 +140,7 @@ public class Board : MonoBehaviour
         for (int i = 0; i < threating.Count; i++)
         {
             ChangePlaceColor(threating[i].place.boardIndex, PlaceType.ATTACK);
+            threating[i].place.IsAttackableByCurPiece = true;
         }
 
     }
@@ -175,6 +176,7 @@ public class Board : MonoBehaviour
         for (int i = 0; i < threatList.Count; i++)
         {
             threatList[i].place.ChangeColor();
+            threatList[i].place.IsAttackableByCurPiece = false;
         }
     }
 

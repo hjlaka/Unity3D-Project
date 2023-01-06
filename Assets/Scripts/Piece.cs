@@ -18,9 +18,8 @@ public class Piece : MonoBehaviour
 
     private Renderer render;
 
-    
 
-    //[SerializeField]
+    
     private Color normal;
 
     private List<Piece> defendFor;
@@ -359,6 +358,13 @@ public class Piece : MonoBehaviour
             else
             {
                 // 공격할 수 있다면
+                if(place.IsAttackableByCurPiece)
+                {
+                    //공격 
+                    PlaceManager.Instance.ExpelPiece(this);
+                    PlaceManager.Instance.MovePieceTo(this.place);
+                   
+                }
             }
 
         }

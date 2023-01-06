@@ -124,7 +124,12 @@ public class PlaceManager : SingleTon<PlaceManager>
         }
 
     }
+    public void ExpelPiece(Piece piece)
+    {
+        InitInfluence(piece);
 
+        Destroy(piece.gameObject);
+    }
 
     public void MovePieceTo(Place place)
     {
@@ -215,7 +220,16 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
     
+    private void InitInfluence(Piece piece)
+    {
+        WithDrawInfluence(piece);
 
+        selectedPiece.ClearMovable();
+        selectedPiece.ClearThreat();
+        selectedPiece.ClearDefence();
+        selectedPiece.ClearInfluence();
+
+    }
     
 
     public void SelectPiece(Piece piece)
@@ -223,9 +237,16 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = piece;
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
 
+
+        // 변화된 상황이 있을 수 있으므로 재 계산
+        InitInfluence(piece);
+        PostPlaceAction();
+
+
         // 연출
-        if(piece.place.board != null)
+        if (piece.place.board != null)
             piece.place.board.PreShow(piece);
+        //TODO: 이동 가능 상태 변수와 연출을 하나로 묶어도 좋을듯
 
         OnSelectPiece?.Invoke();
 
