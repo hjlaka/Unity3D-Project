@@ -19,16 +19,17 @@ public class Pawn : Piece
     {
         Vector2Int boardSize = place.board.Size;
 
-        MoveForward(location + new Vector2Int(0, 1), boardSize.y);
+        MoveForward(location + new Vector2Int(0, forwardY), boardSize.y);
 
-        AttackDiagonalLT(location + new Vector2Int(-1, 1), boardSize.y);
-        AttackDiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);
+        AttackDiagonalLT(location + new Vector2Int(-1, forwardY), boardSize.y);
+        AttackDiagonalRT(location + new Vector2Int(1, forwardY), boardSize.y, boardSize.x);
     }
 
     private void MoveForward(Vector2Int curLocation, int boardHeight)
     {
 
         if (IsTopOutLocation(curLocation, boardHeight)) return;
+        if (IsBottomOutLocation(curLocation)) return;
 
         if (RecognizePieceMoveObstacle(curLocation)) return;
 
@@ -38,7 +39,7 @@ public class Pawn : Piece
 
     private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
     {
-        if (IsLeftOutLocation(curLocation) || IsTopOutLocation(curLocation, boardHeight)) 
+        if (IsLeftOutLocation(curLocation) || IsTopOutLocation(curLocation, boardHeight) || IsBottomOutLocation(curLocation)) 
             return;
 
         RecognizePieceOnlyInfluence(curLocation);
@@ -46,7 +47,7 @@ public class Pawn : Piece
 
     private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
     {
-        if (IsRightOutLocation(curLocation, boardWidth) || IsTopOutLocation(curLocation, boardHeight))
+        if (IsRightOutLocation(curLocation, boardWidth) || IsTopOutLocation(curLocation, boardHeight) || IsBottomOutLocation(curLocation))
             return;
 
         RecognizePieceOnlyInfluence(curLocation);
@@ -73,7 +74,7 @@ public class Pawn : Piece
     public override void SetInPlace(Place place)
     {
         Place oldPlace = this.place;
-        if (oldPlace.board != place.board)
+        if (oldPlace?.board != place.board)
             canDoubleMove = true;
         else
             canDoubleMove = false;

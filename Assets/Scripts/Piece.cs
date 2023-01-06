@@ -10,6 +10,8 @@ public class Piece : MonoBehaviour
     [SerializeField]
     private Color mouseOver;
 
+    protected int forwardY;
+
     [Header("Charector")]
     [SerializeField]
     private DialogueData charactor;
@@ -67,14 +69,23 @@ public class Piece : MonoBehaviour
 
     private void Start()
     {
+        ApplyTeamInfo();
+
+        if (place != null)
+        {
+            SetInPlace(place);
+        }   
+    }
+
+    private void ApplyTeamInfo()
+    {
         normal = team.normal;
         render.material.color = normal;
 
-        if(place != null)
-        {
-            SetInPlace(place);
-        }
-            
+        if (team.direction != TeamData.Direction.DownToUp)
+            forwardY = -1;
+        else
+            forwardY = 1;
     }
 
     public void ClearMovable()

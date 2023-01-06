@@ -1667,6 +1667,10 @@ PrefabInstance:
       propertyPath: place
       value: 
       objectReference: {fileID: 1559460597}
+    - target: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
+      propertyPath: charactor
+      value: 
+      objectReference: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
     - target: {fileID: 3703165187794129851, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
       propertyPath: m_Name
       value: Bishop (2)
@@ -2898,6 +2902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34e2835e7a78c74b8c475bc5b01fc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueOn: 0
   dialogueUI: {fileID: 695330745}
   delay: 0.3
 --- !u!114 &1371377821
@@ -3733,6 +3738,10 @@ PrefabInstance:
       propertyPath: place
       value: 
       objectReference: {fileID: 1280150999}
+    - target: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
+      propertyPath: charactor
+      value: 
+      objectReference: {fileID: 11400000, guid: 8d02293c5205d8f40b96fd9ffc2eb617, type: 2}
     - target: {fileID: 3703165187794129851, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
       propertyPath: m_Name
       value: Bishop (1)
@@ -3979,7 +3988,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095236343}
-  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.051449593, w: 0.94618416}
+  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.05144959, w: 0.94618416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4064,6 +4073,10 @@ PrefabInstance:
       propertyPath: place
       value: 
       objectReference: {fileID: 1809343569}
+    - target: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
+      propertyPath: charactor
+      value: 
+      objectReference: {fileID: 11400000, guid: 14f5e314656adae47b96e4b84bc5ce07, type: 2}
     - target: {fileID: 396178706442639793, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
       propertyPath: place
       value: 
@@ -4282,6 +4295,7 @@ MonoBehaviour:
   place: {fileID: 731029635}
   team: {fileID: 11400000, guid: 68781b80634d1584198878bd5363e703, type: 2}
   mouseOver: {r: 0.43094707, g: 1, b: 0.06132078, a: 0}
+  charactor: {fileID: 11400000, guid: 48b6ca04a7bd82b4383edd53723c6405, type: 2}
   canDoubleMove: 0
 --- !u!4 &7284184315646996699 stripped
 Transform:
