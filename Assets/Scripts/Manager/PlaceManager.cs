@@ -20,6 +20,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE}
 
     private Coroutine waitToInit;
+    private Coroutine showEnd;
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
@@ -111,11 +112,14 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         for (int i = 0; i < defencing.Count; i++)
         {
+            // 다른 보드로 위치가 변경될 시 문제 생길 수 있음
             ChangePlaceColor(defencing[i].place.boardIndex, PlaceType.DEFENCE);
+            //defencing[i].place.ChangeColor();
         }
         for (int i = 0; i < threating.Count; i++)
         {
             ChangePlaceColor(threating[i].place.boardIndex, PlaceType.ATTACK);
+            //threating[i].place.ChangeColor();
         }
 
     }
@@ -280,7 +284,11 @@ public class PlaceManager : SingleTon<PlaceManager>
         Debug.Log("턴을 끝낼 때가 되었군요");
 
         SelectedPieceInit();
-        StartCoroutine(PostShowEnd(endedPiece));
+
+        //yield return new WaitForSeconds(1f);
+        //PostShowEnd(endedPiece);
+        ShowMovableEnd(endedPiece);
+        ShowInfluenceEnd(endedPiece);
 
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
 
