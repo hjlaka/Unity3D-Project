@@ -32,8 +32,6 @@ public class Board : MonoBehaviour
         if (null == heatPointHUD)
             return;
 
-        //Debug.Log(heatPointHUD.GetComponent<GridLayoutGroup>());
-        //cellSize = heatPointHUD.GetComponent<GridLayout>().cellSize.x;
         CreateHUD();
         UpdateHeatHUD();
     }
@@ -73,7 +71,6 @@ public class Board : MonoBehaviour
             TextMeshProUGUI text = textUI.GetComponent<TextMeshProUGUI>();
             text.text = i.ToString();
             text.fontSize = 20f;
-            //TextMeshProUGUI text = heatPointHUD.GetChild(i).GetComponent<TextMeshProUGUI>();
             heatHUDList.Add(text);
         }
 
@@ -138,12 +135,10 @@ public class Board : MonoBehaviour
         {
             // 다른 보드로 위치가 변경될 시 문제 생길 수 있음
             ChangePlaceColor(defencing[i].place.boardIndex, PlaceType.DEFENCE);
-            //defencing[i].place.ChangeColor();
         }
         for (int i = 0; i < threating.Count; i++)
         {
             ChangePlaceColor(threating[i].place.boardIndex, PlaceType.ATTACK);
-            //threating[i].place.ChangeColor();
         }
 
     }

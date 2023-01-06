@@ -132,7 +132,6 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
         defendFor.Add(piece);
-        //string talk = "보호한다!";
         DialogueManager.Instance.AddDialogue(ref charactor.defending);
     }
 
@@ -155,7 +154,6 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
         ThreatTo.Add(piece);
-        //string talk = "공격한다!";
         DialogueManager.Instance.AddDialogue(ref charactor.threatening);
     }
 
@@ -258,9 +256,6 @@ public class Piece : MonoBehaviour
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-        // TODO:
-        // 과열도는 영향권 범위의 변경과 함께 연산되도록 엮기
-        //targetPlace.HeatPoint++;
 
         if (targetPiece != null)
         {
@@ -288,10 +283,6 @@ public class Piece : MonoBehaviour
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
             AddInfluence(targetPlace);
 
-
-            //연출
-            //PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.DEFENCE);
-            //DialogueManager.Instance.ShowDialogueUI("Defend" + targetPiece);
         }
         else
         {
@@ -303,10 +294,6 @@ public class Piece : MonoBehaviour
             AddMovable(targetPlace);
             AddInfluence(targetPlace);
 
-
-            //연출
-            //PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.ATTACK);
-            //DialogueManager.Instance.ShowDialogueUI("Attack" + targetPiece);
         }
     }
 
@@ -314,7 +301,6 @@ public class Piece : MonoBehaviour
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-        //targetPlace.HeatPoint++;
 
         if (targetPiece != null)
         {
@@ -335,7 +321,6 @@ public class Piece : MonoBehaviour
     {
         AddMovable(targetPlace);
         AddInfluence(targetPlace);
-        //PlaceManager.Instance.ChangePlaceColor(curLocation, PlaceManager.PlaceType.MOVABLE);
     }
 
     private void OnMouseOver()
