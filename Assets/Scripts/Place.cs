@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Place : MonoBehaviour
@@ -15,6 +16,15 @@ public class Place : MonoBehaviour
     [SerializeField]
     private PlaceEffect effect;
 
+    [Header("UI Setting")]
+
+    [SerializeField]
+    private TextMeshProUGUI topTeamHeatUI;
+    [SerializeField]
+    private TextMeshProUGUI TotalHeatUI;
+    [SerializeField]
+    private TextMeshProUGUI bottomTeamHeatUI;
+
     [SerializeField]
     private int heatPointTopTeam;
     [SerializeField]
@@ -24,11 +34,14 @@ public class Place : MonoBehaviour
     private int heatPoint;
 
 
+
+
     public int HeatPointTopTeam
     {
         get { return heatPointTopTeam; }
         set { heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
             Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
+            if(topTeamHeatUI != null) topTeamHeatUI.text = heatPointTopTeam.ToString();
         }
     }
 
@@ -37,6 +50,7 @@ public class Place : MonoBehaviour
         get { return heatPointBottomTeam; }
         set { heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
             Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
+            if (bottomTeamHeatUI != null)  bottomTeamHeatUI.text = heatPointBottomTeam.ToString();
         }
     }
 
@@ -56,6 +70,7 @@ public class Place : MonoBehaviour
 
 
             if (heatPoint >= 3) Debug.Log(heatPoint + " 과열된 자리! :" + this);
+            if (TotalHeatUI != null)  TotalHeatUI.text = heatPoint.ToString();
         }
     }
 
