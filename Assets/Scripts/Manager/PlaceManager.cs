@@ -142,7 +142,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 위치 변경 후 영향권 연산
         PostPlaceAction();
 
-        if(oldBoard != null)
+        if(newBoard != null)
         {
             // 영향권 연출
             newBoard.UpdateHeatHUD();
@@ -204,7 +204,8 @@ public class PlaceManager : SingleTon<PlaceManager>
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
 
         // 연출
-        piece.place.board.PreShow(piece);
+        if(piece.place.board != null)
+            piece.place.board.PreShow(piece);
 
         OnSelectPiece?.Invoke();
 
@@ -217,7 +218,8 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 선택된 기물을 바로 취소하는 경우
 
         //연출
-        selectedPiece.place.board.PreShowEnd(selectedPiece);
+        if (selectedPiece.place.board != null)
+            selectedPiece.place.board.PreShowEnd(selectedPiece);
 
         SelectedPieceInit();
     }
