@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Piece : MonoBehaviour
 {
     [Header("InGame")]
@@ -12,17 +11,18 @@ public class Piece : MonoBehaviour
 
     protected int forwardY;
 
+
+    public IReturnHeat returnHeat;
+
     [Header("Charector")]
     [SerializeField]
-    private DialogueData charactor;
+    public CharacterData charactor;
 
     private Renderer render;
+    private Color curNormal;
 
     private IDecidePlaceStrategy decidePlaceStrategy;
 
-
-    
-    private Color normal;
 
     private List<Piece> defendFor;
     private List<Piece> threatTo;
@@ -70,7 +70,7 @@ public class Piece : MonoBehaviour
         movableTo = new List<Place>();
         influenceable = new List<Place>();
 
-        decidePlaceStrategy = new AttackFirstStrategy();
+        
     }
 
     private void Start()
@@ -85,20 +85,58 @@ public class Piece : MonoBehaviour
 
     public void DesireToPlace()
     {
+
+        //PlaceManager.Instance.SelectPiece(this);
+
+        if(MovableTo.Count <= 0)
+        {
+            Debug.Log("이동할 수 있는 곳이 없다");
+            PlaceManager.Instance.CancleSelectPiece();
+            return;
+        }
+
+        Place targetPlace = decidePlaceStrategy.DecidePlace(this);
+        if(targetPlace != null)
+        {
+            if(targetPlace.piece != null)
+            {
+                Debug.Log("공격하자!");
+                //AttackTo(targetPlace);
+                PlaceManager.Instance.Attack(this, targetPlace.piece);
+            }
+            else
+            {
+                Debug.Log("이동하자!");
+                PlaceManager.Instance.MovePieceTo(this, targetPlace);
+            }   
+        }
+        else
+        {
+            Debug.Log("움직이고 싶은 곳이 없다");
+            PlaceManager.Instance.CancleSelectPiece();
+        }
         //Place targetPlace;
         //decidePlaceStrategy.DecidePlace(out targetPlace);
-        decidePlaceStrategy.DecidePlace(MovableTo);
+
     }
 
     private void ApplyTeamInfo()
     {
-        normal = team.normal;
-        render.material.color = normal;
+        curNormal = team.normal;
+        render.material.color = curNormal;
 
-        if (team.direction != TeamData.Direction.DownToUp)
+        if (team.direction == TeamData.Direction.UpToDown)
+        {
             forwardY = -1;
+            returnHeat = new TopTeam();
+        } 
         else
+        {
             forwardY = 1;
+            returnHeat = new BottomTeam();
+        }
+
+        decidePlaceStrategy = charactor.DecidePlaceStrategy;
     }
 
     #region 리스트 관리
@@ -338,6 +376,17 @@ public class Piece : MonoBehaviour
         AddInfluence(targetPlace);
     }
 
+    public void ChangeColor()
+    {
+        curNormal = team.normal;
+        render.material.color = curNormal;
+    }
+    public void ChangeColor(Color color)
+    {
+        curNormal = color;
+        render.material.color = curNormal;
+
+    }
     private void OnMouseOver()
     {
         //Debug.Log(string.Format("{0} 마우스 가리킴", gameObject.name));
@@ -347,7 +396,7 @@ public class Piece : MonoBehaviour
     private void OnMouseExit()
     {
         //Debug.Log(string.Format("{0} 밖으로 마우스 나감", gameObject.name));
-        render.material.color = normal;
+        render.material.color = curNormal;
     }
 
     private void OnMouseUpAsButton()
@@ -377,14 +426,25 @@ public class Piece : MonoBehaviour
                 if(place.IsAttackableByCurPiece)
                 {
                     //공격 
-                    Place attackPlace = this.place;
-                    PlaceManager.Instance.ExpelPiece(this);
-                    PlaceManager.Instance.MovePieceTo(PlaceManager.Instance.SelectedPiece, attackPlace);
+                    //BeAttackedBy(PlaceManager.Instance.SelectedPiece);
+                    PlaceManager.Instance.Attack(PlaceManager.Instance.SelectedPiece, this);
                    
                 }
             }
 
         }
+    }
+    private void AttackTo(Place place)
+    {
+        PlaceManager.Instance.Attack(this, place.piece);
+        //PlaceManager.Instance.ExpelPiece(place.Piece);
+        //PlaceManager.Instance.MovePieceTo(this, place);
+    }
+    private void BeAttackedBy(Piece piece)
+    {
+        Place attackPlace = this.place;
+        PlaceManager.Instance.ExpelPiece(this);
+        PlaceManager.Instance.MovePieceTo(piece, attackPlace);
     }
 
     public void setDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
