@@ -379,7 +379,7 @@ public class Piece : MonoBehaviour
                     //АјАн 
                     Place attackPlace = this.place;
                     PlaceManager.Instance.ExpelPiece(this);
-                    PlaceManager.Instance.MovePieceTo(attackPlace);
+                    PlaceManager.Instance.MovePieceTo(PlaceManager.Instance.SelectedPiece, attackPlace);
                    
                 }
             }

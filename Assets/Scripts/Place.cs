@@ -13,6 +13,10 @@ public class Place : MonoBehaviour
         set { piece = value; }
     }
     public Board board;
+    public Vector2Int boardIndex;
+    public PlaceType type;     // 스크립터블 오브젝트
+
+    private Color typeColor;
 
     [Header("Running Game")]
     [SerializeField]
@@ -55,12 +59,12 @@ public class Place : MonoBehaviour
 
 
 
-
+    #region 프로퍼티
     public int HeatPointTopTeam
     {
         get { return heatPointTopTeam; }
         set { heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
-            Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
+            //Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
             if(topTeamHeatUI != null) topTeamHeatUI.text = heatPointTopTeam.ToString();
         }
     }
@@ -69,7 +73,7 @@ public class Place : MonoBehaviour
     {
         get { return heatPointBottomTeam; }
         set { heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
-            Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
+            //Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
             if (bottomTeamHeatUI != null)  bottomTeamHeatUI.text = heatPointBottomTeam.ToString();
         }
     }
@@ -94,16 +98,16 @@ public class Place : MonoBehaviour
         }
     }
 
-    public Vector2Int boardIndex;
+    #endregion
+
+
 
     private Renderer render;
     private bool isApprochable;
     public bool IsApprochable { get { return isApprochable; } set { isApprochable = value; } }
 
 
-    public PlaceType type;     // 스크립터블 오브젝트
 
-    private Color typeColor;
 
     private void Awake()
     {
@@ -149,7 +153,7 @@ public class Place : MonoBehaviour
         if (!isApprochable)
             return;
 
-        PlaceManager.Instance.MovePieceTo(this);
+        PlaceManager.Instance.MovePieceTo(PlaceManager.Instance.SelectedPiece, this);
 
 
     }

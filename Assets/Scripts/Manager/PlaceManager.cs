@@ -131,15 +131,15 @@ public class PlaceManager : SingleTon<PlaceManager>
         Destroy(piece.gameObject);
     }
 
-    public void MovePieceTo(Place place)
+    public void MovePieceTo(Piece piece, Place place)
     {
-        Place oldPlace = selectedPiece.place;
+        Place oldPlace = piece.place;
         oldPlace.piece = null;
         Board oldBoard = oldPlace.board;
 
 
         // 움직일 수 있는 곳인지 확인
-        if (!IsPlaceable(place, SelectedPiece))
+        if (!IsPlaceable(place, piece))
         {
             Debug.Log("움직일 수 없는 곳");
             return;
@@ -151,25 +151,25 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (oldBoard != null)
         {
             Debug.Log("이전 영역을 지웁니다");
-            oldBoard.PreShowEnd(SelectedPiece);
+            oldBoard.PreShowEnd(piece);
         }
         else
         {
             Debug.Log("이전 영역을 지우지 않습니다. 보드가 없습니다.");
         }
-        WithDrawInfluence(SelectedPiece);
-        selectedPiece.ClearMovable();
+        WithDrawInfluence(piece);
+        piece.ClearMovable();
 
         // 영향권 비교 후 변동 사항에 대해 연산하기
         // =====임시 방편======
 
-        selectedPiece.ClearThreat();
-        selectedPiece.ClearDefence();
-        selectedPiece.ClearInfluence();
+        piece.ClearThreat();
+        piece.ClearDefence();
+        piece.ClearInfluence();
 
         // ===================
 
-        selectedPiece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
+        piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
 
         Board newBoard = place.board;
 
@@ -181,7 +181,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         {
             // 영향권 연출
             newBoard.UpdateHeatHUD();
-            newBoard.PostShow(selectedPiece);
+            newBoard.PostShow(piece);
         }
         
 
@@ -193,7 +193,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
         // 이전 기물 저장
-        Piece endedPiece = selectedPiece;
+        Piece endedPiece = piece;
 
 
         StartCoroutine(EndTurn(endedPiece));        // 턴을 끝내는 연산을 진행할지 말지, 계속해서 확인
