@@ -18,6 +18,8 @@ public class Piece : MonoBehaviour
 
     private Renderer render;
 
+    private IDecidePlaceStrategy decidePlaceStrategy;
+
 
     
     private Color normal;
@@ -27,6 +29,7 @@ public class Piece : MonoBehaviour
     private List<Place> movableTo;
     private List<Place> influenceable;
 
+    #region 리스트 프로퍼티
     public List<Piece> DefendFor
     {
         get { return defendFor; }
@@ -57,6 +60,8 @@ public class Piece : MonoBehaviour
         private set { influenceable = value; }
     }
 
+    #endregion
+
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
@@ -76,6 +81,13 @@ public class Piece : MonoBehaviour
         }   
     }
 
+    private void DesireToPlace()
+    {
+        //Place targetPlace;
+        //decidePlaceStrategy.DecidePlace(out targetPlace);
+        decidePlaceStrategy.DecidePlace();
+    }
+
     private void ApplyTeamInfo()
     {
         normal = team.normal;
@@ -87,6 +99,7 @@ public class Piece : MonoBehaviour
             forwardY = 1;
     }
 
+    #region 리스트 관리
     public void ClearMovable()
     {
         //Debug.Log("이동 클리어" + MovableTo.Count);
@@ -171,6 +184,7 @@ public class Piece : MonoBehaviour
         Debug.Log(this + "가 " + piece + "로부터 더이상 위협받지 않는다.");
     }
 
+    #endregion
     public virtual void SetInPlace(Place place)
     {
         this.place = place;
@@ -369,6 +383,11 @@ public class Piece : MonoBehaviour
             }
 
         }
+    }
+
+    public void setDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
+    {
+
     }
 }
 
