@@ -8,6 +8,11 @@ public class PieceCreateButton : MonoBehaviour
     private Piece piecePrefab;
     [SerializeField]
     private TeamData team;
+    [SerializeField]
+    private CharacterData testCharacter;
+
+    [SerializeField]
+    private AI aiManager;
 
     private Place creatingPlace;
     private void Awake()
@@ -23,7 +28,10 @@ public class PieceCreateButton : MonoBehaviour
         Debug.Log("기물을 생성했습니다." + piecePrefab.name);
         Piece instance = Instantiate(piecePrefab);
         instance.team = team;
+        instance.charactor = testCharacter;
         instance.SetInPlace(creatingPlace);
+        Debug.Log("전달한 것: " + instance);
+        aiManager.AddAIPiece(instance);
         
     }
 
