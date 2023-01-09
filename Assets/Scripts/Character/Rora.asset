@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 269bc0947b1b53f42ab008add36b7e90, type: 3}
-  m_Name: Podo
+  m_Name: Rora
   m_EditorClassIdentifier: 
-  dialogue: 
-  threatening: 
-  defending: 
-  attacking: 
+  characterName: "\uB85C\uB77C"
+  decidePlaceStrategyType: 0
+  threatening: "\uB108 \uC870\uC2EC\uD574\uB77C"
+  defending: "\uBC29\uC5B4\uD574\uC8FC\uB9C8"
+  attacking: "\uC5D0\uC787"
