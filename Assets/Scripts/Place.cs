@@ -93,7 +93,7 @@ public class Place : MonoBehaviour
                 effect.Intencity = heatPoint * 0.2f;
 
 
-            if (heatPoint >= 3) Debug.Log(heatPoint + " 과열된 자리! :" + this);
+            //if (heatPoint >= 3) Debug.Log(heatPoint + " 과열된 자리! :" + this);
             if (TotalHeatUI != null)  TotalHeatUI.text = heatPoint.ToString();
         }
     }

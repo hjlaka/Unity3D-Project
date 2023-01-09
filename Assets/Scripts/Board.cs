@@ -90,6 +90,34 @@ public class Board : MonoBehaviour
         }
     }
 
+   /* public void MovePieceTo(Piece piece, Place place)
+    {
+        Place oldPlace = piece.place;
+        oldPlace.piece = null;
+
+        // 움직일 수 있는 곳인가?
+
+        // 보드 위 연출 지우기
+        PreShowEnd(piece);
+
+        // 영향력 제거
+
+        // 기물의 이전 영향권 리스트 초기화
+
+        // 기물의 위치 이동
+        piece.SetInPlace(place);
+
+        // 기물의 새로운 영향권 리스트 만들기
+
+        // 보드 위 연출 생성
+        PostShow(piece);
+        UpdateHeatHUD();
+
+        // 카메라 연출까지 여기에서? - 매니저?
+        // 진행할 이벤트가 있으면 실행?? - 매니저?
+
+    }*/
+
 
     public void ShowMovable(Piece piece)
     {
