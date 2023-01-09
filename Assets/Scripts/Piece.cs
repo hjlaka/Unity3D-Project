@@ -69,6 +69,8 @@ public class Piece : MonoBehaviour
         threatTo = new List<Piece>();
         movableTo = new List<Place>();
         influenceable = new List<Place>();
+
+        decidePlaceStrategy = new AttackFirstStrategy();
     }
 
     private void Start()
@@ -81,11 +83,11 @@ public class Piece : MonoBehaviour
         }   
     }
 
-    private void DesireToPlace()
+    public void DesireToPlace()
     {
         //Place targetPlace;
         //decidePlaceStrategy.DecidePlace(out targetPlace);
-        decidePlaceStrategy.DecidePlace();
+        decidePlaceStrategy.DecidePlace(MovableTo);
     }
 
     private void ApplyTeamInfo()

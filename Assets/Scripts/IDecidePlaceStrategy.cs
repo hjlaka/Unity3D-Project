@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDecidePlaceStrategy
 {
-    void DecidePlace();
+    void DecidePlace(List<Place> movablePlaces);
 }
