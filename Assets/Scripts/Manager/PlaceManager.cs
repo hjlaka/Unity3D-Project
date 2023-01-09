@@ -16,6 +16,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     public UnityEvent OnSelectPiece;
     public UnityEvent OnNonSelectPiece;
     public UnityEvent OnFinishMove;
+    public UnityEvent OnAttack;
 
 
 
@@ -41,7 +42,11 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public Place selectedPlace;
 
+    [Header("Piece")]
+    [SerializeField]
+    private Color selectingColor;
 
+    [Header("Place")]
     [SerializeField]
     public Color highlight;
     [SerializeField]
@@ -247,9 +252,20 @@ public class PlaceManager : SingleTon<PlaceManager>
         board.UpdateHeatHUD();
     }
 
+    public void Attack(Piece piece, Piece target)
+    {
+        Place attackPlace = target.place;
+        ExpelPiece(target);
+
+        OnAttack?.Invoke();
+
+        MovePieceTo(piece, attackPlace);
+    }
+
     public void SelectPiece(Piece piece)
     {
         SelectedPiece = piece;
+        SelectedPiece.ChangeColor(selectingColor);
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
 
 
@@ -285,7 +301,8 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void SelectedPieceInit()
     {
-        
+        SelectedPiece.ChangeColor();
+
         SelectedPiece = null;
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
 
