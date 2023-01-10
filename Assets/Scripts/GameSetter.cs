@@ -53,7 +53,10 @@ public class GameSetter : MonoBehaviour
 
             instance.team = setting.playerTeam;
             instance.charactor = players.character;
+            playerData.PlayerPieces.Add(instance);
             instance.SetInPlace(mainBoard.GetPlace(players.location));
+
+            
 
         }
     }
