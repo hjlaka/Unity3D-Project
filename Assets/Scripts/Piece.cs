@@ -185,7 +185,7 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
         defendFor.Add(piece);
-        DialogueManager.Instance.AddDialogue(ref charactor.defending);
+        DialogueManager.Instance.AddDialogue(ref charactor.characterName, ref charactor.defending);
     }
 
     public void EndDefence(Piece piece)
@@ -207,7 +207,7 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
         ThreatTo.Add(piece);
-        DialogueManager.Instance.AddDialogue(ref charactor.threatening);
+        DialogueManager.Instance.AddDialogue(ref charactor.characterName, ref charactor.threatening);
     }
 
     public void EndThreat(Piece piece)
