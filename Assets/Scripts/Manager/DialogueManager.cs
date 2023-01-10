@@ -92,6 +92,11 @@ public class DialogueManager : SingleTon<DialogueManager>
         return true;
     }
 
+    public void NextDialogueShow()
+    {
+        SetDialogueText();
+    }
+
     private void EndConversation()
     {
         DisableDialogueUI();
