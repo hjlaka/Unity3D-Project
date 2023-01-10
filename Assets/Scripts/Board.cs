@@ -43,6 +43,13 @@ public class Board : MonoBehaviour
             ResetHeat();
         }
     }
+
+    public Place GetPlace(Vector2Int index)
+    {
+        if (index.x > size.x || index.y > size.y) return null;
+
+        return places[index.x, index.y];
+    }
     public void ResetHeat()
     {
         if (null == heatPointHUD)
