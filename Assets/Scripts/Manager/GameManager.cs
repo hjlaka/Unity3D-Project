@@ -7,6 +7,8 @@ public class GameManager : SingleTon<GameManager>
     public enum GameState { SELECTING_PIECE, SELECTING_PLACE, TURN_CHANGE, IN_CONVERSATION, TURN_FINISHED, AI_TURN}
     public GameState state;
 
+    public bool isPlayerTurn;
+
 
     public void GameStateUpdate()
     {

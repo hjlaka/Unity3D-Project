@@ -136,6 +136,7 @@ public class Place : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!GameManager.Instance.isPlayerTurn) return;
         //Debug.Log(string.Format("{0} Å¬¸¯", gameObject.name));
 
 

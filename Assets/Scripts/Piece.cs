@@ -83,7 +83,7 @@ public class Piece : MonoBehaviour
         }   
     }
 
-    public void DesireToPlace()
+    public void PlaceToDesire()
     {
 
         //PlaceManager.Instance.SelectPiece(this);
@@ -401,6 +401,11 @@ public class Piece : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
+        if (!GameManager.Instance.isPlayerTurn)
+        {
+            Debug.Log("플레이어의 차례가 아닙니다.");
+            return;
+        }
         if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
         {
             //Debug.Log(string.Format("{0} 클릭", gameObject.name));

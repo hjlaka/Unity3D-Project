@@ -55,6 +55,11 @@ public class AI : MonoBehaviour
 
     public void AITurn()
     {
+        if (!GameManager.Instance.isPlayerTurn)
+        {
+            Debug.Log("플레이어의 차례가 아님");
+            return;
+        }
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
         {
             Debug.Log("기물 선택 단계가 아님");
@@ -75,7 +80,8 @@ public class AI : MonoBehaviour
 
     private IEnumerator RunPieces()
     {
-        GameManager.Instance.state = GameManager.GameState.AI_TURN;
+        GameManager.Instance.isPlayerTurn = false;
+        //GameManager.Instance.state = GameManager.GameState.AI_TURN;
         Debug.Log("AI 턴 실행 개수: " + aiPieceList.Count);
 
         for (int i = 0; i < aiPieceList.Count; i++)
@@ -88,13 +94,14 @@ public class AI : MonoBehaviour
 
             yield return new WaitForSeconds(showSelectedTime);
 
-            aiPieceList[i].DesireToPlace();
+            aiPieceList[i].PlaceToDesire();
 
             yield return new WaitForSeconds(turnChangeTime);
         }
 
         Debug.Log("AI 턴 종료");
-        GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+        //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+        GameManager.Instance.isPlayerTurn = true;
         turnGoing = null;
         
     }
