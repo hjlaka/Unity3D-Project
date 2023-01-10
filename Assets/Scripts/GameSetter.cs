@@ -8,6 +8,8 @@ public class GameSetter : MonoBehaviour
     // 데이터는 미리 넣어둔다고 가정한다.
     public List<GameData> gameSettings;
 
+    public AI aiManager;
+
 
 /*    private void Awake()
     {
@@ -38,7 +40,7 @@ public class GameSetter : MonoBehaviour
             instance.charactor = opponent.character;
             instance.SetInPlace(mainBoard.GetPlace(opponent.location));
 
-            //aiManager.AddAIPiece(instance);
+            aiManager.AddAIPiece(instance);
         }
     }
 

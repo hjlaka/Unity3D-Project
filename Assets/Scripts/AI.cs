@@ -46,8 +46,6 @@ public class AI : MonoBehaviour
 
     public void AddAIPiece(Piece piece)
     {
-        aiPieceList.Clear();
-
         Debug.Log("전달된 것: " + piece);
         aiPieceList.Add(piece);
         Debug.Log(piece + "기물을 AI에 추가했다.");
@@ -96,7 +94,11 @@ public class AI : MonoBehaviour
 
             aiPieceList[i].PlaceToDesire();
 
-            yield return new WaitForSeconds(turnChangeTime);
+            //yield return new WaitForSeconds(turnChangeTime);
+            while (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
+            {
+                yield return null;
+            }
         }
 
         Debug.Log("AI 턴 종료");
@@ -106,6 +108,13 @@ public class AI : MonoBehaviour
         
     }
 
+    /*private IEnumerator WaitForReadyNext()
+    {
+        while(GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
+        {
+            yield return null;
+        }
+    }*/
 
 
 
