@@ -72,7 +72,41 @@ public class AI : MonoBehaviour
 
         Debug.Log("AI 턴 실행");
 
-        turnGoing = StartCoroutine(RunPieces());
+
+        // 하나의 기물이 움직임
+        turnGoing = StartCoroutine(RunOnePiece());
+        // 여러 기물 연쇄적으로 움직임
+        //turnGoing = StartCoroutine(RunPieces());
+
+    }
+
+    private IEnumerator RunOnePiece()
+    {
+        // 기물 선정
+
+        // 기물마다 점수가 있다.
+        // 움직이고자 하는 의지가 있다(?)
+        // 의지가 가장 높은 아이가 움직인다?
+
+
+
+        // 기물 움직임
+
+        GameManager.Instance.isPlayerTurn = false;
+
+        if (null != aiPieceList[0])
+        {
+            PlaceManager.Instance.SelectPiece(aiPieceList[0]);
+            Debug.Log(aiPieceList[0] + "턴 시작");
+
+            yield return new WaitForSeconds(showSelectedTime);
+
+            aiPieceList[0].PlaceToDesire();
+
+        }
+
+        GameManager.Instance.isPlayerTurn = true;
+        turnGoing = null;
 
     }
 
