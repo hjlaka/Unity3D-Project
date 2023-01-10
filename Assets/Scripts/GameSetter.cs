@@ -17,9 +17,9 @@ public class GameSetter : MonoBehaviour
     }*/
 
 
-    public void SetOpponents()
+    public void SetOpponents(int index = 0)
     {
-        if (gameSettings.Count <= 0) return;
+        if (gameSettings.Count <= index) return;
 
         Debug.Log("세팅 시작");
 
@@ -27,7 +27,7 @@ public class GameSetter : MonoBehaviour
 
         Debug.Log("찾아낸 보드: " + mainBoard);
 
-        GameData setting = gameSettings[0];
+        GameData setting = gameSettings[index];
 
         for (int i = 0; i < setting.opponents.Count; i++)
         {
