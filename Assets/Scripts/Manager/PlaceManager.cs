@@ -60,14 +60,14 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
     
 
-    public void PostPlaceAction()
+    public void PostPlaceAction(Piece piece)
     {
-        Place newPlace = selectedPiece.place;
+        Place newPlace = piece.place;
         Vector2Int newIndex = newPlace.boardIndex;
         Board curBoard = newPlace.board;
 
         // 새로운 자리 과열도 추가
-        if (selectedPiece.team.direction == TeamData.Direction.DownToUp)
+        if (piece.team.direction == TeamData.Direction.DownToUp)
             newPlace.HeatPointBottomTeam++;
         else
             newPlace.HeatPointTopTeam++;
@@ -80,7 +80,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (!curBoard.FollowRule)
             return;
 
-        selectedPiece.IsMovable(selectedPiece.place.boardIndex);
+        piece.IsMovable(piece.place.boardIndex);
 
     }
 
