@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2402481303748908473}
   - component: {fileID: 1443156753202429635}
-  - component: {fileID: 3108192685022573290}
+  - component: {fileID: 8815173425037999921}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -80,7 +80,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &3108192685022573290
+--- !u!114 &8815173425037999921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,19 +89,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 9196825123279805262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3b27628feb3ce458f6fc1732831380, type: 3}
+  m_Script: {fileID: 11500000, guid: 096b18adf158d7841a90a55654a232be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   place: {fileID: 0}
   team: {fileID: 0}
   mouseOver: {r: 0, g: 0, b: 0, a: 0}
   charactor: {fileID: 0}
-  OnCastlingL:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCastlingR:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &2866548496305121680
 PrefabInstance:
   m_ObjectHideFlags: 0
