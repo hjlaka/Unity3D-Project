@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: GameSetting2
   m_EditorClassIdentifier: 
   dataID: 0
-  team: {fileID: 0}
+  team: {fileID: 11400000, guid: 4da831a05a6774f419a040d06db90c54, type: 2}
   opponents:
   - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 2, y: 2}
+    location: {x: 6, y: 2}
   - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 2, y: 3}
+    location: {x: 6, y: 3}
   - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 2, y: 4}
+    location: {x: 6, y: 4}
   - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 2, y: 5}
+    location: {x: 6, y: 5}

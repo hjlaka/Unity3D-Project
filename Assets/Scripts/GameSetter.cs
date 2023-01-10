@@ -9,6 +9,7 @@ public class GameSetter : MonoBehaviour
     public List<GameData> gameSettings;
 
     public AI aiManager;
+    public PlayerData playerData;
 
 
 /*    private void Awake()
@@ -36,34 +37,30 @@ public class GameSetter : MonoBehaviour
 
             Debug.Log("배치중인 기물: " + opponent.piecePrefab);
 
-            instance.team = setting.team;
+            instance.team = setting.opponentTeam;
             instance.charactor = opponent.character;
             instance.SetInPlace(mainBoard.GetPlace(opponent.location));
 
             aiManager.AddAIPiece(instance);
         }
+
+        for (int i = 0; i < setting.players.Count; i++)
+        {
+            GameData.PlayerPiece players = setting.players[i];
+            Piece instance = Instantiate(players.piecePrefab);
+
+            Debug.Log("배치중인 기물: " + players.piecePrefab);
+
+            instance.team = setting.playerTeam;
+            instance.charactor = players.character;
+            instance.SetInPlace(mainBoard.GetPlace(players.location));
+
+        }
     }
 
+    public void SetPlayers(int index = 0)
+    {
 
-
-    // 일부 기물 소환
-
-
-    // 정해진 위치에 두기
-
-
-    // 이 기물은 어디, 저 기물은 어디.
-
-
-    // 파일로 저장?
-
-
-    // 기물 종류, (캐릭터), 위치
-
-
-    // 랜덤으로 생성?
-
-
-    // 아군 기물은?
+    }
 
 }
