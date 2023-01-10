@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Podo
   m_EditorClassIdentifier: 
   characterName: "\uD3EC\uB3C4"
-  decidePlaceStrategyType: 2
+  decidePlaceStrategyType: 0
   threatening: "\uC5B4\uD765"
   defending: "\uBC29\uC5B4"
   attacking: "\uD53C\uC29D"

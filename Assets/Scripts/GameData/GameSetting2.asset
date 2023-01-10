@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfe225e3e2b77234fa0507a00c8e55ae, type: 3}
-  m_Name: GameSetting1
+  m_Name: GameSetting2
   m_EditorClassIdentifier: 
-  dataID: 1
-  team: {fileID: 11400000, guid: 4da831a05a6774f419a040d06db90c54, type: 2}
+  dataID: 0
+  team: {fileID: 0}
   opponents:
-  - piecePrefab: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 2, y: 7}
-  - piecePrefab: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
+    location: {x: 2, y: 2}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 5, y: 7}
-  - piecePrefab: {fileID: 8815173425037999921, guid: 0a020da768c0b324994acd0939968828, type: 3}
+    location: {x: 2, y: 3}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 1, y: 7}
-  - piecePrefab: {fileID: 8815173425037999921, guid: 0a020da768c0b324994acd0939968828, type: 3}
+    location: {x: 2, y: 4}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
-    location: {x: 6, y: 7}
+    location: {x: 2, y: 5}
