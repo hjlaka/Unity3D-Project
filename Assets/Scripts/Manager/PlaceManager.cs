@@ -60,7 +60,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
     
 
-    public void PostPlaceAction(Piece piece)
+    public void CalculateInfluence(Piece piece)
     {
         Place newPlace = piece.place;
         Vector2Int newIndex = newPlace.boardIndex;
@@ -139,69 +139,50 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void MovePieceTo(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
-        oldPlace.piece = null;
         Board oldBoard = oldPlace.board;
+        Board newBoard = place.board;
 
 
         // 움직일 수 있는 곳인지 확인
         if (!IsPlaceable(place, piece))
-        {
-            Debug.Log("움직일 수 없는 곳");
             return;
-        }
-        Debug.Log("움직일 수 있는 곳");
 
-
-
+        
+        // 연출 - 리스트 의존적.
         if (oldBoard != null)
-        {
-            Debug.Log("이전 영역을 지웁니다");
             oldBoard.PreShowEnd(piece);
-        }
-        else
-        {
-            Debug.Log("이전 영역을 지우지 않습니다. 보드가 없습니다.");
-        }
+
+
+        // 연산
+        oldPlace.piece = null;
         WithDrawInfluence(piece);
         piece.ClearMovable();
-
-        // 영향권 비교 후 변동 사항에 대해 연산하기
-        // =====임시 방편======
-
         piece.ClearThreat();
         piece.ClearDefence();
         piece.ClearInfluence();
 
-        // ===================
-
+        
+        // 연산
         piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
+        CalculateInfluence(piece);
 
-        Board newBoard = place.board;
 
-
-        // 위치 변경 후 영향권 연산
-        PostPlaceAction();
-
+        // 연출 - 리스트 의존적
         if(newBoard != null)
         {
-            // 영향권 연출
             newBoard.UpdateHeatHUD();
             newBoard.PostShow(piece);
         }
         
 
-        // 카메라 연출
+        // 연출
         OnFinishMove?.Invoke();
 
-        // 만약 진행할 이벤트가 있으면 실행
+        // 이벤트
         DialogueManager.Instance.StartDialogue();
 
-
-        // 이전 기물 저장
-        Piece endedPiece = piece;
-
-
-        StartCoroutine(EndTurn(endedPiece));        // 턴을 끝내는 연산을 진행할지 말지, 계속해서 확인
+        // 이벤트 종료 확인 후 턴 종료
+        StartCoroutine(EndTurn(piece));        
 
     }
 
@@ -272,7 +253,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 변화된 상황이 있을 수 있으므로 재 계산
         InitInfluence(piece);
 
-        PostPlaceAction();
+        CalculateInfluence(piece);
         UpdateHUD(piece.place.board);
 
 
