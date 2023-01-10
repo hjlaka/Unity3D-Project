@@ -129,6 +129,7 @@ public class Piece : MonoBehaviour
         {
             forwardY = -1;
             returnHeat = new TopTeam();
+            transform.Rotate(Vector3.up * 180);
         } 
         else
         {

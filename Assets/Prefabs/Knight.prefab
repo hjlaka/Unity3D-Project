@@ -94,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   place: {fileID: 0}
   team: {fileID: 0}
-  mouseOver: {r: 0, g: 0, b: 0, a: 0}
+  mouseOver: {r: 0, g: 1, b: 0.574213, a: 0}
   charactor: {fileID: 0}
 --- !u!1001 &2866548496305121680
 PrefabInstance:
