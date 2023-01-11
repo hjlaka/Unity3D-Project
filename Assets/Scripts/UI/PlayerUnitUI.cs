@@ -7,7 +7,7 @@ public class PlayerUnitUI : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject unitPrefab;
+    private UnitButton unitPrefab;
 
     [SerializeField]
     private Transform contentTransform;
@@ -15,8 +15,9 @@ public class PlayerUnitUI : MonoBehaviour
 
     public void AddUI(CharacterData character)
     {
-        GameObject instance = Instantiate(unitPrefab, contentTransform);
+        UnitButton instance = Instantiate(unitPrefab, contentTransform);
         instance.name = character.characterName;
+        instance.characterData = character;
         instance.GetComponentInChildren<TextMeshProUGUI>().text = character.characterName;
     }
 

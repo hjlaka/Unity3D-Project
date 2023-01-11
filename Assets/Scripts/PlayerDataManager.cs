@@ -11,6 +11,14 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
     [SerializeField]
     private PlayerUnitUI ui;
 
+    [SerializeField]
+    private TeamData playerTeam;
+    public TeamData PlayerTeam
+    {
+        get { return playerTeam;  }
+        private set { playerTeam = value; }
+    }
+
     public List<Piece> PlayerPieces 
     { get 
         { 
