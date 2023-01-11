@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(ChangeLayerFunc))]
 public class UnitButton : MonoBehaviour
 {
     public CharacterData characterData;
@@ -14,10 +16,14 @@ public class UnitButton : MonoBehaviour
 
     // 드래그 앤 드랍?
     private Place creatingPlace;
+    private Transform pieceZone;
+    private ChangeLayerFunc changeLayer;
 
     private void Awake()
     {
+        pieceZone = GameObject.Find("PieceZone").transform;
         creatingPlace = GameObject.Find("CreatingPlace").GetComponent<Place>();         // 형 변환이 아니라 컴포넌트 가져오기가 맞나?
+        changeLayer = GetComponent<ChangeLayerFunc>();
     }
     public void PlacePiece()
     {
@@ -30,6 +36,7 @@ public class UnitButton : MonoBehaviour
         instance.character = characterData;
         instance.SetInPlace(creatingPlace);
 
+        changeLayer.ChangeLayerRecursively(instance.transform, pieceZone.gameObject.layer);
 
         PlaceManager.Instance.SelectPiece(instance);
 

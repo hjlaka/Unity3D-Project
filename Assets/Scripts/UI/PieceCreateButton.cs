@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ChangeLayerFunc))]
 public class PieceCreateButton : MonoBehaviour
 {
     [SerializeField]
@@ -14,10 +15,15 @@ public class PieceCreateButton : MonoBehaviour
     [SerializeField]
     private AI aiManager;
 
+    
+    private Transform pieceZone;
     private Place creatingPlace;
+    private ChangeLayerFunc changeLayer;
     private void Awake()
     {
+        pieceZone = GameObject.Find("PieceZone").transform;
         creatingPlace = GameObject.Find("CreatingPlace").GetComponent<Place>();         // 형 변환이 아니라 컴포넌트 가져오기가 맞나?
+        changeLayer = GetComponent<ChangeLayerFunc>();
     }
 
     public void CreatePiece()
@@ -26,13 +32,20 @@ public class PieceCreateButton : MonoBehaviour
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE) return;
 
         Debug.Log("기물을 생성했습니다." + piecePrefab.name);
-        Piece instance = Instantiate(piecePrefab);
+        Piece instance = Instantiate(piecePrefab, pieceZone);
         instance.team = team;
-        instance.charactor = testCharacter;
+        instance.character = testCharacter;
+
+        changeLayer.ChangeLayerRecursively(instance.transform, pieceZone.gameObject.layer);
+
         instance.SetInPlace(creatingPlace);
         Debug.Log("전달한 것: " + instance);
         aiManager.AddAIPiece(instance);
         
     }
 
+    
+
 }
+
+    
