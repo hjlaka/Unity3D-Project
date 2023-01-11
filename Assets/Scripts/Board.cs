@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -16,33 +15,10 @@ public class Board : MonoBehaviour
     public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE }
     private bool followRule;
     public bool FollowRule { get { return followRule; } set { followRule = value; } }
-    public Transform heatPointHUD;
-    private List<TextMeshProUGUI> heatHUDList;
     public Place[,] places;
     private float cellSize;
 
-    private void Awake()
-    {
-        heatHUDList = new List<TextMeshProUGUI>();
-        
-    }
-    private void Start()
-    {
 
-        if (null == heatPointHUD)
-            return;
-
-        CreateHUD();
-        UpdateHeatHUD();
-    }
-
-    public void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            ResetHeat();
-        }
-    }
 
     public Place GetPlace(Vector2Int index)
     {
@@ -50,80 +26,6 @@ public class Board : MonoBehaviour
 
         return places[index.x, index.y];
     }
-    public void ResetHeat()
-    {
-        if (null == heatPointHUD)
-            return;
-
-
-        for (int i = 0; i < size.x; i++)
-        {
-            for (int j = 0; j < size.y; j++)
-            {
-                places[i, j].HeatPoint = 0;
-                heatHUDList[(i * size.x) + j].text = "0";
-            }
-        }
-    }
-
-    private void CreateHUD()
-    {
-        heatPointHUD.GetComponent<RectTransform>().sizeDelta = new Vector2(20 * size.x, 20 * size.y);
-
-        for (int i = 0; i < size.x * size.y; i++)
-        {
-            GameObject textUI = Instantiate(new GameObject());
-            textUI.transform.SetParent(heatPointHUD.transform, false);
-            textUI.AddComponent<TextMeshProUGUI>();
-            TextMeshProUGUI text = textUI.GetComponent<TextMeshProUGUI>();
-            text.text = i.ToString();
-            text.fontSize = 20f;
-            heatHUDList.Add(text);
-        }
-
-        heatPointHUD.gameObject.SetActive(false);
-    }
-    public void UpdateHeatHUD()
-    {
-        if (null == heatPointHUD)
-            return;
-
-        for (int i = 0; i < size.x; i++)
-        {
-            for(int j = 0; j < size.y; j++)
-            {
-                heatHUDList[(i * size.x) + j].text = places[i, j].HeatPoint.ToString();
-            }
-        }
-    }
-
-   /* public void MovePieceTo(Piece piece, Place place)
-    {
-        Place oldPlace = piece.place;
-        oldPlace.piece = null;
-
-        // 움직일 수 있는 곳인가?
-
-        // 보드 위 연출 지우기
-        PreShowEnd(piece);
-
-        // 영향력 제거
-
-        // 기물의 이전 영향권 리스트 초기화
-
-        // 기물의 위치 이동
-        piece.SetInPlace(place);
-
-        // 기물의 새로운 영향권 리스트 만들기
-
-        // 보드 위 연출 생성
-        PostShow(piece);
-        UpdateHeatHUD();
-
-        // 카메라 연출까지 여기에서? - 매니저?
-        // 진행할 이벤트가 있으면 실행?? - 매니저?
-
-    }*/
 
 
     public void ShowMovable(Piece piece)
