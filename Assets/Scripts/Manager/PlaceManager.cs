@@ -52,12 +52,6 @@ public class PlaceManager : SingleTon<PlaceManager>
     [SerializeField]
     private Color attackable;
 
-
-    public void ShowHUD()
-    {
-        Transform hud = SelectedPiece.place.board.heatPointHUD;
-        if(hud != null) hud.gameObject.SetActive(true);
-    }
     
 
     public void CalculateInfluence(Piece piece)
@@ -67,6 +61,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         Board curBoard = newPlace.board;
 
         // 새로운 자리 과열도 추가
+
         if (piece.team.direction == TeamData.Direction.DownToUp)
             newPlace.HeatPointBottomTeam++;
         else
@@ -227,11 +222,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     }
     
-    public void UpdateHUD(Board board)
-    {
-        if (board == null) return;
-        board.UpdateHeatHUD();
-    }
+
 
     public void Attack(Piece piece, Piece target)
     {
@@ -254,7 +245,6 @@ public class PlaceManager : SingleTon<PlaceManager>
         InitInfluence(piece);
 
         CalculateInfluence(piece);
-        UpdateHUD(piece.place.board);
 
 
 
@@ -291,10 +281,5 @@ public class PlaceManager : SingleTon<PlaceManager>
         
     }
 
-    private IEnumerator EndPlaceCam()
-    {
-        yield return new WaitForSeconds(1f);
 
-        OnNonSelectPiece?.Invoke();
-    }
 }
