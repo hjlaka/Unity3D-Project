@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Piece : LifePiece
+public class Piece : LifeUnit
 {
     [Header("InGame")]
     public Place place;
@@ -62,17 +62,13 @@ public class Piece : LifePiece
 
     #endregion
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
-
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
         threatTo = new List<Piece>();
         movableTo = new List<Place>();
         influenceable = new List<Place>();
-
-        
     }
 
     private void Start()
