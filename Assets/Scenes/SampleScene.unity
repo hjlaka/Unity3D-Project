@@ -5060,7 +5060,7 @@ GameObject:
   - component: {fileID: 1281561934}
   - component: {fileID: 1281561933}
   m_Layer: 0
-  m_Name: GridBoard-Sub
+  m_Name: GridBoard-Init
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5079,7 +5079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placePrefab: {fileID: 4816363033270595032, guid: bb62ec26f87da3143a5d9bf13e3b37cf, type: 3}
-  boardName: Board
+  boardName: InitialBoard
   followRule: 0
   HeatHUD: {fileID: 0}
   gridSize: {x: 4, y: 4}
@@ -5206,6 +5206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   isPlayerTurn: 1
+  gameSetter: {fileID: 338363071}
   trunRemain: 0
   turnRemainUI: {fileID: 1393403956}
 --- !u!114 &1371377820
@@ -7831,7 +7832,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095236343}
-  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.051449593, w: 0.94618416}
+  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.05144959, w: 0.94618416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
