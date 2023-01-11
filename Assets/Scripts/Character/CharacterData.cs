@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class CharacterData : ScriptableObject
 {
+    [Header("General")]
     public string characterName;
+    public Piece piecePrefab;
 
     public IDecidePlaceStrategy.StategyType decidePlaceStrategyType;
 

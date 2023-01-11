@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Podo
   m_EditorClassIdentifier: 
   characterName: "\uD3EC\uB3C4"
+  piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
   decidePlaceStrategyType: 0
   threatening: "\uC5B4\uD765"
   defending: "\uBC29\uC5B4"

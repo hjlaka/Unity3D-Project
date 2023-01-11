@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Samuel
   m_EditorClassIdentifier: 
   characterName: "\uC0AC\uBB34\uC5D8"
+  piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
   decidePlaceStrategyType: 0
   threatening: "\uBAA9\uD45C \uD3EC\uCC29"
   defending: "\uBAA9\uD45C \uBCF4\uD638"

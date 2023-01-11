@@ -14,9 +14,9 @@ public class Piece : MonoBehaviour
 
     public IReturnHeat returnHeat;
 
-    [Header("Charector")]
+    [Header("Charecter")]
     [SerializeField]
-    public CharacterData charactor;
+    public CharacterData character;
 
     private Renderer render;
     private Color curNormal;
@@ -137,7 +137,7 @@ public class Piece : MonoBehaviour
             returnHeat = new BottomTeam();
         }
 
-        decidePlaceStrategy = charactor.DecidePlaceStrategy;
+        decidePlaceStrategy = character.DecidePlaceStrategy;
     }
 
     #region 리스트 관리
@@ -185,7 +185,7 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
         defendFor.Add(piece);
-        DialogueManager.Instance.AddDialogue(ref charactor.characterName, ref charactor.defending);
+        //DialogueManager.Instance.AddDialogue(ref character.characterName, ref character.defending);
     }
 
     public void EndDefence(Piece piece)
@@ -207,7 +207,7 @@ public class Piece : MonoBehaviour
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
         ThreatTo.Add(piece);
-        DialogueManager.Instance.AddDialogue(ref charactor.characterName, ref charactor.threatening);
+        //DialogueManager.Instance.AddDialogue(ref character.characterName, ref character.threatening);
     }
 
     public void EndThreat(Piece piece)
