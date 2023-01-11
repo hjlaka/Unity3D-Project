@@ -31,7 +31,7 @@ public class LifeUnit : MonoBehaviour
     }
     protected virtual void Walk(Vector3 directionVec)
     {
-        transform.Translate(moveSpeed * Time.deltaTime * directionVec);
+        transform.Translate(moveSpeed * Time.deltaTime * directionVec, Space.World);
 
         OnWalk?.Invoke();
     }
@@ -39,7 +39,7 @@ public class LifeUnit : MonoBehaviour
     private void MoveToTarget(Vector3 targetLocation)
     {
 
-        if ((targetLocation - transform.position).sqrMagnitude > 1f)
+        if ((targetLocation - transform.position).sqrMagnitude > 2f)
         {
             Vector3 directionVec = targetLocation - transform.position;
             directionVec.y = 0;
@@ -48,7 +48,7 @@ public class LifeUnit : MonoBehaviour
 
             if (directionVec.sqrMagnitude != 0)
             {
-                transform.forward = Vector3.Lerp(transform.forward, directionVec, 0.2f);
+                transform.forward = Vector3.Lerp(transform.forward, directionVec, 0.5f);
             }
 
             Walk(directionVec);
