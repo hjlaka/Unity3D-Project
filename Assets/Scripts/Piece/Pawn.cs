@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Pawn : Piece
 {
     [SerializeField]
@@ -13,9 +14,7 @@ public class Pawn : Piece
 
     }
 
-
-
-    public override void IsMovable(Vector2Int location)
+    public override void RecognizeRange(Vector2Int location)
     {
         Vector2Int boardSize = place.board.Size;
 
@@ -28,10 +27,10 @@ public class Pawn : Piece
     private void MoveForward(Vector2Int curLocation, int boardHeight)
     {
 
-        if (IsTopOutLocation(curLocation, boardHeight)) return;
-        if (IsBottomOutLocation(curLocation)) return;
+        if (recognizer.IsTopOutLocation(curLocation, boardHeight)) return;
+        if (recognizer.IsBottomOutLocation(curLocation)) return;
 
-        if (RecognizeObstaclePiece(curLocation)) return;
+        if (recognizer.RecognizeObstaclePiece(curLocation)) return;
 
         // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
         MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
@@ -39,27 +38,23 @@ public class Pawn : Piece
 
     private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
     {
-        if (IsLeftOutLocation(curLocation) || 
-            IsTopOutLocation(curLocation, boardHeight) || 
-            IsBottomOutLocation(curLocation)) 
+        if (recognizer.IsLeftOutLocation(curLocation) ||
+            recognizer.IsTopOutLocation(curLocation, boardHeight) ||
+            recognizer.IsBottomOutLocation(curLocation)) 
             return;
 
-        RecognizePieceOnlyInfluence(curLocation);
+        recognizer.RecognizePieceOnlyInfluence(curLocation);
     }
 
     private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
     {
-        if (IsRightOutLocation(curLocation, boardWidth) || 
-            IsTopOutLocation(curLocation, boardHeight) || 
-            IsBottomOutLocation(curLocation))
+        if (recognizer.IsRightOutLocation(curLocation, boardWidth) ||
+            recognizer.IsTopOutLocation(curLocation, boardHeight) ||
+            recognizer.IsBottomOutLocation(curLocation))
             return;
 
-        RecognizePieceOnlyInfluence(curLocation);
+        recognizer.RecognizePieceOnlyInfluence(curLocation);
     }
-
-
-
-
 
     private void MoveDoubleForward(Vector2Int curLocation, int boardHeight)
     {
@@ -67,10 +62,10 @@ public class Pawn : Piece
         if (canDoubleMove)
         {
             // 벽이라면
-            if (IsTopOutLocation(curLocation, boardHeight)) return;
+            if (recognizer.IsTopOutLocation(curLocation, boardHeight)) return;
 
             // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
-            if (RecognizeObstaclePiece(curLocation)) return;
+            if (recognizer.RecognizeObstaclePiece(curLocation)) return;
 
         }
     }
@@ -85,8 +80,6 @@ public class Pawn : Piece
 
         base.SetInPlace(place);
     }
-
-
 
     public bool IsAttackable()
     {

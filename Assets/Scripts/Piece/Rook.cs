@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rook : Piece
 {
-    public override void IsMovable(Vector2Int location)
+    public override void RecognizeRange(Vector2Int location)
     {
         Vector2Int boardSize = place.board.Size;
 

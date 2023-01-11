@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
+[RequireComponent(typeof(Recognizer))]
 public class Piece : LifeUnit
 {
     [Header("InGame")]
@@ -23,6 +26,7 @@ public class Piece : LifeUnit
 
     private IDecidePlaceStrategy decidePlaceStrategy;
 
+    protected Recognizer recognizer;
 
     private List<Piece> defendFor;
     private List<Piece> threatTo;
@@ -62,13 +66,14 @@ public class Piece : LifeUnit
 
     #endregion
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
         threatTo = new List<Piece>();
         movableTo = new List<Place>();
         influenceable = new List<Place>();
+        recognizer = GetComponent<Recognizer>();
     }
 
     private void Start()
@@ -238,7 +243,7 @@ public class Piece : LifeUnit
 
 
     public virtual void PieceAction() { }
-    public virtual void IsMovable(Vector2Int location)
+    public virtual void RecognizeRange(Vector2Int location)
     {
     }
 
@@ -248,132 +253,12 @@ public class Piece : LifeUnit
     }
 
 
-    protected bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
-    {
-        if (curLocation.y > boardHeight - 1)
-            return true;
-        else
-            return false;
-    }
-
-    protected bool IsBottomOutLocation(Vector2Int curLocation)
-    {
-        if (curLocation.y < 0)
-            return true;
-        else
-            return false;
-    }
-
-    protected bool IsLeftOutLocation(Vector2Int curLocation)
-    {
-        if (curLocation.x < 0)
-            return true;
-        else
-            return false;
-    }
-
-    protected bool IsRightOutLocation(Vector2Int curLocation, int boardWidth)
-    {
-        if (curLocation.x > boardWidth - 1)
-            return true;
-        else
-            return false;
-    }
+   
 
 
 
 
-    // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
-    protected bool RecognizeObstaclePiece(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-
-        if(targetPiece != null)
-        {
-            return true;
-        }
-        else
-        {
-            Debug.Log("앞에 장애물 없다");
-
-            AddMovable(targetPlace);
-            //연출 이동
-
-            return false;
-        }
-    }
-
-    protected bool RecognizePieceOnlyInfluence(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-
-        if (targetPiece != null)
-        {
-            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
-
-            return true;
-        }
-        else
-        {
-            // 기물이 없는 경우 이동할 수 없음
-            // 영향권은 맞음
-            AddInfluence(targetPlace);
-            return false;
-        }
-    }
-    // } 폰 움직임을 위해 추가 -----------------------------------------------------------
-
-    private void RecognizeDefendOrAttack(Vector2Int curLocation, Piece targetPiece, Place targetPlace)
-    {
-        if (targetPiece.team.TeamId == team.TeamId)
-        {
-            AddDefence(targetPiece);
-            targetPiece.BeDefended(this);
-
-            // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
-            AddInfluence(targetPlace);
-
-        }
-        else
-        {
-            AddThreat(targetPiece);
-            targetPiece.BeThreatened(this);
-
-            // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
-            // 공격할 수 있는 자리는 영향권 내 자리이다.
-            AddMovable(targetPlace);
-            AddInfluence(targetPlace);
-
-        }
-    }
-
-    protected bool RecognizePiece(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-
-        if (targetPiece != null)
-        {
-            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
-
-            return true;
-        }
-        else
-        {
-
-            RecognizeMovableVoidPlace(curLocation, targetPlace);
-
-            return false;
-        }
-    }
-
-    private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
-    {
-        AddMovable(targetPlace);
-        AddInfluence(targetPlace);
-    }
+    
 
     public void ChangeColor()
     {
