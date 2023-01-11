@@ -11,7 +11,7 @@ public class PlaceGrid : MonoBehaviour
     [SerializeField]
     private bool followRule = true;
     [SerializeField]
-    private Transform HeatHUD;
+    private bool isMarkable = false;
 
 
     [Header("Size")]
@@ -37,7 +37,12 @@ public class PlaceGrid : MonoBehaviour
     private void CreateBoard()
     {
         GameObject boardObject = new GameObject();
-        boardObject.AddComponent<Board>();
+
+        if (isMarkable)
+            boardObject.AddComponent<MarkableBoard>();
+        else
+            boardObject.AddComponent<Board>();
+
         boardObject.gameObject.name = boardName;
 
         Board board = boardObject.GetComponent<Board>();
@@ -65,7 +70,6 @@ public class PlaceGrid : MonoBehaviour
 
         // 배열은 클래스다.
         board.places = places;
-        board.heatPointHUD = HeatHUD;
     }
 
     private void OnDrawGizmos()
