@@ -27,14 +27,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         get { return selectedPiece; }
         set 
         { 
-            selectedPiece = value;
-
-            if (value != null && SelectedPiece.place.board?.heatPointHUD != null)
-            {
-                SelectedPiece.place.board.heatPointHUD.gameObject.SetActive(true);
-
-            }
-                
+            selectedPiece = value;           
         }
     }
 
@@ -117,11 +110,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (place.board != piece.place.board) return true;
         if (!place.board.FollowRule) return true;
 
-        else
-        {
-            //movable이어야 움직임 가능.
-            return place.IsMovableToCurPiece;
-        }
+        return place.IsMovableToCurPiece;
 
     }
     public void ExpelPiece(Piece piece)
@@ -134,8 +123,8 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void MovePieceTo(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
-        Board oldBoard = oldPlace.board;
-        Board newBoard = place.board;
+        MarkableBoard oldBoard = oldPlace.board as MarkableBoard;
+        MarkableBoard newBoard = place.board as MarkableBoard;
 
 
         // 움직일 수 있는 곳인지 확인
@@ -150,11 +139,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 연산
         oldPlace.piece = null;
-        WithDrawInfluence(piece);
-        piece.ClearMovable();
-        piece.ClearThreat();
-        piece.ClearDefence();
-        piece.ClearInfluence();
+        InitInfluence(piece);
 
         
         // 연산
@@ -165,7 +150,6 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 연출 - 리스트 의존적
         if(newBoard != null)
         {
-            newBoard.UpdateHeatHUD();
             newBoard.PostShow(piece);
         }
         
@@ -196,11 +180,11 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         SelectedPieceInit();
 
-        Board endedBoard = endedPiece.place.board;
-        if(endedBoard != null)
+        MarkableBoard markableBoard = endedPiece.place.board as MarkableBoard;
+        if (markableBoard != null)
         {
-            endedBoard.ShowMovableEnd(endedPiece);
-            endedBoard.ShowInfluenceEnd(endedPiece);
+            markableBoard.ShowMovableEnd(endedPiece);
+            markableBoard.ShowInfluenceEnd(endedPiece);
         }
 
         GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
@@ -249,8 +233,9 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
         // 연출
-        if (piece.place.board != null)
-            piece.place.board.PreShow(piece);
+        MarkableBoard markableBoard = piece.place.board as MarkableBoard;
+        if (markableBoard)
+            markableBoard.PreShow(piece);
         //TODO: 이동 가능 상태 변수와 연출을 하나로 묶어도 좋을듯
 
         OnSelectPiece?.Invoke();
@@ -264,8 +249,9 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 선택된 기물을 바로 취소하는 경우
 
         //연출
-        if (selectedPiece.place.board != null)
-            selectedPiece.place.board.PreShowEnd(selectedPiece);
+        MarkableBoard markableBoard = selectedPiece.place.board as MarkableBoard;
+        if (markableBoard)
+            markableBoard.PreShowEnd(selectedPiece);
 
         SelectedPieceInit();
     }
