@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LifeUnit : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class LifeUnit : MonoBehaviour
     [SerializeField]
     private Vector3 target;
 
+    public UnityEvent OnWalk;
+
     protected virtual void Update()
     {
         if(isFree)
@@ -29,6 +32,8 @@ public class LifeUnit : MonoBehaviour
     protected virtual void Walk(Vector3 directionVec)
     {
         transform.Translate(moveSpeed * Time.deltaTime * directionVec);
+
+        OnWalk?.Invoke();
     }
 
     private void MoveToTarget(Vector3 targetLocation)
