@@ -238,7 +238,7 @@ public class Piece : LifeUnit
 
 
     public virtual void PieceAction() { }
-    public virtual void IsMovable(Vector2Int location)
+    public virtual void RecognizeRange(Vector2Int location)
     {
     }
 

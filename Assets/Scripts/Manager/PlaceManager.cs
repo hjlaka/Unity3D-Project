@@ -68,7 +68,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (!curBoard.FollowRule)
             return;
 
-        piece.IsMovable(piece.place.boardIndex);
+        piece.RecognizeRange(piece.place.boardIndex);
 
     }
 
