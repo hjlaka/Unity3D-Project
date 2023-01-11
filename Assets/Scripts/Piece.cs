@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Piece : MonoBehaviour
+public class Piece : LifePiece
 {
     [Header("InGame")]
     public Place place;
@@ -62,8 +62,10 @@ public class Piece : MonoBehaviour
 
     #endregion
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
         threatTo = new List<Piece>();
