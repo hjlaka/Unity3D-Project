@@ -154,7 +154,7 @@ public class Place : MonoBehaviour
         if (!isApprochable)
             return;
 
-        PlaceManager.Instance.MovePieceTo(PlaceManager.Instance.SelectedPiece, this);
+        PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
 
 
     }

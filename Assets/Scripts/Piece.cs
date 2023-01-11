@@ -105,7 +105,7 @@ public class Piece : LifeUnit
             else
             {
                 Debug.Log("이동하자!");
-                PlaceManager.Instance.MovePieceTo(this, targetPlace);
+                PlaceManager.Instance.MoveProcess(this, targetPlace);
             }   
         }
         else
@@ -442,13 +442,13 @@ public class Piece : LifeUnit
     {
         PlaceManager.Instance.Attack(this, place.piece);
         //PlaceManager.Instance.ExpelPiece(place.Piece);
-        //PlaceManager.Instance.MovePieceTo(this, place);
+        //PlaceManager.Instance.MoveProcess(this, place);
     }
     private void BeAttackedBy(Piece piece)
     {
         Place attackPlace = this.place;
         PlaceManager.Instance.ExpelPiece(this);
-        PlaceManager.Instance.MovePieceTo(piece, attackPlace);
+        PlaceManager.Instance.MoveProcess(piece, attackPlace);
     }
 
     public void setDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)

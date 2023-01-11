@@ -120,7 +120,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         Destroy(piece.gameObject);
     }
 
-    public void MovePieceTo(Piece piece, Place place)
+    public void MoveProcess(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
         MarkableBoard oldBoard = oldPlace.board as MarkableBoard;
@@ -215,7 +215,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         OnAttack?.Invoke();
 
-        MovePieceTo(piece, attackPlace);
+        MoveProcess(piece, attackPlace);
     }
 
     public void SelectPiece(Piece piece)
