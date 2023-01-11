@@ -13,12 +13,12 @@ public class PlayerUnitUI : MonoBehaviour
     private Transform contentTransform;
 
 
-    public void AddUI(CharacterData character)
+    public void AddUI(Piece piece)
     {
         UnitButton instance = Instantiate(unitPrefab, contentTransform);
-        instance.name = character.characterName;
-        instance.characterData = character;
-        instance.GetComponentInChildren<TextMeshProUGUI>().text = character.characterName;
+        instance.name = piece.character.characterName;
+        //instance.characterData = character;
+        instance.GetComponentInChildren<TextMeshProUGUI>().text = piece.character.characterName;
     }
 
 

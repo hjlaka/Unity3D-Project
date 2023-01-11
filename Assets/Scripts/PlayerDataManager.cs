@@ -6,7 +6,7 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
 {
     private List<Piece> playerPieces;
 
-    public List<CharacterData> unitList;
+    public List<Piece> unitList;
 
     [SerializeField]
     private PlayerUnitUI ui;
@@ -29,24 +29,24 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
     private void Awake()
     {
         playerPieces = new List<Piece>();
-        unitList = new List<CharacterData>();
+        unitList = new List<Piece>();
     }
 
     public void AddPlayerPiece(Piece piece)
     {
         playerPieces.Add(piece);
 
-        AddUnit(piece.character);
+        AddUnit(piece);
     }
 
-    public void AddUnit(CharacterData character)
+    public void AddUnit(Piece piece)
     {
-        unitList.Add(character);
-        ui.AddUI(character);
+        unitList.Add(piece);
+        ui.AddUI(piece);
     }
 
-    public void RemoveUnit(CharacterData character)
+    public void RemoveUnit(Piece piece)
     {
-        unitList.Remove(character);
+        unitList.Remove(piece);
     }
 }

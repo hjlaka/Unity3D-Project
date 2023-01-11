@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(ChangeLayerFunc))]
 public class UnitButton : MonoBehaviour
 {
-    public CharacterData characterData;
+    //public CharacterData characterData;
+    public Piece piece;
 
     // 누를 경우 기물을 판에 배치시킬 수 있다.
 
@@ -30,17 +31,17 @@ public class UnitButton : MonoBehaviour
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE) return;
 
         //TODO: 기물 생성에서 기물 위치 변경으로 기능 변경 고려하기
-        Debug.Log("기물을 생성했습니다." + characterData.characterName);
-        Piece instance = Instantiate(characterData.piecePrefab);
+       /* Debug.Log("기물을 생성했습니다." + piece.character.characterName);
+        Piece instance = Instantiate(piece.character.piecePrefab);
         instance.team = PlayerDataManager.Instance.PlayerTeam;
-        instance.character = characterData;
+        instance.character = piece.character;
         instance.SetInPlace(creatingPlace);
 
         changeLayer.ChangeLayerRecursively(instance.transform, pieceZone.gameObject.layer);
 
         PlaceManager.Instance.SelectPiece(instance);
 
-        Debug.Log("전달한 것: " + instance);
+        Debug.Log("전달한 것: " + instance);*/
 
     }
 }
