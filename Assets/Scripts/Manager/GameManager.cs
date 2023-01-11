@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : SingleTon<GameManager>
@@ -8,6 +9,37 @@ public class GameManager : SingleTon<GameManager>
     public GameState state;
 
     public bool isPlayerTurn;
+
+
+    [SerializeField]
+    private GameSetter gameSetter;
+
+
+    [SerializeField]
+    private int trunRemain;
+    public int TurnRemain
+    {
+        get { return trunRemain; }
+        set 
+        { 
+            trunRemain = value;
+            turnRemainUI.text = trunRemain.ToString();
+        }
+    }    
+    [SerializeField]
+    private TextMeshProUGUI turnRemainUI;
+
+    private void Start()
+    {
+        TurnRemain = 10;
+        gameSetter.SetPlayers(0);
+
+    }
+
+    public void TurnCalculate()
+    {
+
+    }
 
 
     public void GameStateUpdate()

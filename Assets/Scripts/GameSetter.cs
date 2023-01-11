@@ -45,17 +45,17 @@ public class GameSetter : MonoBehaviour
 
         for (int i = 0; i < setting.players.Count; i++)
         {
-            GameData.PlayerPiece players = setting.players[i];
-            Piece instance = Instantiate(players.piecePrefab);
+            GameData.PlayerPiece player = setting.players[i];
+            Piece instance = Instantiate(player.piecePrefab);
 
-            Debug.Log("배치중인 기물: " + players.piecePrefab);
+            Debug.Log("배치중인 기물: " + player.piecePrefab);
 
             instance.team = setting.playerTeam;
-            instance.character = players.character;
+            instance.character = player.character;
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
 
-            instance.SetInPlace(mainBoard.GetPlace(players.location));
+            instance.SetInPlace(mainBoard.GetPlace(player.location));
 
 
         }
@@ -64,6 +64,35 @@ public class GameSetter : MonoBehaviour
     public void SetPlayers(int index = 0)
     {
 
+        if (gameSettings.Count <= index) return;
+
+        Debug.Log("세팅 시작");
+
+        //Board mainBoard = GameObject.Find("MainBoard").GetComponent<Board>();
+
+        //Debug.Log("찾아낸 보드: " + mainBoard);
+
+        GameData setting = gameSettings[index];
+
+        for (int i = 0; i < setting.players.Count; i++)
+        {
+            GameData.PlayerPiece player = setting.players[i];
+            Piece instance = player.piecePrefab;
+            CharacterData character = player.character;
+
+            //Debug.Log("배치중인 기물: " + players.piecePrefab);
+
+            instance.team = setting.playerTeam;
+            instance.character = player.character;
+
+            // 어딘가에 위치 시켜야 한다.
+
+            PlayerDataManager.Instance.AddPlayerPiece(instance);
+
+            //instance.SetInPlace(mainBoard.GetPlace(players.location));
+
+
+        }
     }
 
 }
