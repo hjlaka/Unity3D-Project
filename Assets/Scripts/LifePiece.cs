@@ -11,11 +11,10 @@ public class LifePiece : LifeUnit
         animator = GetComponentInChildren<Animator>();
     }
 
-    protected override void Walk()
+    protected override void Walk(Vector3 directionVec)
     {
-        base.Walk();
+        base.Walk(directionVec);
 
-        Debug.Log(animator);
         animator?.SetTrigger("Walk");
     }
 

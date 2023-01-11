@@ -8,7 +8,14 @@ public class LifeUnit : MonoBehaviour
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
+    private float jumpSpeed;
+    [SerializeField]
     private bool isFree = false;
+    public bool IsFree
+    {
+        get { return isFree; }
+        set { isFree = value; }
+    }
     [SerializeField]
     private Vector3 target;
 
@@ -19,23 +26,32 @@ public class LifeUnit : MonoBehaviour
             MoveToTarget(target);
         }
     }
-    protected virtual void Walk()
+    protected virtual void Walk(Vector3 directionVec)
     {
-        transform.Translate(moveSpeed * Time.deltaTime * transform.forward);
+        transform.Translate(moveSpeed * Time.deltaTime * directionVec);
     }
 
     private void MoveToTarget(Vector3 targetLocation)
     {
-        /*Vector3 direction =  targetLocation - transform.position;
-        direction.y = 0;*/
 
-        targetLocation.y = 0;
-
-        transform.LookAt(targetLocation);
-
-        while ((targetLocation - transform.position).sqrMagnitude > 1f)
+        if ((targetLocation - transform.position).sqrMagnitude > 1f)
         {
-            Walk();
+            Vector3 directionVec = targetLocation - transform.position;
+            directionVec.y = 0;
+            directionVec.Normalize();
+
+
+            if (directionVec.sqrMagnitude != 0)
+            {
+                transform.forward = Vector3.Lerp(transform.forward, directionVec, 0.2f);
+            }
+
+            Walk(directionVec);
         }
+    }
+
+    private void Jump()
+    {
+        transform.Translate(Vector3.up * jumpSpeed * Time.deltaTime);
     }
 }
