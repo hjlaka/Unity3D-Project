@@ -31,7 +31,7 @@ public class Pawn : Piece
         if (IsTopOutLocation(curLocation, boardHeight)) return;
         if (IsBottomOutLocation(curLocation)) return;
 
-        if (RecognizePieceMoveObstacle(curLocation)) return;
+        if (RecognizeObstaclePiece(curLocation)) return;
 
         // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
         MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
@@ -39,7 +39,9 @@ public class Pawn : Piece
 
     private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
     {
-        if (IsLeftOutLocation(curLocation) || IsTopOutLocation(curLocation, boardHeight) || IsBottomOutLocation(curLocation)) 
+        if (IsLeftOutLocation(curLocation) || 
+            IsTopOutLocation(curLocation, boardHeight) || 
+            IsBottomOutLocation(curLocation)) 
             return;
 
         RecognizePieceOnlyInfluence(curLocation);
@@ -47,7 +49,9 @@ public class Pawn : Piece
 
     private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
     {
-        if (IsRightOutLocation(curLocation, boardWidth) || IsTopOutLocation(curLocation, boardHeight) || IsBottomOutLocation(curLocation))
+        if (IsRightOutLocation(curLocation, boardWidth) || 
+            IsTopOutLocation(curLocation, boardHeight) || 
+            IsBottomOutLocation(curLocation))
             return;
 
         RecognizePieceOnlyInfluence(curLocation);
@@ -66,7 +70,7 @@ public class Pawn : Piece
             if (IsTopOutLocation(curLocation, boardHeight)) return;
 
             // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
-            if (RecognizePieceMoveObstacle(curLocation)) return;
+            if (RecognizeObstaclePiece(curLocation)) return;
 
         }
     }

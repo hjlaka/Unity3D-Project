@@ -284,7 +284,7 @@ public class Piece : LifeUnit
 
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
-    protected bool RecognizePieceMoveObstacle(Vector2Int curLocation)
+    protected bool RecognizeObstaclePiece(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
@@ -311,7 +311,7 @@ public class Piece : LifeUnit
 
         if (targetPiece != null)
         {
-            RecognizeDefendAndAttack(curLocation, targetPiece, targetPlace);
+            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
 
             return true;
         }
@@ -325,7 +325,7 @@ public class Piece : LifeUnit
     }
     // } 폰 움직임을 위해 추가 -----------------------------------------------------------
 
-    private void RecognizeDefendAndAttack(Vector2Int curLocation, Piece targetPiece, Place targetPlace)
+    private void RecognizeDefendOrAttack(Vector2Int curLocation, Piece targetPiece, Place targetPlace)
     {
         if (targetPiece.team.TeamId == team.TeamId)
         {
@@ -356,7 +356,7 @@ public class Piece : LifeUnit
 
         if (targetPiece != null)
         {
-            RecognizeDefendAndAttack(curLocation, targetPiece, targetPlace);
+            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
 
             return true;
         }
