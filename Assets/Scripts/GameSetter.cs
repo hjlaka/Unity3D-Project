@@ -43,22 +43,7 @@ public class GameSetter : MonoBehaviour
             aiManager.AddAIPiece(instance);
         }
 
-        for (int i = 0; i < setting.players.Count; i++)
-        {
-            GameData.PlayerPiece player = setting.players[i];
-            Piece instance = Instantiate(player.piecePrefab);
-
-            Debug.Log("배치중인 기물: " + player.piecePrefab);
-
-            instance.team = setting.playerTeam;
-            instance.character = player.character;
-
-            PlayerDataManager.Instance.AddPlayerPiece(instance);
-
-            instance.SetInPlace(mainBoard.GetPlace(player.location));
-
-
-        }
+        SetPlayers(index);
     }
 
     public void SetPlayers(int index = 0)
@@ -68,7 +53,7 @@ public class GameSetter : MonoBehaviour
 
         Debug.Log("세팅 시작");
 
-        //Board mainBoard = GameObject.Find("MainBoard").GetComponent<Board>();
+        Board initBoard = GameObject.Find("InitialBoard").GetComponent<Board>();
 
         //Debug.Log("찾아낸 보드: " + mainBoard);
 
@@ -77,19 +62,20 @@ public class GameSetter : MonoBehaviour
         for (int i = 0; i < setting.players.Count; i++)
         {
             GameData.PlayerPiece player = setting.players[i];
-            Piece instance = player.piecePrefab;
-            CharacterData character = player.character;
+            Debug.Log("배치중인 기물: " + player.piecePrefab);
 
-            //Debug.Log("배치중인 기물: " + players.piecePrefab);
-
+            Piece instance = Instantiate(player.piecePrefab);
             instance.team = setting.playerTeam;
             instance.character = player.character;
 
-            // 어딘가에 위치 시켜야 한다.
+            int randX = Random.Range(0, 3);
+            int randY = Random.Range(0, 3);
+
+            Debug.Log("랜덤 위치: " + randX + ", " + randY);
+            instance.SetInPlace(initBoard.GetPlace(new Vector2Int(randX, randY)));
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
 
-            //instance.SetInPlace(mainBoard.GetPlace(players.location));
 
 
         }
