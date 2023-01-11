@@ -9,7 +9,6 @@ public class GameSetter : MonoBehaviour
     public List<GameData> gameSettings;
 
     public AI aiManager;
-    public PlayerData playerData;
 
 
 /*    private void Awake()
@@ -38,7 +37,7 @@ public class GameSetter : MonoBehaviour
             Debug.Log("배치중인 기물: " + opponent.piecePrefab);
 
             instance.team = setting.opponentTeam;
-            instance.charactor = opponent.character;
+            instance.character = opponent.character;
             instance.SetInPlace(mainBoard.GetPlace(opponent.location));
 
             aiManager.AddAIPiece(instance);
@@ -52,11 +51,12 @@ public class GameSetter : MonoBehaviour
             Debug.Log("배치중인 기물: " + players.piecePrefab);
 
             instance.team = setting.playerTeam;
-            instance.charactor = players.character;
-            playerData.PlayerPieces.Add(instance);
+            instance.character = players.character;
+
+            PlayerDataManager.Instance.AddPlayerPiece(instance);
+
             instance.SetInPlace(mainBoard.GetPlace(players.location));
 
-            
 
         }
     }
