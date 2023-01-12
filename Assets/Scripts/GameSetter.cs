@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameSetter : MonoBehaviour
 {
@@ -10,11 +11,12 @@ public class GameSetter : MonoBehaviour
 
     public AI aiManager;
 
+    public UnityEvent OnOpponentSet;
 
-/*    private void Awake()
-    {
-        gameSettings = new List<GameData>();
-    }*/
+    /*    private void Awake()
+        {
+            gameSettings = new List<GameData>();
+        }*/
 
 
     public void SetOpponents(int index = 0)
@@ -42,8 +44,11 @@ public class GameSetter : MonoBehaviour
 
             aiManager.AddAIPiece(instance);
         }
+        OnOpponentSet?.Invoke();
 
-        SetPlayers(index);
+        //SetPlayers(index);
+
+        
     }
 
     public void SetPlayers(int index = 0)
