@@ -1,0 +1,87 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PawnMove : MonoBehaviour, IPieceMovable
+{
+    private Piece controlled;
+
+    private bool canDoubleMove;
+
+    public PawnMove(Piece controlled, bool canDoubleMove = true)
+    {
+        this.controlled = controlled;
+        this.canDoubleMove = canDoubleMove;
+    }
+
+    public void RecognizeRange(Vector2Int location)
+    {
+        Vector2Int boardSize = controlled.place.board.Size;
+
+        MoveForward(location + new Vector2Int(0, controlled.forwardY), boardSize.y);
+
+        AttackDiagonalLT(location + new Vector2Int(-1, controlled.forwardY), boardSize.y);
+        AttackDiagonalRT(location + new Vector2Int(1, controlled.forwardY), boardSize.y, boardSize.x);
+    }
+
+    public void RecognizeSpecialMove(Place newPlace)
+    {
+        Place oldPlace = controlled.place;
+        if (oldPlace?.board != newPlace.board)
+            canDoubleMove = true;
+        else
+            canDoubleMove = false;
+    }
+    // 중간에 기물이 폰이 되면 두번 움직임을 허용할 것인가?
+    // 조건 변경? 정해진 행에서만 두번 움직일 수 있게 하기?
+
+    private void MoveForward(Vector2Int curLocation, int boardHeight)
+    {
+
+        if (controlled.IsTopOutLocation(curLocation, boardHeight)) return;
+        if (controlled.IsBottomOutLocation(curLocation)) return;
+
+        if (controlled.RecognizeObstaclePiece(curLocation)) return;
+
+        // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
+        MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
+    }
+
+    private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
+    {
+        if (controlled.IsLeftOutLocation(curLocation) ||
+            controlled.IsTopOutLocation(curLocation, boardHeight) ||
+            controlled.IsBottomOutLocation(curLocation))
+            return;
+
+        controlled.RecognizePieceOnlyInfluence(curLocation);
+    }
+
+    private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
+    {
+        if (controlled.IsRightOutLocation(curLocation, boardWidth) ||
+            controlled.IsTopOutLocation(curLocation, boardHeight) ||
+            controlled.IsBottomOutLocation(curLocation))
+            return;
+
+        controlled.RecognizePieceOnlyInfluence(curLocation);
+    }
+
+
+    private void MoveDoubleForward(Vector2Int curLocation, int boardHeight)
+    {
+        // 앞으로 두 칸 이동할 수 있는가?
+        if (canDoubleMove)
+        {
+            // 벽이라면
+            if (controlled.IsTopOutLocation(curLocation, boardHeight)) return;
+
+            // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
+            if (controlled.RecognizeObstaclePiece(curLocation)) return;
+
+        }
+    }
+
+
+
+}

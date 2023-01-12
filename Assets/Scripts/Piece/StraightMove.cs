@@ -63,5 +63,8 @@ public class StraightMove : MonoBehaviour, IPieceMovable
         StraightR(curLocation + new Vector2Int(1, 0), boardWidth);
     }
 
-
+    public void RecognizeSpecialMove(Place newPlace)
+    {
+        // Do Nothing
+    }
 }

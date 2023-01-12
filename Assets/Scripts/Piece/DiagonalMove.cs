@@ -66,4 +66,9 @@ public class DiagonalMove : MonoBehaviour, IPieceMovable
 
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }
+
+    public void RecognizeSpecialMove(Place newPlace)
+    {
+        // Do Nothing
+    }
 }

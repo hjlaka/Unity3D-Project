@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IPieceMovable
 {
     void RecognizeRange(Vector2Int location);
+
+    void RecognizeSpecialMove(Place newPlace);
 }
