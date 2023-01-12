@@ -192,7 +192,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         }
 
         //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
-        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
+        GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
 
         // 카메라 연출
         OnNonSelectPiece?.Invoke();
@@ -263,6 +263,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void SelectedPieceInit()
     {
+        Debug.Log("기물 선택 해제");
         SelectedPiece.ChangeColor();
 
         SelectedPiece = null;

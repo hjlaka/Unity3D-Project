@@ -26,6 +26,7 @@ public class GameManager : SingleTon<GameManager>
         PLAYER_TURN,
         OPPONENT_TURN
     }
+    private TurnState turnState;
 
     public bool isPlayerTurn;
 
@@ -33,6 +34,9 @@ public class GameManager : SingleTon<GameManager>
 
     [SerializeField]
     private GameSetter gameSetter;
+
+    [SerializeField]
+    private AI aiManager;
 
 
     [SerializeField]
@@ -54,7 +58,9 @@ public class GameManager : SingleTon<GameManager>
     {
         TurnRemain = 10;
         //state = GameState.SELECTING_PIECE;
-        
+        turnState = TurnState.PLAYER_TURN;
+
+
 
     }
 
@@ -114,12 +120,16 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.TURN_CHANGE:
+
+                ChangeTurn();
+
                 break;
 
             case GameState.IN_CONVERSATION:
                 break;
 
             case GameState.TURN_FINISHED:
+                ChangeGameState(GameState.TURN_CHANGE);
                 break;
 
             case GameState.AI_TURN:
@@ -142,6 +152,26 @@ public class GameManager : SingleTon<GameManager>
     {
         Debug.Log("게임 씬 이전으로 변경: " + beforeState);
         state = beforeState;
+    }
+
+    private void ChangeTurn()
+    {
+        //AI와 플레이어 턴은 한번씩만 진행되는가?
+
+        if (turnState == TurnState.PLAYER_TURN)
+        {
+            turnState = TurnState.OPPONENT_TURN;
+            ChangeGameState(GameState.AI_TURN);
+            aiManager.AITurn();         // 여기서 시작? - 상태 기계 만들기?
+        }
+        else if (turnState == TurnState.OPPONENT_TURN)
+        {
+            turnState = TurnState.PLAYER_TURN;
+            ChangeGameState(GameState.SELECTING_PIECE);
+            
+            
+        }
+            
     }
 
 }
