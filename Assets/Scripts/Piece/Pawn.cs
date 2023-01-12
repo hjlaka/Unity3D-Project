@@ -5,9 +5,9 @@ using UnityEngine;
 public class Pawn : Piece
 {
 
-    public override void PieceAction()
+    protected override void Awake()
     {
-        base.PieceAction();
+        base.Awake();
         movePattern = new PawnMove(this);
     }
 
