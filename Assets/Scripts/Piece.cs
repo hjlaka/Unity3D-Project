@@ -320,9 +320,9 @@ public class Piece : LifeUnit
         PlaceManager.Instance.MoveProcess(piece, attackPlace);
     }
 
-    public void setDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
+    public void SetDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
     {
-
+        decideDesireStrategy = decidePlaceStrategy;
     }
 
     public void ChangeColor()
