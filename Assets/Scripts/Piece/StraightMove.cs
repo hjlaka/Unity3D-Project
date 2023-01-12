@@ -5,11 +5,9 @@ using UnityEngine;
 public class StraightMove : MoveRecognizer, IPieceMovable
 {
 
-    private Piece controlled;
-
-    public StraightMove(Piece controlled)
+    public StraightMove(Piece controlled) : base(controlled)
     {
-        this.controlled = controlled;
+        // Do Nothing
     }
 
     public void RecognizeRange(Vector2Int location)
@@ -27,7 +25,7 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
 
         StraightT(curLocation + new Vector2Int(0, 1), boardHeight);
@@ -38,7 +36,7 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
         StraightB(curLocation + new Vector2Int(0, -1));
     }
@@ -48,7 +46,7 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         if (curLocation.x < 0) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
         StraightL(curLocation + new Vector2Int(-1, 0));
     }
@@ -58,7 +56,7 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         if (curLocation.x > boardWidth - 1) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
         StraightR(curLocation + new Vector2Int(1, 0), boardWidth);
     }

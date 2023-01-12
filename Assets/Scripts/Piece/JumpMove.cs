@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class JumpMove : MoveRecognizer, IPieceMovable
 {
-    private Piece controlled;
-    public JumpMove(Piece controlled)
+    public JumpMove(Piece controlled) : base(controlled)
     {
-        this.controlled = controlled;
+        // Do Nothing
     }
 
     public void RecognizeRange(Vector2Int location)
@@ -29,7 +28,7 @@ public class JumpMove : MoveRecognizer, IPieceMovable
         if (curLocation.x < 0 || curLocation.x > boardWidth - 1) return;
         if (curLocation.y < 0 || curLocation.y > boardHeight - 1) return;
 
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
     }
     public void RecognizeSpecialMove(Place newPlace)
     {

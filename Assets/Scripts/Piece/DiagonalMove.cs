@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class DiagonalMove : MoveRecognizer, IPieceMovable
 {
-    private readonly Piece controlled;  // 컴파일러 추천 한정자 추가
 
     // 단계를 나눠서 강화되게 하기?
-    public DiagonalMove(Piece controlled)
+    public DiagonalMove(Piece controlled) : base(controlled)
     {
-        this.controlled = controlled;
+        // Do Nothing
     }
     public void RecognizeRange(Vector2Int location)
     {
@@ -28,7 +27,7 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
@@ -40,7 +39,7 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
         DiagonalLB(curLocation + new Vector2Int(-1, -1));
     }
@@ -51,7 +50,7 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
     }
@@ -62,7 +61,7 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        if (controlled.RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return;
 
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }

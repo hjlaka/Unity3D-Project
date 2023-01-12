@@ -6,11 +6,9 @@ public class EightWayMove : MoveRecognizer, IPieceMovable
 {
     IPieceMovable straight;
     IPieceMovable diagonal;
-    //private Piece controlled;
 
-    public EightWayMove(Piece controlled)
+    public EightWayMove(Piece controlled) : base(controlled)
     {
-        //this.controlled = controlled;
         straight = new StraightMove(controlled);
         diagonal = new DiagonalMove(controlled);
 

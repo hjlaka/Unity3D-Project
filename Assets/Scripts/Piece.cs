@@ -254,108 +254,7 @@ public class Piece : LifeUnit
 
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
-    public bool RecognizeObstaclePiece(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-
-        if(targetPiece != null)
-        {
-            return true;
-        }
-        else
-        {
-            Debug.Log("앞에 장애물 없다");
-
-            AddMovable(targetPlace);
-            //연출 이동
-
-            return false;
-        }
-    }
-
-    public bool RecognizePieceOnlyInfluence(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-
-        if (targetPiece != null)
-        {
-            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
-
-            return true;
-        }
-        else
-        {
-            // 기물이 없는 경우 이동할 수 없음
-            // 영향권은 맞음
-            AddInfluence(targetPlace);
-            return false;
-        }
-    }
-    // } 폰 움직임을 위해 추가 -----------------------------------------------------------
-
-    private void RecognizeDefendOrAttack(Vector2Int curLocation, Piece targetPiece, Place targetPlace)
-    {
-        if (targetPiece.team.TeamId == team.TeamId)
-        {
-            AddDefence(targetPiece);
-            targetPiece.BeDefended(this);
-
-            // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
-            AddInfluence(targetPlace);
-
-        }
-        else
-        {
-            AddThreat(targetPiece);
-            targetPiece.BeThreatened(this);
-
-            // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
-            // 공격할 수 있는 자리는 영향권 내 자리이다.
-            AddMovable(targetPlace);
-            AddInfluence(targetPlace);
-
-        }
-    }
-
-    public bool RecognizePiece(Vector2Int curLocation)
-    {
-        Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
-        Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
-
-        if (targetPiece != null)
-        {
-            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
-
-            return true;
-        }
-        else
-        {
-
-            RecognizeMovableVoidPlace(curLocation, targetPlace);
-
-            return false;
-        }
-    }
-
-    private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
-    {
-        AddMovable(targetPlace);
-        AddInfluence(targetPlace);
-    }
-
-    public void ChangeColor()
-    {
-        curNormal = team.normal;
-        render.material.color = curNormal;
-    }
-    public void ChangeColor(Color color)
-    {
-        curNormal = color;
-        render.material.color = curNormal;
-
-    }
+    
     private void OnMouseOver()
     {
         //Debug.Log(string.Format("{0} 마우스 가리킴", gameObject.name));
@@ -423,6 +322,18 @@ public class Piece : LifeUnit
 
     public void setDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
     {
+
+    }
+
+    public void ChangeColor()
+    {
+        curNormal = team.normal;
+        render.material.color = curNormal;
+    }
+    public void ChangeColor(Color color)
+    {
+        curNormal = color;
+        render.material.color = curNormal;
 
     }
 }

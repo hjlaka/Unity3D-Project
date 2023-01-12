@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class PawnMove : MoveRecognizer, IPieceMovable
 {
-    private Piece controlled;
 
     private bool canDoubleMove;
 
-    public PawnMove(Piece controlled, bool canDoubleMove = true)
+    public PawnMove(Piece controlled, bool canDoubleMove = true) : base(controlled)
     {
-        this.controlled = controlled;
         this.canDoubleMove = canDoubleMove;
     }
 
@@ -41,7 +39,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         if (IsTopOutLocation(curLocation, boardHeight)) return;
         if (IsBottomOutLocation(curLocation)) return;
 
-        if (controlled.RecognizeObstaclePiece(curLocation)) return;
+        if (RecognizeObstaclePiece(curLocation)) return;
 
         // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
         MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
@@ -54,7 +52,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
             IsBottomOutLocation(curLocation))
             return;
 
-        controlled.RecognizePieceOnlyInfluence(curLocation);
+        RecognizePieceOnlyInfluence(curLocation);
     }
 
     private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
@@ -64,7 +62,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
             IsBottomOutLocation(curLocation))
             return;
 
-        controlled.RecognizePieceOnlyInfluence(curLocation);
+        RecognizePieceOnlyInfluence(curLocation);
     }
 
 
@@ -77,7 +75,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
             if (IsTopOutLocation(curLocation, boardHeight)) return;
 
             // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
-            if (controlled.RecognizeObstaclePiece(curLocation)) return;
+            if (RecognizeObstaclePiece(curLocation)) return;
 
         }
     }
