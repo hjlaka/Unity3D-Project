@@ -2,36 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bishop : Piece
+public class DiagonalMove : MonoBehaviour, IPieceMovable
 {
+    private readonly Piece controlled;  // 컴파일러 추천 한정자 추가
 
-    protected override void Awake()
+    // 단계를 나눠서 강화되게 하기?
+    public DiagonalMove(Piece controlled)
     {
-        base.Awake();
-
-        movePattern = new DiagonalMove(this);
+        this.controlled = controlled;
     }
-
-    public override void RecognizeRange(Vector2Int location)
+    public void RecognizeRange(Vector2Int location)
     {
-        movePattern.RecognizeRange(location);
-       /* Vector2Int boardSize = place.board.Size;
+        Vector2Int boardSize = controlled.place.board.Size;
 
         DiagonalLB(location + new Vector2Int(-1, -1));
         DiagonalLT(location + new Vector2Int(-1, 1), boardSize.y);
         DiagonalRB(location + new Vector2Int(1, -1), boardSize.x);
-        DiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);*/
-
+        DiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);
     }
 
-   /* private void DiagonalLT(Vector2Int curLocation, int boardHeight)
+    private void DiagonalLT(Vector2Int curLocation, int boardHeight)
     {
 
-        if(curLocation.x < 0) return;
+        if (curLocation.x < 0) return;
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        if (RecognizePiece(curLocation)) return;
+        if (controlled.RecognizePiece(curLocation)) return;
 
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
@@ -43,7 +40,7 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        if (RecognizePiece(curLocation)) return;
+        if (controlled.RecognizePiece(curLocation)) return;
 
         DiagonalLB(curLocation + new Vector2Int(-1, -1));
     }
@@ -54,7 +51,7 @@ public class Bishop : Piece
         if (curLocation.y > boardHeight - 1) return;
 
         // 이동 가능 범위 등록
-        if (RecognizePiece(curLocation)) return;
+        if (controlled.RecognizePiece(curLocation)) return;
 
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
     }
@@ -65,10 +62,8 @@ public class Bishop : Piece
         if (curLocation.y < 0) return;
 
         // 이동 가능 범위 등록
-        if (RecognizePiece(curLocation)) return;
+        if (controlled.RecognizePiece(curLocation)) return;
 
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
-    }*/
-
-
+    }
 }
