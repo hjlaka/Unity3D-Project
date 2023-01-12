@@ -10,9 +10,5 @@ public class Rook : Piece
 
         movePattern = new StraightMove(this);
     }
-    public override void RecognizeRange(Vector2Int location)
-    {
-        movePattern.RecognizeRange(location);
-    }
     
 }

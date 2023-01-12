@@ -10,11 +10,6 @@ public class Knight : Piece
 
         movePattern = new JumpMove(this);
     }
-    public override void RecognizeRange(Vector2Int location)
-    {
-        movePattern.RecognizeRange(location);
-    }
-
 
 
 }

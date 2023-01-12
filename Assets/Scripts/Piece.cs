@@ -242,6 +242,7 @@ public class Piece : LifeUnit
     public virtual void PieceAction() { }
     public virtual void RecognizeRange(Vector2Int location)
     {
+        movePattern.RecognizeRange(location);
     }
 
     public virtual List<Place> ReturnMovablePlaces(Vector2Int location)

@@ -11,11 +11,6 @@ public class Pawn : Piece
         movePattern = new PawnMove(this);
     }
 
-    public override void RecognizeRange(Vector2Int location)
-    {
-        movePattern.RecognizeRange(location);
-        // TODO: 오버라이드 안해도 될 수도 있음
-    }
 
     public override void SetInPlace(Place place)
     {
