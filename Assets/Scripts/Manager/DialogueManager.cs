@@ -6,8 +6,8 @@ using UnityEngine;
 public class DialogueManager : SingleTon<DialogueManager>
 {
 
-    [SerializeField]
-    private bool dialogueOn;
+/*    [SerializeField]
+    private bool dialogueOn;*/
 
     [SerializeField]
     private  DialogueUI dialogueUI;
@@ -20,7 +20,6 @@ public class DialogueManager : SingleTon<DialogueManager>
     private TextMeshProUGUI dialogueName;
     [SerializeField]
     private TextMeshProUGUI dialogueText;
-    
 
 
     private Queue<DialogueUnit> dialogueQueue;
@@ -49,7 +48,7 @@ public class DialogueManager : SingleTon<DialogueManager>
     }
 
 
-    private void Update()
+/*    private void Update()
     {
         if (GameManager.Instance.state != GameManager.GameState.IN_CONVERSATION) return;
 
@@ -59,7 +58,7 @@ public class DialogueManager : SingleTon<DialogueManager>
             SetDialogueText();
         }
         
-    }
+    }*/
 
     public void AddDialogue(ref string name, ref string talk)
     {
@@ -72,11 +71,15 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     public void StartDialogue()
     {
-        if (!dialogueOn)
-        {
-            GameManager.Instance.state = GameManager.GameState.TURN_FINISHED;
-            return;
-        }
+        /*        if (!dialogueOn)
+                {
+                    //GameManager.Instance.state = GameManager.GameState.TURN_FINISHED;
+                    GameManager.Instance.GoBackGameState();
+                    return;
+                }
+
+        */
+        GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
 
         if (!SetDialogueText())
         {
@@ -96,7 +99,8 @@ public class DialogueManager : SingleTon<DialogueManager>
         yield return new WaitForSeconds(delay);
 
         dialogueUI.gameObject.SetActive(true);
-        GameManager.Instance.state = GameManager.GameState.IN_CONVERSATION;
+        //GameManager.Instance.state = GameManager.GameState.IN_CONVERSATION;
+        
 
     }
 
@@ -104,8 +108,6 @@ public class DialogueManager : SingleTon<DialogueManager>
     {
         if (dialogueQueue.Count <= 0)
         {
-            Debug.Log("대화 끝났어요");
-            GameManager.Instance.state = GameManager.GameState.TURN_FINISHED;
             EndConversation();
             return false;
         }
@@ -123,6 +125,8 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     private void EndConversation()
     {
+        Debug.Log("대화 끝났어요");
+        GameManager.Instance.GoBackGameState();
         DisableDialogueUI();
     }
 

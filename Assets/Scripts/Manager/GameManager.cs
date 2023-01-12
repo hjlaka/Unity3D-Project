@@ -5,8 +5,27 @@ using UnityEngine;
 
 public class GameManager : SingleTon<GameManager>
 {
-    public enum GameState { SELECTING_PIECE, SELECTING_PLACE, TURN_CHANGE, IN_CONVERSATION, TURN_FINISHED, AI_TURN}
+    public enum GameState 
+    { 
+        START,
+        SETTING_GAME,
+        PREPARING_GAME,
+        SELECTING_PIECE, 
+        SELECTING_PLACE, 
+        DOING_PLAYER_TURN,
+        TURN_CHANGE, 
+        IN_CONVERSATION, 
+        TURN_FINISHED, 
+        AI_TURN
+    }
     public GameState state;
+    private GameState beforeState;
+
+    public enum TurnState
+    {
+        PLAYER_TURN,
+        OPPONENT_TURN
+    }
 
     public bool isPlayerTurn;
 
@@ -23,7 +42,8 @@ public class GameManager : SingleTon<GameManager>
         set 
         { 
             trunRemain = value;
-            turnRemainUI.text = trunRemain.ToString();
+            if(turnRemainUI != null)
+                turnRemainUI.text = trunRemain.ToString();
         }
     }    
     [SerializeField]
@@ -32,12 +52,24 @@ public class GameManager : SingleTon<GameManager>
     private void Start()
     {
         TurnRemain = 10;
-        gameSetter.SetPlayers(0);
+        state = GameState.SELECTING_PIECE;
+        
 
     }
 
-    public void TurnCalculate()
+
+    public void GameFlow()
     {
+        // 시작 이벤트 실행
+
+
+        // 게임 실행
+
+        // 기물 배치 단계
+
+        // 턴 차례대로 진행
+
+
 
     }
 
@@ -46,10 +78,26 @@ public class GameManager : SingleTon<GameManager>
     {
         switch(state)
         {
+            
+            case GameState.START:
+                DialogueManager.Instance.StartDialogue();
+                ChangeGameState(GameState.SETTING_GAME);
+                break; 
+
+            case GameState.SETTING_GAME:
+                gameSetter.SetPlayers(0);
+                break;
+            
+            case GameState.PREPARING_GAME:
+                break;
+
             case GameState.SELECTING_PIECE:
                 break;
 
             case GameState.SELECTING_PLACE:
+                break;
+                
+            case GameState.DOING_PLAYER_TURN:
                 break;
 
             case GameState.TURN_CHANGE:
@@ -68,6 +116,17 @@ public class GameManager : SingleTon<GameManager>
                 state = GameState.TURN_CHANGE; 
                 break;
         }
+    }
+
+    public void ChangeGameState(GameState nextState)
+    {
+        beforeState = state;
+        state = nextState;
+    }
+
+    public void GoBackGameState()
+    {
+        state = beforeState;
     }
 
 }
