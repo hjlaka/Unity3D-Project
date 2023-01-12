@@ -44,6 +44,11 @@ public class AI : MonoBehaviour
     private Coroutine turnGoing;
 
 
+    private void Awake()
+    {
+        aiPieceList = new List<Piece>();
+    }
+
     public void AddAIPiece(Piece piece)
     {
         Debug.Log("전달된 것: " + piece);
@@ -53,14 +58,9 @@ public class AI : MonoBehaviour
 
     public void AITurn()
     {
-        if (!GameManager.Instance.isPlayerTurn)
+        if (GameManager.Instance.state != GameManager.GameState.AI_TURN)
         {
-            Debug.Log("플레이어의 차례가 아님");
-            return;
-        }
-        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
-        {
-            Debug.Log("기물 선택 단계가 아님");
+            Debug.Log("AI 차례 단계가 아님");
             return;
         }
         if (turnGoing != null)
@@ -92,7 +92,6 @@ public class AI : MonoBehaviour
 
         // 기물 움직임
 
-        GameManager.Instance.isPlayerTurn = false;
 
         if (null != aiPieceList[0])
         {
@@ -105,15 +104,12 @@ public class AI : MonoBehaviour
 
         }
 
-        GameManager.Instance.isPlayerTurn = true;
         turnGoing = null;
 
     }
 
     private IEnumerator RunPieces()
     {
-        GameManager.Instance.isPlayerTurn = false;
-        //GameManager.Instance.state = GameManager.GameState.AI_TURN;
         Debug.Log("AI 턴 실행 개수: " + aiPieceList.Count);
 
         for (int i = 0; i < aiPieceList.Count; i++)
@@ -136,19 +132,10 @@ public class AI : MonoBehaviour
         }
 
         Debug.Log("AI 턴 종료");
-        //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
-        GameManager.Instance.isPlayerTurn = true;
         turnGoing = null;
         
     }
 
-    /*private IEnumerator WaitForReadyNext()
-    {
-        while(GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
-        {
-            yield return null;
-        }
-    }*/
 
 
 
