@@ -136,23 +136,37 @@ public class Place : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameManager.Instance.isPlayerTurn) return;
+        if (!GameManager.Instance.isPlayerTurn) { Debug.Log("플레이어 턴 아님"); return; }
         //Debug.Log(string.Format("{0} 클릭", gameObject.name));
 
 
         // 게임 상태 조건
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
+        {
+            Debug.Log("위치 선택 가능 상태 아님");
             return;
+        }
+            
 
         // 기물이 선택된 상태에서 클릭시
         if (null == PlaceManager.Instance.SelectedPiece)
+        {
+            Debug.Log("선택된 기물이 없음");
             return;
+        }
 
         if (piece != null)
+        {
+            Debug.Log("자리에 기물이 있음 (공격을 원할시 기물을 눌러야 함)");
             return;
+        }
 
         if (!isApprochable)
+        {
+            Debug.Log("접근 불가능한 위치임");
             return;
+        }
+            
 
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
 

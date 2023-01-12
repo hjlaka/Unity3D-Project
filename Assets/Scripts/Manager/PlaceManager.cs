@@ -129,7 +129,11 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 움직일 수 있는 곳인지 확인
         if (!IsPlaceable(place, piece))
+        {
+            Debug.Log("움직일 수 없는 곳");
             return;
+        }
+            
 
         
         // 연출 - 리스트 의존적.
@@ -170,7 +174,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 기본 대기 시간
         yield return new WaitForSeconds(1.5f);
 
-        while (GameManager.Instance.state != GameManager.GameState.TURN_FINISHED)
+        while (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
         {
             yield return null;
 
@@ -187,7 +191,8 @@ public class PlaceManager : SingleTon<PlaceManager>
             markableBoard.ShowInfluenceEnd(endedPiece);
         }
 
-        GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+        //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
 
         // 카메라 연출
         OnNonSelectPiece?.Invoke();
