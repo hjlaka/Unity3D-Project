@@ -49,4 +49,13 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
     {
         unitList.Remove(piece);
     }
+
+    public void EnablePlayerListUI()
+    {
+        ui.gameObject.SetActive(true);
+    }
+    public void DisablePlayerListUI()
+    {
+        ui.gameObject.SetActive(false);
+    }
 }
