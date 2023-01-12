@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpMove : MonoBehaviour, IPieceMovable
+public class JumpMove : MoveRecognizer, IPieceMovable
 {
     private Piece controlled;
     public JumpMove(Piece controlled)

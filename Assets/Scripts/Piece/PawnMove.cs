@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PawnMove : MonoBehaviour, IPieceMovable
+public class PawnMove : MoveRecognizer, IPieceMovable
 {
     private Piece controlled;
 
@@ -38,8 +38,8 @@ public class PawnMove : MonoBehaviour, IPieceMovable
     private void MoveForward(Vector2Int curLocation, int boardHeight)
     {
 
-        if (controlled.IsTopOutLocation(curLocation, boardHeight)) return;
-        if (controlled.IsBottomOutLocation(curLocation)) return;
+        if (IsTopOutLocation(curLocation, boardHeight)) return;
+        if (IsBottomOutLocation(curLocation)) return;
 
         if (controlled.RecognizeObstaclePiece(curLocation)) return;
 
@@ -49,9 +49,9 @@ public class PawnMove : MonoBehaviour, IPieceMovable
 
     private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
     {
-        if (controlled.IsLeftOutLocation(curLocation) ||
-            controlled.IsTopOutLocation(curLocation, boardHeight) ||
-            controlled.IsBottomOutLocation(curLocation))
+        if (IsLeftOutLocation(curLocation) ||
+            IsTopOutLocation(curLocation, boardHeight) ||
+            IsBottomOutLocation(curLocation))
             return;
 
         controlled.RecognizePieceOnlyInfluence(curLocation);
@@ -59,9 +59,9 @@ public class PawnMove : MonoBehaviour, IPieceMovable
 
     private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
     {
-        if (controlled.IsRightOutLocation(curLocation, boardWidth) ||
-            controlled.IsTopOutLocation(curLocation, boardHeight) ||
-            controlled.IsBottomOutLocation(curLocation))
+        if (IsRightOutLocation(curLocation, boardWidth) ||
+            IsTopOutLocation(curLocation, boardHeight) ||
+            IsBottomOutLocation(curLocation))
             return;
 
         controlled.RecognizePieceOnlyInfluence(curLocation);
@@ -74,7 +74,7 @@ public class PawnMove : MonoBehaviour, IPieceMovable
         if (canDoubleMove)
         {
             // 벽이라면
-            if (controlled.IsTopOutLocation(curLocation, boardHeight)) return;
+            if (IsTopOutLocation(curLocation, boardHeight)) return;
 
             // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
             if (controlled.RecognizeObstaclePiece(curLocation)) return;

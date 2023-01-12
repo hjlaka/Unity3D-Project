@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiagonalMove : MonoBehaviour, IPieceMovable
+public class DiagonalMove : MoveRecognizer, IPieceMovable
 {
     private readonly Piece controlled;  // 컴파일러 추천 한정자 추가
 

@@ -251,39 +251,6 @@ public class Piece : LifeUnit
     }
 
 
-    public bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
-    {
-        if (curLocation.y > boardHeight - 1)
-            return true;
-        else
-            return false;
-    }
-
-    public bool IsBottomOutLocation(Vector2Int curLocation)
-    {
-        if (curLocation.y < 0)
-            return true;
-        else
-            return false;
-    }
-
-    public bool IsLeftOutLocation(Vector2Int curLocation)
-    {
-        if (curLocation.x < 0)
-            return true;
-        else
-            return false;
-    }
-
-    public bool IsRightOutLocation(Vector2Int curLocation, int boardWidth)
-    {
-        if (curLocation.x > boardWidth - 1)
-            return true;
-        else
-            return false;
-    }
-
-
 
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
@@ -403,11 +370,11 @@ public class Piece : LifeUnit
 
     private void OnMouseUpAsButton()
     {
-        if (!GameManager.Instance.isPlayerTurn)
+        /*if (!GameManager.Instance.isPlayerTurn)
         {
             Debug.Log("플레이어의 차례가 아닙니다.");
             return;
-        }
+        }*/
         if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
         {
             //Debug.Log(string.Format("{0} 클릭", gameObject.name));

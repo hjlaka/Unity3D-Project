@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EightWayMove : MonoBehaviour, IPieceMovable
+public class EightWayMove : MoveRecognizer, IPieceMovable
 {
     IPieceMovable straight;
     IPieceMovable diagonal;
