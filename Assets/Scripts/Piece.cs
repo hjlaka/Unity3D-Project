@@ -9,7 +9,7 @@ public class Piece : LifeUnit
     [SerializeField]
     private Color mouseOver;
 
-    protected int forwardY;
+    public int forwardY;
 
 
     public IReturnHeat returnHeat;
@@ -21,7 +21,9 @@ public class Piece : LifeUnit
     private Renderer render;
     private Color curNormal;
 
-    private IDecidePlaceStrategy decidePlaceStrategy;
+    private IDecidePlaceStrategy decideDesireStrategy;
+
+    protected IPieceMovable movePattern;
 
 
     private List<Piece> defendFor;
@@ -62,7 +64,7 @@ public class Piece : LifeUnit
 
     #endregion
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         render = GetComponentInChildren<Renderer>();
         defendFor = new List<Piece>();
@@ -93,7 +95,7 @@ public class Piece : LifeUnit
             return;
         }
 
-        Place targetPlace = decidePlaceStrategy.DecidePlace(this);
+        Place targetPlace = decideDesireStrategy.DecidePlace(this);
         if(targetPlace != null)
         {
             if(targetPlace.piece != null)
@@ -114,7 +116,7 @@ public class Piece : LifeUnit
             PlaceManager.Instance.CancleSelectPiece();
         }
         //Place targetPlace;
-        //decidePlaceStrategy.DecidePlace(out targetPlace);
+        //decideDesireStrategy.DecidePlace(out targetPlace);
 
     }
 
@@ -135,7 +137,7 @@ public class Piece : LifeUnit
             returnHeat = new BottomTeam();
         }
 
-        decidePlaceStrategy = character.DecidePlaceStrategy;
+        decideDesireStrategy = character.DecidePlaceStrategy;
     }
 
     #region 리스트 관리
@@ -248,7 +250,7 @@ public class Piece : LifeUnit
     }
 
 
-    protected bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
+    public bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
     {
         if (curLocation.y > boardHeight - 1)
             return true;
@@ -256,7 +258,7 @@ public class Piece : LifeUnit
             return false;
     }
 
-    protected bool IsBottomOutLocation(Vector2Int curLocation)
+    public bool IsBottomOutLocation(Vector2Int curLocation)
     {
         if (curLocation.y < 0)
             return true;
@@ -264,7 +266,7 @@ public class Piece : LifeUnit
             return false;
     }
 
-    protected bool IsLeftOutLocation(Vector2Int curLocation)
+    public bool IsLeftOutLocation(Vector2Int curLocation)
     {
         if (curLocation.x < 0)
             return true;
@@ -272,7 +274,7 @@ public class Piece : LifeUnit
             return false;
     }
 
-    protected bool IsRightOutLocation(Vector2Int curLocation, int boardWidth)
+    public bool IsRightOutLocation(Vector2Int curLocation, int boardWidth)
     {
         if (curLocation.x > boardWidth - 1)
             return true;
@@ -284,7 +286,7 @@ public class Piece : LifeUnit
 
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
-    protected bool RecognizeObstaclePiece(Vector2Int curLocation)
+    public bool RecognizeObstaclePiece(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
@@ -304,7 +306,7 @@ public class Piece : LifeUnit
         }
     }
 
-    protected bool RecognizePieceOnlyInfluence(Vector2Int curLocation)
+    public bool RecognizePieceOnlyInfluence(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
@@ -349,7 +351,7 @@ public class Piece : LifeUnit
         }
     }
 
-    protected bool RecognizePiece(Vector2Int curLocation)
+    public bool RecognizePiece(Vector2Int curLocation)
     {
         Piece targetPiece = this.place.board.places[curLocation.x, curLocation.y].piece;
         Place targetPlace = this.place.board.places[curLocation.x, curLocation.y];
