@@ -10,13 +10,15 @@ public class GameManager : SingleTon<GameManager>
         START,
         SETTING_GAME,
         PREPARING_GAME,
+        PREPARING_END,
         SELECTING_PIECE, 
         SELECTING_PLACE, 
         DOING_PLAYER_TURN,
+        TURN_FINISHED,
         TURN_CHANGE, 
         IN_CONVERSATION, 
-        TURN_FINISHED, 
-        AI_TURN
+        AI_TURN,
+        GAME_END
     }
     public GameState state;
     private GameState beforeState;
@@ -107,7 +109,12 @@ public class GameManager : SingleTon<GameManager>
             case GameState.PREPARING_GAME:
                 gameSetter.SetPlayers(0);
                 PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
+                // 완료 버튼을 눌렀을 시, 다음으로 넘어간다. 무언가 입력을 대기 해야 한다.// 외부에서 바꿀 수밖에 없는가? 혹은 신호를 받는 게 나은가?
                 ChangeGameState(GameState.SELECTING_PIECE);
+                PlayerDataManager.Instance.DisablePlayerListUI();
+                break;
+
+            case GameState.PREPARING_END:
                 break;
 
             case GameState.SELECTING_PIECE:
@@ -168,7 +175,6 @@ public class GameManager : SingleTon<GameManager>
         {
             turnState = TurnState.PLAYER_TURN;
             ChangeGameState(GameState.SELECTING_PIECE);
-            
             
         }
             

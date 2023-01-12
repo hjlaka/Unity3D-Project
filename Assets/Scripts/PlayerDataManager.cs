@@ -32,6 +32,21 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
         unitList = new List<Piece>();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            if(ui.gameObject.activeSelf)
+            {
+                DisablePlayerListUI();
+            }
+            else
+            {
+                EnablePlayerListUI();
+            }
+        }
+    }
+
     public void AddPlayerPiece(Piece piece)
     {
         playerPieces.Add(piece);
