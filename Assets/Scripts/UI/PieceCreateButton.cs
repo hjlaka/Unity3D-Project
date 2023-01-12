@@ -40,7 +40,12 @@ public class PieceCreateButton : MonoBehaviour
 
         instance.SetInPlace(creatingPlace);
         Debug.Log("전달한 것: " + instance);
-        aiManager.AddAIPiece(instance);
+
+
+        if (team.direction == TeamData.Direction.UpToDown)
+            aiManager.AddAIPiece(instance);
+        else
+            PlayerDataManager.Instance.AddPlayerPiece(instance);
         
     }
 
