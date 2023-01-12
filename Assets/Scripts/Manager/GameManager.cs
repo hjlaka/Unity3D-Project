@@ -30,6 +30,7 @@ public class GameManager : SingleTon<GameManager>
     public bool isPlayerTurn;
 
 
+
     [SerializeField]
     private GameSetter gameSetter;
 
@@ -52,11 +53,15 @@ public class GameManager : SingleTon<GameManager>
     private void Start()
     {
         TurnRemain = 10;
-        state = GameState.SELECTING_PIECE;
+        //state = GameState.SELECTING_PIECE;
         
 
     }
 
+    private void Update()
+    {
+        GameStateUpdate();
+    }
 
     public void GameFlow()
     {
@@ -81,14 +86,22 @@ public class GameManager : SingleTon<GameManager>
             
             case GameState.START:
                 DialogueManager.Instance.StartDialogue();
-                ChangeGameState(GameState.SETTING_GAME);
+
+                // 대화가 더이상 없다면 계속 진행
+                if(state == GameState.START)
+                    ChangeGameState(GameState.SETTING_GAME);
                 break; 
 
             case GameState.SETTING_GAME:
-                gameSetter.SetPlayers(0);
+                gameSetter.SetOpponents(0);
+                
+                ChangeGameState(GameState.PREPARING_GAME);
                 break;
             
             case GameState.PREPARING_GAME:
+                gameSetter.SetPlayers(0);
+                PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
+                ChangeGameState(GameState.SELECTING_PIECE);
                 break;
 
             case GameState.SELECTING_PIECE:
@@ -120,12 +133,14 @@ public class GameManager : SingleTon<GameManager>
 
     public void ChangeGameState(GameState nextState)
     {
+        Debug.Log("게임 씬 변경: " + nextState);
         beforeState = state;
         state = nextState;
     }
 
     public void GoBackGameState()
     {
+        Debug.Log("게임 씬 이전으로 변경: " + beforeState);
         state = beforeState;
     }
 
