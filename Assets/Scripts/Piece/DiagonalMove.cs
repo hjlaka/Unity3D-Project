@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiagonalMove : MoveRecognizer, IPieceMovable
+public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
 {
+    private int level;
+    private int validMoveCount;
+    private int curMoveCount;
 
     // 단계를 나눠서 강화되게 하기?
     public DiagonalMove(Piece controlled) : base(controlled)
     {
         // Do Nothing
     }
-    public void RecognizeRange(Vector2Int location)
+    public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
+        recognizedLists = recognized;
 
         DiagonalLB(location + new Vector2Int(-1, -1));
         DiagonalLT(location + new Vector2Int(-1, 1), boardSize.y);
@@ -69,5 +73,10 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable
     public void RecognizeSpecialMove(Place newPlace)
     {
         // Do Nothing
+    }
+
+    public void LevelUp()
+    {
+        level++;
     }
 }

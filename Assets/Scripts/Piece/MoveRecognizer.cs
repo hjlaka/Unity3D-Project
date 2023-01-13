@@ -6,6 +6,8 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
 {
     protected readonly Piece controlled;
 
+    protected StateLists recognizedLists;
+
     protected MoveRecognizer(Piece controlled)
     {
         this.controlled = controlled;
@@ -56,7 +58,7 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
         {
             Debug.Log("앞에 장애물 없다");
 
-            controlled.Recognized.AddMovable(targetPlace);
+            recognizedLists.AddMovable(targetPlace);
             //연출 이동
 
             return false;
@@ -78,7 +80,7 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
         {
             // 기물이 없는 경우 이동할 수 없음
             // 영향권은 맞음
-            controlled.Recognized.AddInfluenceable(targetPlace);
+            recognizedLists.AddInfluenceable(targetPlace);
             return false;
         }
     }
@@ -88,22 +90,22 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
     {
         if (targetPiece.team.TeamId == controlled.team.TeamId)
         {
-            controlled.Recognized.AddDefending(targetPiece);
+            recognizedLists.AddDefending(targetPiece);
             targetPiece.BeDefended(controlled);
 
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
-            controlled.Recognized.AddInfluenceable(targetPlace);
+            recognizedLists.AddInfluenceable(targetPlace);
 
         }
         else
         {
-            controlled.Recognized.AddThreating(targetPiece);
+            recognizedLists.AddThreating(targetPiece);
             targetPiece.BeThreatened(controlled);
 
             // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
             // 공격할 수 있는 자리는 영향권 내 자리이다.
-            controlled.Recognized.AddMovable(targetPlace);
-            controlled.Recognized.AddInfluenceable(targetPlace);
+            recognizedLists.AddMovable(targetPlace);
+            recognizedLists.AddInfluenceable(targetPlace);
 
         }
     }
@@ -130,8 +132,8 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
 
     private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
     {
-        controlled.Recognized.AddMovable(targetPlace);
-        controlled.Recognized.AddInfluenceable(targetPlace);
+        recognizedLists.AddMovable(targetPlace);
+        recognizedLists.AddInfluenceable(targetPlace);
     }
 
 
