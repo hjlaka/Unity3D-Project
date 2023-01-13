@@ -5,6 +5,16 @@ using UnityEngine;
 public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
 {
 
+    protected override void CopyData()
+    {
+        willingToDefend = StrategyManager.Instance.attackFirst.willingToDefend;
+        willingToAttack = StrategyManager.Instance.attackFirst.willingToAttack;
+        willingToThreat = StrategyManager.Instance.attackFirst.willingToThreat;
+        willingToExtend = StrategyManager.Instance.attackFirst.willingToExtend;
+        willingToSafe = StrategyManager.Instance.attackFirst.willingToSafe;
+        futureOriented = StrategyManager.Instance.attackFirst.futureOriented;
+
+    }
     public Place DecidePlace(Piece piece)
     {
         float maxScore = -99f;
@@ -12,6 +22,8 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         string debug_score = "";
 
         List<Place> movablePlaces = piece.Recognized.movable;
+
+        CopyData();
 
         for (int i = 0; i < movablePlaces.Count; i++)
         {
