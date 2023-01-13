@@ -64,7 +64,7 @@ public class Place : MonoBehaviour
     {
         get { return heatPointTopTeam; }
         set { heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
-            //Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
+            Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
             if(topTeamHeatUI != null) topTeamHeatUI.text = heatPointTopTeam.ToString();
         }
     }
@@ -73,7 +73,7 @@ public class Place : MonoBehaviour
     {
         get { return heatPointBottomTeam; }
         set { heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
-            //Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
+            Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
             if (bottomTeamHeatUI != null)  bottomTeamHeatUI.text = heatPointBottomTeam.ToString();
         }
     }
@@ -136,7 +136,7 @@ public class Place : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameManager.Instance.isPlayerTurn) { Debug.Log("플레이어 턴 아님"); return; }
+        //if (!GameManager.Instance.isPlayerTurn) { Debug.Log("플레이어 턴 아님"); return; }
         //Debug.Log(string.Format("{0} 클릭", gameObject.name));
 
 

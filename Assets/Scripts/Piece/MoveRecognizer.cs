@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
+public class MoveRecognizer //부모에 인터페이스 붙이기?
 {
     protected readonly Piece controlled;
 
@@ -91,7 +91,7 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
         if (targetPiece.team.TeamId == controlled.team.TeamId)
         {
             recognizedLists.AddDefending(targetPiece);
-            targetPiece.BeDefended(controlled);
+            //targetPiece.BeDefended(controlled);
 
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
             recognizedLists.AddInfluenceable(targetPlace);
@@ -100,7 +100,7 @@ public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
         else
         {
             recognizedLists.AddThreating(targetPiece);
-            targetPiece.BeThreatened(controlled);
+            //targetPiece.BeThreatened(controlled);
 
             // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
             // 공격할 수 있는 자리는 영향권 내 자리이다.

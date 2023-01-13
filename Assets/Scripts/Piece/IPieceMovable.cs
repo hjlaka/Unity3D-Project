@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IPieceMovable
 {
-    void RecognizeRange(Vector2Int location);
+    void RecognizeRange(Vector2Int location, StateLists recognized);
 
     void RecognizeSpecialMove(Place newPlace);
 }

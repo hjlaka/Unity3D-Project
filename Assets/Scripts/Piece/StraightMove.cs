@@ -10,9 +10,10 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         // Do Nothing
     }
 
-    public void RecognizeRange(Vector2Int location)
+    public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;     // 기물이 있는 보드에서 판단을 한다고 가정함.
+        recognizedLists = recognized;
 
         StraightB(location + new Vector2Int(0, -1));
         StraightT(location + new Vector2Int(0, 1), boardSize.y);

@@ -39,7 +39,6 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     private void Awake()
     {
-        //dialogueText = dialogueUI.GetComponentInChildren<TextMeshProUGUI>();
         dialogueQueue = new Queue<DialogueUnit>();
 
         
@@ -71,14 +70,7 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     public void StartDialogue()
     {
-        /*        if (!dialogueOn)
-                {
-                    //GameManager.Instance.state = GameManager.GameState.TURN_FINISHED;
-                    GameManager.Instance.GoBackGameState();
-                    return;
-                }
 
-        */
         GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
 
         if (!SetDialogueText())
@@ -99,8 +91,6 @@ public class DialogueManager : SingleTon<DialogueManager>
         yield return new WaitForSeconds(delay);
 
         dialogueUI.gameObject.SetActive(true);
-        //GameManager.Instance.state = GameManager.GameState.IN_CONVERSATION;
-        
 
     }
 

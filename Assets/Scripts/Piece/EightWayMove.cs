@@ -13,10 +13,10 @@ public class EightWayMove : MoveRecognizer, IPieceMovable
         diagonal = new DiagonalMove(controlled);
 
     }
-    public void RecognizeRange(Vector2Int location)
+    public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
-        straight.RecognizeRange(location);
-        diagonal.RecognizeRange(location);
+        straight.RecognizeRange(location, recognized);
+        diagonal.RecognizeRange(location, recognized);
         // 현재까지는 장소가 중복되는 데에 대한 대처가 없다.
     }
 

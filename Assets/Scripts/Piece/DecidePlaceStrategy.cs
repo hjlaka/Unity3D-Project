@@ -8,17 +8,24 @@ public class DecidePlaceStrategy
 
     IHeatPreperStrategy heatPreperStrategy;
 
+    StrategyData strategyData;
 
-    private float willingToDefend = 1f;
-    private float willingToAttack = 4f;
-    private float willingToThreat = 1.2f;
-    private float willingToExtend = 0.5f;
-    private float willingToSafe = 1.3f;
-    private float futureOriented = 0.1f;
+
+    protected float willingToDefend = 1f;
+    protected float willingToAttack = 4f;
+    protected float willingToThreat = 1.2f;
+    protected float willingToExtend = 0.5f;
+    protected float willingToSafe = 1.3f;
+    protected float futureOriented = 0.1f;
 
     public DecidePlaceStrategy()
     {
         scores = new int[8, 8];
+    }
+
+    protected virtual void CopyData()
+    {
+
     }
 
     protected void ClearScores()

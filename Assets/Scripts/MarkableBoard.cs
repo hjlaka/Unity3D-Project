@@ -42,7 +42,7 @@ public class MarkableBoard : Board
             return;
 
         // 연출
-        List<Place> movablePlaces = piece.MovableTo;
+        List<Place> movablePlaces = piece.Recognized.movable;
         for (int i = 0; i < movablePlaces.Count; i++)
         {
             ChangePlaceColor(movablePlaces[i].boardIndex, PlaceType.MOVABLE);
@@ -57,7 +57,7 @@ public class MarkableBoard : Board
             return;
 
         // 연출
-        List<Place> influencing = piece.Influenceable;
+        List<Place> influencing = piece.Recognized.influenceable;
         for (int i = 0; i < influencing.Count; i++)
         {
             //TODO: 영향권을 나타내는 색 따로 설정
@@ -73,13 +73,13 @@ public class MarkableBoard : Board
             return;
 
         // 연출
-        List<Piece> defencing = piece.DefendFor;
-        List<Piece> threating = piece.ThreatTo;
+        List<Piece> defending = piece.Recognized.defending;
+        List<Piece> threating = piece.Recognized.threating;
 
-        for (int i = 0; i < defencing.Count; i++)
+        for (int i = 0; i < defending.Count; i++)
         {
             // 다른 보드로 위치가 변경될 시 문제 생길 수 있음
-            ChangePlaceColor(defencing[i].place.boardIndex, PlaceType.DEFENCE);
+            ChangePlaceColor(defending[i].place.boardIndex, PlaceType.DEFENCE);
         }
         for (int i = 0; i < threating.Count; i++)
         {
@@ -91,7 +91,7 @@ public class MarkableBoard : Board
 
     public void ShowMovableEnd(Piece endedPiece)
     {
-        List<Place> movableList = endedPiece.MovableTo;
+        List<Place> movableList = endedPiece.Recognized.movable;
         for (int i = 0; i < movableList.Count; i++)
         {
             movableList[i].ChangeColor();
@@ -100,7 +100,7 @@ public class MarkableBoard : Board
     }
     public void ShowInfluenceEnd(Piece endedPiece)
     {
-        List<Place> influenceList = endedPiece.Influenceable;
+        List<Place> influenceList = endedPiece.Recognized.influenceable;
         for (int i = 0; i < influenceList.Count; i++)
         {
             influenceList[i].ChangeColor();
@@ -108,8 +108,8 @@ public class MarkableBoard : Board
     }
     private void ShowThreatAndDefenceEnd(Piece endedPiece)
     {
-        List<Piece> defeceList = endedPiece.DefendFor;
-        List<Piece> threatList = endedPiece.ThreatTo;
+        List<Piece> defeceList = endedPiece.Recognized.defending;
+        List<Piece> threatList = endedPiece.Recognized.threating;
 
         for (int i = 0; i < defeceList.Count; i++)
         {

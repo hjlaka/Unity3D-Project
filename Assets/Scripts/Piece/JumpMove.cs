@@ -9,9 +9,10 @@ public class JumpMove : MoveRecognizer, IPieceMovable
         // Do Nothing
     }
 
-    public void RecognizeRange(Vector2Int location)
+    public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
+        recognizedLists = recognized;
 
         JumpPosition(location + new Vector2Int(2, 1), boardSize.y, boardSize.x);
         JumpPosition(location + new Vector2Int(2, -1), boardSize.y, boardSize.x);

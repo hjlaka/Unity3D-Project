@@ -12,7 +12,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         this.canDoubleMove = canDoubleMove;
     }
 
-    public void RecognizeRange(Vector2Int location)
+    public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
 
