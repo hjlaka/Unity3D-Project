@@ -6,6 +6,8 @@ public class DecidePlaceStrategy : MonoBehaviour
 {
     protected int[,] scores;
 
+    IHeatPreperStrategy heatPreperStrategy;
+
     public DecidePlaceStrategy()
     {
         scores = new int[8, 8];
@@ -21,22 +23,29 @@ public class DecidePlaceStrategy : MonoBehaviour
             }
         }
     }
-    protected virtual int CalculateScore(Place place)
+    protected virtual int CalculateScore(Piece piece, Place place)
     {
         int score;
         int attackPoint = 0;
-        Piece piece = place.piece;
+        int heatPreferPoint = 0;
+        Piece targetPiece = place.piece;
 
-        if (piece != null)         // 공격 가능한 장소라면
+        if (targetPiece != null)         // 공격 가능한 장소라면
         {
             // 기물의 점수를 확인한다.
             // 기물에 대한 적의를 확인한다. 적개심만큼 곱한다.
 
             // 기물을 공격한 후에 대해 판단한다.
             // 안전 점수는 언제 계산할까?
-            attackPoint += piece.PieceScore;
+            attackPoint += targetPiece.PieceScore;
         }
         // 과열도 점수?
+        // 과열도가 높은 곳에 갈 것인가?
+        // 과열도가 낮은 곳에 갈 것인가?
+
+        //안정 우선:
+        heatPreferPoint = piece.returnHeat.ReturnTeamHeat(place) - piece.returnHeat.ReturnOpponentHeat(place);
+
         // 이동해본다음에 계산해야한다.
         // 공격 점수 계산
 
@@ -44,7 +53,7 @@ public class DecidePlaceStrategy : MonoBehaviour
 
         // 방어 점수 계산
 
-        score = attackPoint;
+        score = heatPreferPoint;
         return score;
     }
 
