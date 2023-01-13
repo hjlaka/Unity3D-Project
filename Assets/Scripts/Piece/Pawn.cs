@@ -9,6 +9,8 @@ public class Pawn : Piece
     {
         base.Awake();
         movePattern = new PawnMove(this);
+
+        pieceScore = 1;
     }
 
 
