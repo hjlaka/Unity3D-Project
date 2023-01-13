@@ -70,6 +70,16 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         piece.RecognizeRange(piece.place.boardIndex);
 
+        // 계산 완료된 영향권의 과열도 추가
+        for(int i = 0; i < piece.Recognized.influenceable.Count; i++)
+        {
+            Place curPlace = piece.Recognized.influenceable[i];
+            if (piece.team.direction == TeamData.Direction.DownToUp)
+                curPlace.HeatPointBottomTeam++;
+            else
+                curPlace.HeatPointTopTeam++;
+        }
+
     }
 
     
