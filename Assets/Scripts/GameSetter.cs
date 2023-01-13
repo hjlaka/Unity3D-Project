@@ -42,6 +42,9 @@ public class GameSetter : MonoBehaviour
             instance.character = opponent.character;
             instance.SetInPlace(mainBoard.GetPlace(opponent.location));
 
+            //과열도 적용
+            PlaceManager.Instance.CalculateInfluence(instance);
+
             aiManager.AddAIPiece(instance);
         }
         OnOpponentSet?.Invoke();
