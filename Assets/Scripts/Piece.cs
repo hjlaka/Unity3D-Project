@@ -11,6 +11,9 @@ public class Piece : LifeUnit
 
     public int forwardY;
 
+    protected int pieceScore;
+    public int PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
+
 
     public IReturnHeat returnHeat;
 
@@ -26,13 +29,16 @@ public class Piece : LifeUnit
     protected IPieceMovable movePattern;
 
 
-    private List<Piece> defendFor;
-    private List<Piece> threatTo;
-    private List<Place> movableTo;
-    private List<Place> influenceable;
+    private StateLists recognized;
+    public StateLists Recognized { get { return recognized; } private set { recognized = value; } }
+
+    //private List<Piece> defendFor;
+    //private List<Piece> threatTo;
+    //private List<Place> movableTo;
+    //private List<Place> influenceable;
 
     #region 리스트 프로퍼티
-    public List<Piece> DefendFor
+    /*public List<Piece> DefendFor
     {
         get { return defendFor; }
         private set 
@@ -48,29 +54,30 @@ public class Piece : LifeUnit
         { 
             threatTo = value;
         }
-    }
+    }*/
 
-    public List<Place> MovableTo
+    /*public List<Place> MovableTo
     {
         get { return movableTo; } 
         private set { movableTo = value;  }
-    }
+    }*/
 
-    public List<Place> Influenceable
+   /* public List<Place> Influenceable
     {
         get { return influenceable; }
         private set { influenceable = value; }
-    }
+    }*/
 
     #endregion
 
     protected virtual void Awake()
     {
         render = GetComponentInChildren<Renderer>();
-        defendFor = new List<Piece>();
+        /*defendFor = new List<Piece>();
         threatTo = new List<Piece>();
-        movableTo = new List<Place>();
-        influenceable = new List<Place>();
+        movableTo = new List<Place>();*/
+        recognized = new StateLists();
+        //influenceable = new List<Place>();
     }
 
     private void Start()
@@ -88,7 +95,7 @@ public class Piece : LifeUnit
 
         //PlaceManager.Instance.SelectPiece(this);
 
-        if(MovableTo.Count <= 0)
+        if(Recognized.movable.Count <= 0)
         {
             Debug.Log("이동할 수 있는 곳이 없다");
             PlaceManager.Instance.CancleSelectPiece();
@@ -141,7 +148,7 @@ public class Piece : LifeUnit
     }
 
     #region 리스트 관리
-    public void ClearMovable()
+    /*public void ClearMovable()
     {
         //Debug.Log("이동 클리어" + MovableTo.Count);
         MovableTo.Clear();
@@ -164,16 +171,16 @@ public class Piece : LifeUnit
     {
         //Debug.Log("영향권 클리어" + Influenceable.Count);
         Influenceable.Clear();
-    }
+    }*/
     // 여기까지 임시 생성
 
-    public void AddMovable(Place place)
+/*    public void AddMovable(Place place)
     {
         movableTo.Add(place);
-    }
-    public void AddInfluence(Place place)
+    }*/
+   /* public void AddInfluence(Place place)
     {
-        Influenceable.Add(place);
+        recognized.AddInfluenceable(place);
 
         if (team.direction == TeamData.Direction.DownToUp)
             place.HeatPointBottomTeam++;
@@ -184,9 +191,9 @@ public class Piece : LifeUnit
     public void AddDefence(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "를 보호한다");
-        defendFor.Add(piece);
+        recognized.AddDefending(piece);
         //DialogueManager.Instance.AddDialogue(ref character.characterName, ref character.defending);
-    }
+    }*/
 
     public void EndDefence(Piece piece)
     {
@@ -203,12 +210,12 @@ public class Piece : LifeUnit
         Debug.Log(this + "가 " + piece + "로부터 더이상 보호받지 않는다.");
     }
 
-    public void AddThreat(Piece piece)
+    /*public void AddThreat(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "을 위협한다");
         ThreatTo.Add(piece);
         //DialogueManager.Instance.AddDialogue(ref character.characterName, ref character.threatening);
-    }
+    }*/
 
     public void EndThreat(Piece piece)
     {
@@ -243,6 +250,11 @@ public class Piece : LifeUnit
     public virtual void RecognizeRange(Vector2Int location)
     {
         movePattern.RecognizeRange(location);
+    }
+
+    public void SetDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
+    {
+        decideDesireStrategy = decidePlaceStrategy;
     }
 
     public virtual List<Place> ReturnMovablePlaces(Vector2Int location)
@@ -320,10 +332,7 @@ public class Piece : LifeUnit
         PlaceManager.Instance.MoveProcess(piece, attackPlace);
     }
 
-    public void SetDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)
-    {
-        decideDesireStrategy = decidePlaceStrategy;
-    }
+
 
     public void ChangeColor()
     {

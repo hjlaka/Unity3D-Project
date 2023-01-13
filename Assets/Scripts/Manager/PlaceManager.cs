@@ -87,7 +87,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         }
         
 
-        List<Place> influencable = leftPiece.Influenceable;
+        List<Place> influencable = leftPiece.Recognized.influenceable;
 
         for (int i = 0; i < influencable.Count; i++)
         {
@@ -204,10 +204,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     {
         WithDrawInfluence(piece);
 
-        piece.ClearMovable();
-        piece.ClearThreat();
-        piece.ClearDefence();
-        piece.ClearInfluence();
+        piece.Recognized.ClearAllRecognized();
 
     }
     

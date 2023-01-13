@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveRecognizer : MonoBehaviour
+public class MoveRecognizer : MonoBehaviour //부모에 인터페이스 붙이기?
 {
     protected readonly Piece controlled;
 
@@ -56,7 +56,7 @@ public class MoveRecognizer : MonoBehaviour
         {
             Debug.Log("앞에 장애물 없다");
 
-            controlled.AddMovable(targetPlace);
+            controlled.Recognized.AddMovable(targetPlace);
             //연출 이동
 
             return false;
@@ -78,7 +78,7 @@ public class MoveRecognizer : MonoBehaviour
         {
             // 기물이 없는 경우 이동할 수 없음
             // 영향권은 맞음
-            controlled.AddInfluence(targetPlace);
+            controlled.Recognized.AddInfluenceable(targetPlace);
             return false;
         }
     }
@@ -88,22 +88,22 @@ public class MoveRecognizer : MonoBehaviour
     {
         if (targetPiece.team.TeamId == controlled.team.TeamId)
         {
-            controlled.AddDefence(targetPiece);
+            controlled.Recognized.AddDefending(targetPiece);
             targetPiece.BeDefended(controlled);
 
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
-            controlled.AddInfluence(targetPlace);
+            controlled.Recognized.AddInfluenceable(targetPlace);
 
         }
         else
         {
-            controlled.AddThreat(targetPiece);
+            controlled.Recognized.AddThreating(targetPiece);
             targetPiece.BeThreatened(controlled);
 
             // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
             // 공격할 수 있는 자리는 영향권 내 자리이다.
-            controlled.AddMovable(targetPlace);
-            controlled.AddInfluence(targetPlace);
+            controlled.Recognized.AddMovable(targetPlace);
+            controlled.Recognized.AddInfluenceable(targetPlace);
 
         }
     }
@@ -130,8 +130,8 @@ public class MoveRecognizer : MonoBehaviour
 
     private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
     {
-        controlled.AddMovable(targetPlace);
-        controlled.AddInfluence(targetPlace);
+        controlled.Recognized.AddMovable(targetPlace);
+        controlled.Recognized.AddInfluenceable(targetPlace);
     }
 
 
