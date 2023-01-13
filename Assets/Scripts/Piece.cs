@@ -27,6 +27,7 @@ public class Piece : LifeUnit
     private IDecidePlaceStrategy decideDesireStrategy;
 
     protected IPieceMovable movePattern;
+    public IPieceMovable MovePattern { get { return movePattern; } private set { movePattern = value; } }
 
 
     private StateLists recognized;
@@ -238,6 +239,8 @@ public class Piece : LifeUnit
         this.place = place;
         place.piece = this;
         Move();
+
+        Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
     }
 
     public void Move()
@@ -249,7 +252,7 @@ public class Piece : LifeUnit
     public virtual void PieceAction() { }
     public virtual void RecognizeRange(Vector2Int location)
     {
-        movePattern.RecognizeRange(location);
+        movePattern.RecognizeRange(location, recognized);
     }
 
     public void SetDecidePlaceStrategy(IDecidePlaceStrategy decidePlaceStrategy)

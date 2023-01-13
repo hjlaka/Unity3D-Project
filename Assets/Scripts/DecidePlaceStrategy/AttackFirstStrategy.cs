@@ -2,10 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackFirstStrategy : IDecidePlaceStrategy
+public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
 {
+
     public Place DecidePlace(Piece piece)
     {
+        float maxScore = -99f;
+        Place highScorePlace = null;
+        string debug_score = "";
+
+        List<Place> movablePlaces = piece.Recognized.movable;
+
+        for (int i = 0; i < movablePlaces.Count; i++)
+        {
+            Place place = movablePlaces[i];
+            Vector2Int location = movablePlaces[i].boardIndex;
+            float score = CalculateScore(piece, place);
+            debug_score += score + " / ";
+
+            // 저장해 둔 점수 중 가장 높은 점수 가져오기? (왕 보호에 대한 것 외에는 차선을 가져올 수도 있도록?)
+            // 점수 저장이 의미 있을까?
+            if(score >= maxScore)
+            {
+                highScorePlace = place;
+                maxScore = score;
+            }
+        }
+        Debug.Log(debug_score);
+        Debug.Log(highScorePlace.boardIndex + "가 최대 점수다. : " + maxScore);
+
+        return highScorePlace;
+    }
+   /* public Place DecidePlace2(Piece piece)
+    {
+
+
+
+
         Place place = null;
         int heatPoint = 99;
         int attackPoint = -99;
@@ -17,14 +50,14 @@ public class AttackFirstStrategy : IDecidePlaceStrategy
         Debug.Log("공격 우선 선택");
 
 
-        /*
+        *//*
         
             과열도를 따져 기물이 이동할 곳을 결정하는 방식을 사용 중이다.
             그러나 현재 과열도는 기물이 이동할 때, 간접적인 변화가 업데이트 되고 있지 않다.
 
             과열도를 통한 결정 방식도 완전하지 못한 상태다.
 
-        */
+        *//*
 
 
 
@@ -34,7 +67,7 @@ public class AttackFirstStrategy : IDecidePlaceStrategy
 
             for (int i = 0; i < attackablePieces.Count; i++)
             {
-                
+
                 // 적군 과열도보다 팀 과열도가 높은 곳 우선 선택.
                 Place checkingPlace = attackablePieces[i].place;
                 int teamHeat = piece.returnHeat.ReturnTeamHeat(checkingPlace);
@@ -46,11 +79,11 @@ public class AttackFirstStrategy : IDecidePlaceStrategy
                 {
                     // 과열도가 낮은 곳 우선 (선택 사항)
                     if (heatPoint < checkingPlace.HeatPoint) continue;
-                    
+
                     place = attackablePieces[i].place;
                     heatPoint = attackablePieces[i].place.HeatPoint;
                     attackPoint = checkingAttackPoint;
-                } 
+                }
             }
 
             return place;
@@ -81,5 +114,6 @@ public class AttackFirstStrategy : IDecidePlaceStrategy
         }
 
         return place;
-    }
+    }*/
+
 }
