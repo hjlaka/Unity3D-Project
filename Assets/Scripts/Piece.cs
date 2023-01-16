@@ -10,9 +10,12 @@ public class Piece : LifeUnit
     private Color mouseOver;
 
     public int forwardY;
-
+    [SerializeField]
     protected int pieceScore;
     public int PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
+
+    private DecidedStateLists recognized;
+    public DecidedStateLists Recognized { get { return recognized; } private set { recognized = value; } }
 
 
     public IReturnHeat returnHeat;
@@ -30,8 +33,7 @@ public class Piece : LifeUnit
     public IPieceMovable MovePattern { get { return movePattern; } private set { movePattern = value; } }
 
 
-    private StateLists recognized;
-    public StateLists Recognized { get { return recognized; } private set { recognized = value; } }
+    
 
     //private List<Piece> defendFor;
     //private List<Piece> threatTo;
@@ -77,7 +79,7 @@ public class Piece : LifeUnit
         /*defendFor = new List<Piece>();
         threatTo = new List<Piece>();
         movableTo = new List<Place>();*/
-        recognized = new StateLists();
+        recognized = new DecidedStateLists();
         //influenceable = new List<Place>();
     }
 

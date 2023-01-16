@@ -13,7 +13,7 @@ public class King : Piece
         base.Awake();
 
         movePattern = new EightWayMove(this, 1);
-        pieceScore = 3;
+        pieceScore = 99;
     }
 
     public void CastlingL()
