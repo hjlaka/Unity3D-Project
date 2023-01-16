@@ -40,8 +40,12 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
                 maxScore = score;
             }
         }
-        Debug.Log(debug_score);
-        Debug.Log(highScorePlace.boardIndex + "가 최대 점수다. : " + maxScore);
+        if(GameManager.Instance.scoreDebugMode)
+        {
+            Debug.Log(debug_score);
+            Debug.Log(highScorePlace.boardIndex + "가 최대 점수다. : " + maxScore);
+        }
+       
 
         return highScorePlace;
     }

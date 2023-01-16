@@ -33,7 +33,6 @@ public class GameManager : SingleTon<GameManager>
     public bool isPlayerTurn;
 
 
-
     [SerializeField]
     private GameSetter gameSetter;
 
@@ -55,6 +54,9 @@ public class GameManager : SingleTon<GameManager>
     }    
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
+
+    [Header("DebugMode")]
+    public bool scoreDebugMode;
 
     private void Start()
     {

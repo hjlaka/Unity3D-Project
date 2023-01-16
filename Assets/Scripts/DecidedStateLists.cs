@@ -9,9 +9,10 @@ public class DecidedStateLists : StateLists, IChessEventable
         Debug.Log("공격 이벤트");
     }
 
-    public void Check()
+    public void Check(Piece targetPiece)
     {
         Debug.Log("체크 이벤트");
+        ChessEventManager.Instance.CheckEvent(targetPiece);
     }
 
     public void CheckMate()
@@ -22,6 +23,8 @@ public class DecidedStateLists : StateLists, IChessEventable
     public void Defend()
     {
         Debug.Log("방어 이벤트");
+        // 이전에 방어하던 기물에 대해 방어를 유지하는가?
+
     }
 
     public void Threat()

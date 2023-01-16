@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IChessEventable
 {
-    void Check();
+    void Check(Piece targetPiece);
 
     void Threat();
 

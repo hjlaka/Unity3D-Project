@@ -46,7 +46,7 @@ public class DecidePlaceStrategy
         float defencePoint = 0;
         float assumePoint;
 
-        Piece targetPiece = place.piece;
+        Piece targetPiece = place.Piece;
 
         if (targetPiece != null)         // 공격 가능한 장소라면
         {
@@ -71,7 +71,8 @@ public class DecidePlaceStrategy
         assumePoint *= futureOriented;
         
         score = attackPoint + heatPreferPoint + assumePoint;
-        Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + heatPreferPoint + " /  가정 점수: " + assumePoint);
+        if (GameManager.Instance.scoreDebugMode)
+            Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + heatPreferPoint + " /  가정 점수: " + assumePoint);
         return score;
     }
 
@@ -91,7 +92,7 @@ public class DecidePlaceStrategy
 
 
         // 기물이 움직였다고 가정한 후, 기물의 움직임대로 영향권을 계산한다.
-        piece.place.piece = null;
+        piece.place.Piece = null;
         piece.MovePattern.RecognizeRange(location, assumeStateLists);
 
         // 이동할 수 있는 칸 수
@@ -135,12 +136,13 @@ public class DecidePlaceStrategy
         defendablePoint *= willingToDefend;
 
         assumScore = influencablePoint + heatPreferPoint + threatablePoint + defendablePoint;
-        Debug.Log(string.Format("{0}에서부터 가정된 위치 점수 {5}-------\n 영향권: {1}, 과열도 안정적 점수: {2}, 위협: {3}, 보호 {4}",
+        if(GameManager.Instance.scoreDebugMode)
+            Debug.Log(string.Format("{0}에서부터 가정된 위치 점수 {5}-------\n 영향권: {1}, 과열도 안정적 점수: {2}, 위협: {3}, 보호 {4}",
             location, influencablePoint, heatPreferPoint, threatablePoint, defendablePoint, assumScore));
 
 
         // 되돌려 놓기
-        piece.place.piece = piece;
+        piece.place.Piece = piece;
         return assumScore;
 
 

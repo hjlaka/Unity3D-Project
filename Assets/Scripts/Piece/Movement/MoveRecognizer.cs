@@ -16,6 +16,12 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         public List<Place> wayToPiece;
         public MeetType meetType;
 
+        public ReachForPiece()
+        {
+            reachedPlace = null;
+            wayToPiece = new List<Place>();
+            meetType = MeetType.INFLUENCE;
+        }
         /*public void ChangeMeetType(Place place)
         {
             if(place.piece == null)
@@ -66,7 +72,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
 
     public bool RecognizeObstaclePiece(Vector2Int curLocation)
     {
-        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].piece;
+        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
         Place targetPlace = controlled.place.board.places[curLocation.x, curLocation.y];
 
         if (targetPiece != null)
@@ -86,7 +92,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
 
     public bool RecognizePieceOnlyInfluence(Vector2Int curLocation)
     {
-        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].piece;
+        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
         Place targetPlace = controlled.place.board.places[curLocation.x, curLocation.y];
 
         if (targetPiece != null)
@@ -115,8 +121,14 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
             recognizedLists.AddInfluenceable(targetPlace);
 
-            IChessEventable chessEventable = recognizedLists as IChessEventable;
-            chessEventable?.Defend();
+            /*if(recognizedLists is DecidedStateLists)
+            {
+                targetPlace.InfluencingPieces.Add(targetPiece);
+            }*/
+
+            //IChessEventable chessEventable = recognizedLists as IChessEventable;
+            //chessEventable?.Defend();
+
         }
         else
         {
@@ -128,12 +140,12 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             recognizedLists.AddMovable(targetPlace);
             recognizedLists.AddInfluenceable(targetPlace);
 
-            if (targetPiece.PieceScore >= 99)
+            if (targetPiece.tag == "King")
             {
                 // 왕에 대한 공격
                 
                 IChessEventable chessEventable = recognizedLists as IChessEventable;
-                chessEventable?.Check();
+                chessEventable?.Check(targetPiece);
                 
             }
             else
@@ -147,7 +159,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
 
     public bool RecognizePiece(Vector2Int curLocation)
     {
-        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].piece;
+        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
         Place targetPlace = controlled.place.board.places[curLocation.x, curLocation.y];
 
         if (targetPiece != null)
