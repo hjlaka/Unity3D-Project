@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 2402481303748908473}
   - component: {fileID: 1443156753202429635}
   - component: {fileID: 7888784587551533827}
+  - component: {fileID: 1572638889183707523}
   m_Layer: 0
   m_Name: Quene
   m_TagString: Untagged
@@ -101,9 +102,22 @@ MonoBehaviour:
       m_Calls: []
   place: {fileID: 0}
   team: {fileID: 0}
-  mouseOver: {r: 0.4811321, g: 0.37594932, b: 0.065815255, a: 0}
   forwardY: 0
+  pieceScore: 0
   character: {fileID: 0}
+--- !u!114 &1572638889183707523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b513ef7914de3ad4487d9c7ab8b79602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOver: {r: 1, g: 0.538504, b: 0.0141509175, a: 0}
 --- !u!1001 &6654140259625080856
 PrefabInstance:
   m_ObjectHideFlags: 0

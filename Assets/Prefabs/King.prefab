@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 2402481303748908473}
   - component: {fileID: 1443156753202429635}
   - component: {fileID: 3108192685022573290}
+  - component: {fileID: -2696946867619819176}
   m_Layer: 0
   m_Name: King
   m_TagString: King
@@ -101,7 +102,6 @@ MonoBehaviour:
       m_Calls: []
   place: {fileID: 0}
   team: {fileID: 0}
-  mouseOver: {r: 0, g: 0, b: 0, a: 0}
   forwardY: 0
   pieceScore: 0
   character: {fileID: 0}
@@ -111,6 +111,19 @@ MonoBehaviour:
   OnCastlingR:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-2696946867619819176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b513ef7914de3ad4487d9c7ab8b79602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOver: {r: 0.77042377, g: 1, b: 0.0047169924, a: 0}
 --- !u!1001 &2998197552730188995
 PrefabInstance:
   m_ObjectHideFlags: 0

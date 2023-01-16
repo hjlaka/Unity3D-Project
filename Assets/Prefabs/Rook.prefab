@@ -42,7 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2402481303748908473}
   - component: {fileID: 1443156753202429635}
-  - component: {fileID: 3108192685022573290}
+  - component: {fileID: 4938190192469318379}
+  - component: {fileID: 2556318529705069642}
   m_Layer: 0
   m_Name: Rook
   m_TagString: Untagged
@@ -80,7 +81,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &3108192685022573290
+--- !u!114 &4938190192469318379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,19 +90,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 9196825123279805262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3b27628feb3ce458f6fc1732831380, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c8e4aee707ff504792c4c7333edda7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
+  jumpSpeed: 0
+  isFree: 0
+  target: {x: 0, y: 0, z: 0}
+  OnWalk:
+    m_PersistentCalls:
+      m_Calls: []
   place: {fileID: 0}
   team: {fileID: 0}
-  mouseOver: {r: 0, g: 0, b: 0, a: 0}
-  charactor: {fileID: 0}
-  OnCastlingL:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCastlingR:
-    m_PersistentCalls:
-      m_Calls: []
+  forwardY: 0
+  pieceScore: 0
+  character: {fileID: 0}
+--- !u!114 &2556318529705069642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b513ef7914de3ad4487d9c7ab8b79602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOver: {r: 0.87383986, g: 0, b: 1, a: 0}
 --- !u!1001 &6221715498708848111
 PrefabInstance:
   m_ObjectHideFlags: 0

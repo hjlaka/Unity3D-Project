@@ -6,8 +6,7 @@ public class Piece : LifeUnit
     [Header("InGame")]
     public Place place;
     public TeamData team;
-    [SerializeField]
-    private Color mouseOver;
+
 
     public int forwardY;
     [SerializeField]
@@ -272,58 +271,7 @@ public class Piece : LifeUnit
 
     // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
     
-    private void OnMouseOver()
-    {
-        //Debug.Log(string.Format("{0} 마우스 가리킴", gameObject.name));
-        render.material.color = mouseOver;
-    }
-
-    private void OnMouseExit()
-    {
-        //Debug.Log(string.Format("{0} 밖으로 마우스 나감", gameObject.name));
-        render.material.color = curNormal;
-    }
-
-    private void OnMouseUpAsButton()
-    {
-        /*if (!GameManager.Instance.isPlayerTurn)
-        {
-            Debug.Log("플레이어의 차례가 아닙니다.");
-            return;
-        }*/
-        if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
-        {
-            //Debug.Log(string.Format("{0} 클릭", gameObject.name));
-            PlaceManager.Instance.SelectPiece(this);
-        }
-        
-        else if(GameManager.Instance.state == GameManager.GameState.SELECTING_PLACE)
-        {
-            // 자신이라면
-            if (PlaceManager.Instance.SelectedPiece == this)
-                PlaceManager.Instance.CancleSelectPiece();
-
-            // 같은 팀 기물이라면
-            else if (this.team.TeamId == PlaceManager.Instance.SelectedPiece.team.TeamId)
-            {
-                PlaceManager.Instance.CancleSelectPiece();
-                PlaceManager.Instance.SelectPiece(this);
-            }
-            // 다른 팀 기물이라면
-            else
-            {
-                // 공격할 수 있다면
-                if(place.IsAttackableByCurPiece)
-                {
-                    //공격 
-                    //BeAttackedBy(PlaceManager.Instance.SelectedPiece);
-                    PlaceManager.Instance.Attack(PlaceManager.Instance.SelectedPiece, this);
-                   
-                }
-            }
-
-        }
-    }
+    
     private void AttackTo(Place place)
     {
         PlaceManager.Instance.Attack(this, place.piece);
@@ -347,6 +295,17 @@ public class Piece : LifeUnit
     public void ChangeColor(Color color)
     {
         curNormal = color;
+        render.material.color = curNormal;
+
+    }
+    public void ChangeColorTemp(Color color)
+    {
+        render.material.color = curNormal;
+
+    }
+
+    public void ChangeColorTempBack()
+    {
         render.material.color = curNormal;
 
     }

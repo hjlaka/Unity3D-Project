@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 2402481303748908473}
   - component: {fileID: 1443156753202429635}
   - component: {fileID: 8815173425037999921}
+  - component: {fileID: -4970817804220875835}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -92,10 +93,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096b18adf158d7841a90a55654a232be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
+  jumpSpeed: 0
+  isFree: 0
+  target: {x: 0, y: 0, z: 0}
+  OnWalk:
+    m_PersistentCalls:
+      m_Calls: []
   place: {fileID: 0}
   team: {fileID: 0}
-  mouseOver: {r: 0, g: 1, b: 0.574213, a: 0}
-  charactor: {fileID: 0}
+  forwardY: 0
+  pieceScore: 0
+  character: {fileID: 0}
+--- !u!114 &-4970817804220875835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b513ef7914de3ad4487d9c7ab8b79602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOver: {r: 0.6981132, g: 0.055980783, b: 0.055980783, a: 0}
 --- !u!1001 &2866548496305121680
 PrefabInstance:
   m_ObjectHideFlags: 0
