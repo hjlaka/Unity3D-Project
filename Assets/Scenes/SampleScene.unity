@@ -5128,6 +5128,7 @@ GameObject:
   - component: {fileID: 1371377820}
   - component: {fileID: 1371377821}
   - component: {fileID: 1371377822}
+  - component: {fileID: 1371377823}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -5269,6 +5270,19 @@ MonoBehaviour:
   unitList: []
   ui: {fileID: 1773596352}
   playerTeam: {fileID: 11400000, guid: 68781b80634d1584198878bd5363e703, type: 2}
+--- !u!114 &1371377823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371377816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fed0a003d119344cabbadbd00bd9f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackFirst: {fileID: 11400000, guid: 76d5754707111274b9e52790abb9ee21, type: 2}
 --- !u!1 &1393403954
 GameObject:
   m_ObjectHideFlags: 0
@@ -7026,7 +7040,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900151038}
-  m_LocalRotation: {x: 0.15442781, y: -0.25937465, z: 0.04205557, w: 0.95242226}
+  m_LocalRotation: {x: 0.15442781, y: -0.25937468, z: 0.04205557, w: 0.95242226}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7846,7 +7860,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095236343}
-  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.05144959, w: 0.94618416}
+  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.051449593, w: 0.94618416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -9,14 +9,31 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
     private int curMoveCount;
 
     // 단계를 나눠서 강화되게 하기?
-    public DiagonalMove(Piece controlled) : base(controlled)
+    public DiagonalMove(Piece controlled, int level) : base(controlled)
     {
-        // Do Nothing
+        this.level = level;
+
+        switch(level)
+        {
+            case 1:
+                validMoveCount = 1;
+                break;
+            case 2:
+                validMoveCount = 3;
+                break;
+            case 3:
+                validMoveCount = 99;
+                break;
+            default:
+                break;
+        }
     }
     public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
         recognizedLists = recognized;
+
+        curMoveCount = 0;
 
         DiagonalLB(location + new Vector2Int(-1, -1));
         DiagonalLT(location + new Vector2Int(-1, 1), boardSize.y);
@@ -33,6 +50,10 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
 
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
+
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
     }
@@ -45,6 +66,10 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
 
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
+
         DiagonalLB(curLocation + new Vector2Int(-1, -1));
     }
 
@@ -56,6 +81,10 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
 
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
+
         DiagonalRT(curLocation + new Vector2Int(1, 1), boardHeight, boardWidth);
     }
 
@@ -66,6 +95,10 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
 
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
+
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
 
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }

@@ -31,6 +31,9 @@ MonoBehaviour:
   - piecePrefab: {fileID: 7888784587551533827, guid: 13c9d93379063204e8e87580c64be9ed, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
     location: {x: 4, y: 7}
+  - piecePrefab: {fileID: 3108192685022573290, guid: aeb6f511538b5ad4ca9423144d59a21a, type: 3}
+    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    location: {x: 3, y: 7}
   players:
   - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}

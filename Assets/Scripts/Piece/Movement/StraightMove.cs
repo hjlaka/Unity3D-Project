@@ -4,16 +4,35 @@ using UnityEngine;
 
 public class StraightMove : MoveRecognizer, IPieceMovable
 {
-
-    public StraightMove(Piece controlled) : base(controlled)
+    private int level;
+    private int validMoveCount;
+    private int curMoveCount;
+    public StraightMove(Piece controlled, int level) : base(controlled)
     {
-        // Do Nothing
+        this.level = level;
+
+        switch (level)
+        {
+            case 1:
+                validMoveCount = 1;
+                break;
+            case 2:
+                validMoveCount = 3;
+                break;
+            case 3:
+                validMoveCount = 99;
+                break;
+            default:
+                break;
+        }
     }
 
     public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;     // 기물이 있는 보드에서 판단을 한다고 가정함.
         recognizedLists = recognized;
+
+        curMoveCount = 0;
 
         StraightB(location + new Vector2Int(0, -1));
         StraightT(location + new Vector2Int(0, 1), boardSize.y);
@@ -28,6 +47,10 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
 
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
+
 
         StraightT(curLocation + new Vector2Int(0, 1), boardHeight);
     }
@@ -39,6 +62,10 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
 
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
+
         StraightB(curLocation + new Vector2Int(0, -1));
     }
 
@@ -49,6 +76,10 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
 
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
+
         StraightL(curLocation + new Vector2Int(-1, 0));
     }
 
@@ -58,6 +89,10 @@ public class StraightMove : MoveRecognizer, IPieceMovable
 
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return;
+
+        curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return;
 
         StraightR(curLocation + new Vector2Int(1, 0), boardWidth);
     }

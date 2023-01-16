@@ -8,6 +8,14 @@ public class King : Piece
     public UnityEvent OnCastlingL;
     public UnityEvent OnCastlingR;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        movePattern = new EightWayMove(this, 1);
+        pieceScore = 3;
+    }
+
     public void CastlingL()
     {
         OnCastlingL?.Invoke();

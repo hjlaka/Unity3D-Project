@@ -9,7 +9,7 @@ public class Bishop : Piece
     {
         base.Awake();
 
-        movePattern = new DiagonalMove(this);
+        movePattern = new DiagonalMove(this, 3);
         pieceScore = 3;
     }
 

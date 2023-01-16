@@ -8,7 +8,7 @@ public class Rook : Piece
     {
         base.Awake();
 
-        movePattern = new StraightMove(this);
+        movePattern = new StraightMove(this, 3);
     }
     
 }
