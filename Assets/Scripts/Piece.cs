@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Piece : LifeUnit, Observer
+public class Piece : LifeUnit, IObserver
 {
     [Header("InGame")]
     public Place place;
@@ -210,7 +210,7 @@ public class Piece : LifeUnit, Observer
 
     }
 
-    void Observer.Update()
+    void IObserver.Update()
     {
         PlaceManager.Instance.ReCalculateInfluence(this);
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Place : MonoBehaviour, Subject
+public class Place : MonoBehaviour, ISubject
 {
     public enum PlaceType { A, B};
     private Piece piece;
@@ -38,7 +38,7 @@ public class Place : MonoBehaviour, Subject
         set { isAttackableByCurPiece = value; }
     }
 
-    private List<Observer> influencingUnit;
+    private List<IObserver> influencingUnit;
 
     [SerializeField]
     private PlaceEffect effect;
@@ -115,7 +115,7 @@ public class Place : MonoBehaviour, Subject
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
-        influencingUnit = new List<Observer>();
+        influencingUnit = new List<IObserver>();
     }
 
     private void ChangeEffect(float intencity)
@@ -196,12 +196,12 @@ public class Place : MonoBehaviour, Subject
         render.material.color = typeColor;
     }
 
-    public void registerObserver(Observer observer)
+    public void registerObserver(IObserver observer)
     {
         influencingUnit.Add(observer);
     }
 
-    public void removeObserver(Observer observer)
+    public void removeObserver(IObserver observer)
     {
         influencingUnit.Remove(observer);
     }
