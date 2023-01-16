@@ -32,54 +32,11 @@ public class Piece : LifeUnit
     public IPieceMovable MovePattern { get { return movePattern; } private set { movePattern = value; } }
 
 
-    
-
-    //private List<Piece> defendFor;
-    //private List<Piece> threatTo;
-    //private List<Place> movableTo;
-    //private List<Place> influenceable;
-
-    #region 리스트 프로퍼티
-    /*public List<Piece> DefendFor
-    {
-        get { return defendFor; }
-        private set 
-        { 
-            defendFor = value;
-        }
-    }
-    
-    public List<Piece> ThreatTo
-    {
-        get { return threatTo; }
-        private set 
-        { 
-            threatTo = value;
-        }
-    }*/
-
-    /*public List<Place> MovableTo
-    {
-        get { return movableTo; } 
-        private set { movableTo = value;  }
-    }*/
-
-   /* public List<Place> Influenceable
-    {
-        get { return influenceable; }
-        private set { influenceable = value; }
-    }*/
-
-    #endregion
-
     protected virtual void Awake()
     {
         render = GetComponentInChildren<Renderer>();
-        /*defendFor = new List<Piece>();
-        threatTo = new List<Piece>();
-        movableTo = new List<Place>();*/
+
         recognized = new DecidedStateLists();
-        //influenceable = new List<Place>();
     }
 
     private void Start()
@@ -124,8 +81,7 @@ public class Piece : LifeUnit
             Debug.Log("움직이고 싶은 곳이 없다");
             PlaceManager.Instance.CancleSelectPiece();
         }
-        //Place targetPlace;
-        //decideDesireStrategy.DecidePlace(out targetPlace);
+
 
     }
 
@@ -149,55 +105,7 @@ public class Piece : LifeUnit
         decideDesireStrategy = character.DecidePlaceStrategy;
     }
 
-    #region 리스트 관리
-    /*public void ClearMovable()
-    {
-        //Debug.Log("이동 클리어" + MovableTo.Count);
-        MovableTo.Clear();
-    }
-
-    // 임시 생성 
-    public void ClearThreat()
-    {
-        //Debug.Log("위협 클리어" + ThreatTo.Count);
-        ThreatTo.Clear();
-    }
-
-    public void ClearDefence()
-    {
-        //Debug.Log("방어 클리어" + DefendFor.Count);
-        DefendFor.Clear();
-    }
-
-    public void ClearInfluence()
-    {
-        //Debug.Log("영향권 클리어" + Influenceable.Count);
-        Influenceable.Clear();
-    }*/
-    // 여기까지 임시 생성
-
-/*    public void AddMovable(Place place)
-    {
-        movableTo.Add(place);
-    }*/
-   /* public void AddInfluence(Place place)
-    {
-        recognized.AddInfluenceable(place);
-
-        if (team.direction == TeamData.Direction.DownToUp)
-            place.HeatPointBottomTeam++;
-        else
-            place.HeatPointTopTeam++;
-
-    }
-    public void AddDefence(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "를 보호한다");
-        recognized.AddDefending(piece);
-        //DialogueManager.Instance.AddDialogue(ref character.characterName, ref character.defending);
-    }*/
-
-    public void EndDefence(Piece piece)
+   /* public void EndDefence(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "를 더이상 보호하지 않는다.");
     }
@@ -212,13 +120,6 @@ public class Piece : LifeUnit
         Debug.Log(this + "가 " + piece + "로부터 더이상 보호받지 않는다.");
     }
 
-    /*public void AddThreat(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "을 위협한다");
-        ThreatTo.Add(piece);
-        //DialogueManager.Instance.AddDialogue(ref character.characterName, ref character.threatening);
-    }*/
-
     public void EndThreat(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "를 더이상 위협하지 않는다.");
@@ -232,9 +133,8 @@ public class Piece : LifeUnit
     public void EndThreatened(Piece piece)
     {
         Debug.Log(this + "가 " + piece + "로부터 더이상 위협받지 않는다.");
-    }
+    }*/
 
-    #endregion
     public virtual void SetInPlace(Place place)
     {
         this.place = place;
@@ -249,8 +149,6 @@ public class Piece : LifeUnit
         transform.position = place.transform.position;
     }
 
-
-    public virtual void PieceAction() { }
     public virtual void RecognizeRange(Vector2Int location)
     {
         movePattern.RecognizeRange(location, recognized);
@@ -266,10 +164,6 @@ public class Piece : LifeUnit
         return null;
     }
 
-
-
-
-    // ----------------------------------------------------------- 폰 움직임을 위해 추가 { 
     
     
     private void AttackTo(Place place)
