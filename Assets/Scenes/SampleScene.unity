@@ -5226,6 +5226,7 @@ MonoBehaviour:
   aiManager: {fileID: 1473466502}
   trunRemain: 0
   turnRemainUI: {fileID: 1393403956}
+  scoreDebugMode: 0
 --- !u!114 &1371377820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5283,6 +5284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackFirst: {fileID: 11400000, guid: 76d5754707111274b9e52790abb9ee21, type: 2}
+  defendFirst: {fileID: 11400000, guid: 6222ffc3b1c5fa243834e68357be56cf, type: 2}
 --- !u!1 &1393403954
 GameObject:
   m_ObjectHideFlags: 0
@@ -7040,7 +7042,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900151038}
-  m_LocalRotation: {x: 0.15442781, y: -0.25937468, z: 0.04205557, w: 0.95242226}
+  m_LocalRotation: {x: 0.15442781, y: -0.25937465, z: 0.04205557, w: 0.95242226}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7860,7 +7862,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095236343}
-  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.05144959, w: 0.94618416}
+  m_LocalRotation: {x: 0.1889226, y: -0.25767586, z: 0.051449593, w: 0.94618416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

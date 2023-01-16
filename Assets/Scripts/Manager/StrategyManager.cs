@@ -5,4 +5,5 @@ using UnityEngine;
 public class StrategyManager : SingleTon<StrategyManager>
 {
     public StrategyData attackFirst;
+    public StrategyData defendFirst;
 }
