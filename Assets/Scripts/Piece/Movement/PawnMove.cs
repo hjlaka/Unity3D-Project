@@ -15,6 +15,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
     public void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
+        recognizedLists = recognized;
 
         MoveForward(location + new Vector2Int(0, controlled.forwardY), boardSize.y);
 
