@@ -84,7 +84,11 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     }
 
-    
+    public void ReCalculateInfluence(Piece piece)
+    {
+        InitInfluence(piece);
+        CalculateInfluence(piece);
+    }
 
     public void WithDrawInfluence(Piece leftPiece)
     {
@@ -155,7 +159,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
 
         // ¿¬»ê
-        oldPlace.piece = null;
+        oldPlace.Piece = null;
         InitInfluence(piece);
 
         

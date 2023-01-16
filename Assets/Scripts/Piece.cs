@@ -64,11 +64,11 @@ public class Piece : LifeUnit
         Place targetPlace = decideDesireStrategy.DecidePlace(this);
         if(targetPlace != null)
         {
-            if(targetPlace.piece != null)
+            if(targetPlace.Piece != null)
             {
                 Debug.Log("공격하자!");
                 //AttackTo(targetPlace);
-                PlaceManager.Instance.Attack(this, targetPlace.piece);
+                PlaceManager.Instance.Attack(this, targetPlace.Piece);
             }
             else
             {
@@ -137,8 +137,11 @@ public class Piece : LifeUnit
 
     public virtual void SetInPlace(Place place)
     {
+        Place oldPlace = this.place;
         this.place = place;
-        place.piece = this;
+        place.Piece = this;
+        oldPlace?.UpdateInfluencingPieces();    //이전 자리는 없을 수도 있다.
+        place.UpdateInfluencingPieces();
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
@@ -168,7 +171,7 @@ public class Piece : LifeUnit
     
     private void AttackTo(Place place)
     {
-        PlaceManager.Instance.Attack(this, place.piece);
+        PlaceManager.Instance.Attack(this, place.Piece);
         //PlaceManager.Instance.ExpelPiece(place.Piece);
         //PlaceManager.Instance.MoveProcess(this, place);
     }

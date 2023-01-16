@@ -6,7 +6,7 @@ using UnityEngine;
 public class Place : MonoBehaviour
 {
     public enum PlaceType { A, B};
-    public Piece piece;
+    private Piece piece;
     public Piece Piece
     {
         get { return piece; }
@@ -180,6 +180,15 @@ public class Place : MonoBehaviour
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
 
 
+    }
+
+    public void UpdateInfluencingPieces()
+    {
+        for(int i = 0; i < influencingPieces.Count; i++)
+        {
+            Piece piece = influencingPieces[i];
+            PlaceManager.Instance.ReCalculateInfluence(piece);
+        }
     }
 
     public void ChangeColor(Color color)
