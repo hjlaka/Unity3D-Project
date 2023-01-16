@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Piece : LifeUnit
+public class Piece : LifeUnit, Observer
 {
     [Header("InGame")]
     public Place place;
@@ -140,8 +140,9 @@ public class Piece : LifeUnit
         Place oldPlace = this.place;
         this.place = place;
         place.Piece = this;
-        oldPlace?.UpdateInfluencingPieces();    //이전 자리는 없을 수도 있다.
-        place.UpdateInfluencingPieces();
+        oldPlace?.notifyObserver();
+        place.notifyObserver();
+        
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
@@ -205,6 +206,11 @@ public class Piece : LifeUnit
     {
         render.material.color = curNormal;
 
+    }
+
+    void Observer.Update()
+    {
+        PlaceManager.Instance.ReCalculateInfluence(this);
     }
 }
 

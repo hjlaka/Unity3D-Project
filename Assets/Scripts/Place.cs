@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Place : MonoBehaviour
+public class Place : MonoBehaviour, Subject
 {
     public enum PlaceType { A, B};
     private Piece piece;
@@ -38,12 +38,7 @@ public class Place : MonoBehaviour
         set { isAttackableByCurPiece = value; }
     }
 
-    private List<Piece> influencingPieces;
-    public List<Piece> InfluencingPieces
-    {
-        get { return influencingPieces; }
-        set { influencingPieces = value; Debug.Log("influencingPieces º¯È­"); }
-    }
+    private List<Observer> influencingUnit;
 
     [SerializeField]
     private PlaceEffect effect;
@@ -120,7 +115,7 @@ public class Place : MonoBehaviour
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
-        influencingPieces = new List<Piece>();
+        influencingUnit = new List<Observer>();
     }
 
     private void ChangeEffect(float intencity)
@@ -182,14 +177,14 @@ public class Place : MonoBehaviour
 
     }
 
-    public void UpdateInfluencingPieces()
+/*    public void UpdateInfluencingPieces()
     {
         for(int i = 0; i < influencingPieces.Count; i++)
         {
             Piece piece = influencingPieces[i];
             PlaceManager.Instance.ReCalculateInfluence(piece);
         }
-    }
+    }*/
 
     public void ChangeColor(Color color)
     {
@@ -201,5 +196,21 @@ public class Place : MonoBehaviour
         render.material.color = typeColor;
     }
 
+    public void registerObserver(Observer observer)
+    {
+        influencingUnit.Add(observer);
+    }
 
+    public void removeObserver(Observer observer)
+    {
+        influencingUnit.Remove(observer);
+    }
+
+    public void notifyObserver()
+    {
+        for(int i = 0; i < influencingUnit.Count; i++)
+        {
+            influencingUnit[i].Update();
+        }
+    }
 }

@@ -79,7 +79,7 @@ public class PlaceManager : SingleTon<PlaceManager>
             else
                 curPlace.HeatPointTopTeam++;
 
-            curPlace.InfluencingPieces.Add(piece);
+            curPlace.registerObserver(piece);
         }
 
     }
@@ -115,7 +115,7 @@ public class PlaceManager : SingleTon<PlaceManager>
             {
                 influencable[i].HeatPointTopTeam--;
             }
-            influencable[i].InfluencingPieces.Remove(leftPiece);
+            influencable[i].removeObserver(leftPiece);
         }
 
     }
