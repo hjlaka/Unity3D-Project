@@ -13,7 +13,12 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
     {
         this.level = level;
 
-        switch(level)
+        ApplyLevel();
+    }
+
+    private void ApplyLevel()
+    {
+        switch (level)
         {
             case 1:
                 validMoveCount = 1;
@@ -56,6 +61,8 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
 
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
+
+        // movable¿¡ µî·Ï?
     }
 
     private void DiagonalLB(Vector2Int curLocation)

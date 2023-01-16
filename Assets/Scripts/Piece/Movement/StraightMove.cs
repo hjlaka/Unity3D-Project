@@ -11,6 +11,11 @@ public class StraightMove : MoveRecognizer, IPieceMovable
     {
         this.level = level;
 
+        ApplyLevel();
+    }
+
+    private void ApplyLevel()
+    {
         switch (level)
         {
             case 1:
