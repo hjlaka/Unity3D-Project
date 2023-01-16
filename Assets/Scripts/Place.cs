@@ -18,7 +18,9 @@ public class Place : MonoBehaviour
 
     private Color typeColor;
 
+
     [Header("Running Game")]
+   
     [SerializeField]
     private bool isMovableToCurPiece = false;
     [SerializeField]
@@ -36,6 +38,12 @@ public class Place : MonoBehaviour
         set { isAttackableByCurPiece = value; }
     }
 
+    private List<Piece> influencingPieces;
+    public List<Piece> InfluencingPieces
+    {
+        get { return influencingPieces; }
+        set { influencingPieces = value; Debug.Log("influencingPieces 변화"); }
+    }
 
     [SerializeField]
     private PlaceEffect effect;
@@ -64,7 +72,7 @@ public class Place : MonoBehaviour
     {
         get { return heatPointTopTeam; }
         set { heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
-            Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
+            //Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
             if(topTeamHeatUI != null) topTeamHeatUI.text = heatPointTopTeam.ToString();
         }
     }
@@ -73,7 +81,7 @@ public class Place : MonoBehaviour
     {
         get { return heatPointBottomTeam; }
         set { heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
-            Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
+            //Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
             if (bottomTeamHeatUI != null)  bottomTeamHeatUI.text = heatPointBottomTeam.ToString();
         }
     }
@@ -112,6 +120,7 @@ public class Place : MonoBehaviour
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
+        influencingPieces = new List<Piece>();
     }
 
     private void ChangeEffect(float intencity)
