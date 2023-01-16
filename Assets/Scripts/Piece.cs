@@ -187,18 +187,20 @@ public class Piece : LifeUnit, Observer
 
     public void ChangeColor()
     {
+        Debug.Log("팀 색상으로 변경");
         curNormal = team.normal;
         render.material.color = curNormal;
     }
     public void ChangeColor(Color color)
     {
+        Debug.Log(color + " 색상으로 변경");
         curNormal = color;
         render.material.color = curNormal;
 
     }
     public void ChangeColorTemp(Color color)
     {
-        render.material.color = curNormal;
+        render.material.color = color;
 
     }
 

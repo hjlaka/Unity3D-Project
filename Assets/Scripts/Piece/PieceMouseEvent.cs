@@ -43,12 +43,17 @@ public class PieceMouseEvent : MonoBehaviour
         else if (GameManager.Instance.state == GameManager.GameState.SELECTING_PLACE)
         {
             // 자신이라면
-            if (PlaceManager.Instance.SelectedPiece == this)
+            if (PlaceManager.Instance.SelectedPiece == piece)
+            {
+                Debug.Log("자신 클릭");
                 PlaceManager.Instance.CancleSelectPiece();
+            }
+                
 
             // 같은 팀 기물이라면
             else if (piece.team.TeamId == PlaceManager.Instance.SelectedPiece.team.TeamId)
             {
+                Debug.Log("같은 팀 클릭");
                 PlaceManager.Instance.CancleSelectPiece();
                 PlaceManager.Instance.SelectPiece(piece);
             }
