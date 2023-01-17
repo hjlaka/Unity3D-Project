@@ -161,18 +161,19 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             oldBoard.PreShowEnd(piece);
 
 
-        // 연산
+        MovePiece(piece, place);    
+/*        // 연산
         oldPlace.Piece = null;
         InitInfluence(piece);
 
         
         // 연산
         piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
-        CalculateInfluence(piece);
+        CalculateInfluence(piece);*/
 
 
-        // 연출 - 리스트 의존적
-        if(newBoard != null)
+        // 연출 - 리스트 의존적 - 리스트를 받아올 수 있으면 좋을 것이다.
+        if (newBoard != null)
         {
             newBoard.PostShow(piece);
         }
@@ -191,12 +192,23 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         // 메멘토 등록
         if(oldBoard != null && newBoard.FollowRule && oldBoard == newBoard)
         {
-            Placement newPlacement = new Placement(piece, oldPlace.boardIndex, place.boardIndex);   // 메멘토?
-            placementRememberer.Add(SaveMemento(newPlacement));
+            Placement newPlacement = new Placement(piece, oldPlace, place);   // 메멘토를 여기서 생성해야 할까?
+            SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
         }
             
 
+    }
+
+    private void MovePiece(Piece piece, Place place)
+    {
+        piece.place.Piece = null;
+        InitInfluence(piece);
+
+
+        // 연산
+        piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
+        CalculateInfluence(piece);
     }
 
     private IEnumerator EndTurn(Piece endedPiece)
@@ -302,7 +314,37 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     public IMemento SaveMemento(IMemento memento)
     {
+        placementRememberer.Add(memento);
         return memento;
     }
 
+    public void ApplyMemento()
+    {
+        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
+        {
+            Debug.Log("기물 선택 단계가 아님");
+            return;
+        }
+        
+
+        // 기본적으로 두번 복기한다.
+
+        for(int i = 0; i < 2; i++)
+        {
+            Placement placement = placementRememberer.Get() as Placement;
+            Debug.Log("복구 대상: " + placement.Piece);
+
+            if (placement == null) return;
+
+            Piece returnPiece = placement.Piece;
+            Place returnPosition = placement.PrevPosition;
+            GameManager.Instance.ChangeGameState(GameManager.GameState.RETURN);
+            // 연출 없이 움직임만 복구
+            // 복기한 움직임은 메멘토에 저장하지 않는다.
+            MovePiece(returnPiece, returnPosition);
+        }
+
+        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
+
+    }
 }

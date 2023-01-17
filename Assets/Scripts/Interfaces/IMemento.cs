@@ -5,6 +5,5 @@ using UnityEngine;
 public interface IMemento
 {
     IMemento GetState();
-    void SetState();
 
 }

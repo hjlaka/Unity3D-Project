@@ -18,6 +18,7 @@ public class GameManager : SingleTon<GameManager>
         TURN_CHANGE, 
         IN_CONVERSATION, 
         AI_TURN,
+        RETURN,
         GAME_END
     }
     public GameState state;
@@ -142,6 +143,11 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.AI_TURN:
+                break;
+
+            case GameState.RETURN:
+                // 되돌리기 작업 종료 후 돌아왔을 때 아래 실행
+                ChangeGameState(GameState.SELECTING_PIECE);
                 break;
 
             default: 

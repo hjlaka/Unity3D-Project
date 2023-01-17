@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IOriginator
 {
     IMemento SaveMemento(IMemento memento);
+
+    void ApplyMemento();
 }

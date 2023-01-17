@@ -11,14 +11,17 @@ public class Placement : IMemento
     // 이동하기 전 줄, 열
     // 이동한 줄, 열
     private Piece piece;
-    private Vector2Int prevPosition;
-    private Vector2Int nextPosition;
+    public Piece Piece { get { return piece; } }
+    private Place prevPlace;
+    public Place PrevPosition { get { return prevPlace; } }
+    private Place nextPlace;
+    public Place NextPosition { get { return nextPlace; } }
 
-    public Placement(Piece piece, Vector2Int prevPosition, Vector2Int nextPosition)
+    public Placement(Piece piece, Place prevPlace, Place nextPlace)
     {
         this.piece = piece;
-        this.prevPosition = prevPosition;
-        this.nextPosition = nextPosition;
+        this.prevPlace = prevPlace;
+        this.nextPlace = nextPlace;
     }
 
     public IMemento GetState()
@@ -26,8 +29,4 @@ public class Placement : IMemento
         return this;
     }
 
-    public void SetState()
-    {
-
-    }
 }
