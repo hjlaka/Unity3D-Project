@@ -25,7 +25,7 @@ public class DialogueManager : SingleTon<DialogueManager>
     private Queue<DialogueUnit> dialogueQueue;
 
 
-    struct DialogueUnit
+    public class DialogueUnit
     {
         public string name;
         public string dialogue;
@@ -61,10 +61,14 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     public void AddDialogue(ref string name, ref string talk)
     {
-        DialogueUnit newDialogue;
-        newDialogue.name = name;
-        newDialogue.dialogue = talk;
+        DialogueUnit newDialogue = new DialogueUnit(name, talk);
         dialogueQueue.Enqueue(newDialogue);
+        Debug.Log("대화 추가했어요" + dialogueQueue.Count);
+    }
+
+    public void AddDialogue(DialogueUnit dialogue)
+    {
+        dialogueQueue.Enqueue(dialogue);
         Debug.Log("대화 추가했어요" + dialogueQueue.Count);
     }
 

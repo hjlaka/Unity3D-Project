@@ -27,7 +27,8 @@ public class GameManager : SingleTon<GameManager>
     public enum TurnState
     {
         PLAYER_TURN,
-        OPPONENT_TURN
+        OPPONENT_TURN,
+        RETURN
     }
     private TurnState turnState;
 
@@ -147,7 +148,6 @@ public class GameManager : SingleTon<GameManager>
 
             case GameState.RETURN:
                 // 되돌리기 작업 종료 후 돌아왔을 때 아래 실행
-                ChangeGameState(GameState.SELECTING_PIECE);
                 break;
 
             default: 
@@ -185,7 +185,17 @@ public class GameManager : SingleTon<GameManager>
             ChangeGameState(GameState.SELECTING_PIECE);
             
         }
-            
+        else if (turnState == TurnState.RETURN)
+        {
+            turnState = TurnState.PLAYER_TURN;
+            ChangeGameState(GameState.SELECTING_PIECE);
+
+        }
+    }
+
+    public void ChangeTurn(TurnState turn)
+    {
+        turnState = turn;
     }
 
 }

@@ -182,7 +182,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         DialogueManager.Instance.StartDialogue();
 
         // 이벤트 종료 확인 후 턴 종료
-        StartCoroutine(EndTurn(piece));
+        StartCoroutine(EndTurn(piece, true));
 
 
         // 메멘토 등록
@@ -218,12 +218,12 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         return attackedPiece;
     }
 
-    private IEnumerator EndTurn(Piece endedPiece)
+    private IEnumerator EndTurn(Piece endedPiece, bool endMark)
     {
         // 기본 대기 시간
         yield return new WaitForSeconds(1.5f);
 
-        while (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
+        while (GameManager.Instance.state == GameManager.GameState.IN_CONVERSATION)
         {
             yield return null;
 
@@ -233,12 +233,16 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         SelectedPieceInit();
 
-        MarkableBoard markableBoard = endedPiece.place.board as MarkableBoard;
-        if (markableBoard != null)
+        if(endMark)
         {
-            markableBoard.ShowMovableEnd(endedPiece);
-            markableBoard.ShowInfluenceEnd(endedPiece);
+            MarkableBoard markableBoard = endedPiece.place.board as MarkableBoard;
+            if (markableBoard != null)
+            {
+                markableBoard.ShowMovableEnd(endedPiece);
+                markableBoard.ShowInfluenceEnd(endedPiece);
+            }
         }
+
 
         //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
         GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
@@ -278,7 +282,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     {
         SelectedPiece = piece;
         SelectedPiece.ChangeColor(selectingColor);
-        GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
+        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
 
 
 
@@ -338,13 +342,15 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         for(int i = 0; i < 2; i++)
         {
             Placement placement = placementRememberer.Get() as Placement;
-            Debug.Log("복구 대상: " + placement.Piece);
+            
 
             if (placement == null) return;
+            Debug.Log("복구 대상: " + placement.Piece);
 
             Piece returnPiece = placement.Piece;
             Place returnPosition = placement.PrevPosition;
-            GameManager.Instance.ChangeGameState(GameManager.GameState.RETURN);
+            //GameManager.Instance.ChangeGameState(GameManager.GameState.RETURN);
+            GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
             // 연출 없이 움직임만 복구
             // 복기한 움직임은 메멘토에 저장하지 않는다.
             MovePiece(returnPiece, returnPosition);
@@ -357,14 +363,24 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 Place capturedPlace = placement.NextPosition;
                 // 기물 복구
                 Debug.Log("기물: " + capturedPiece + " 위치 : " + capturedPlace);
-                //MovePiece(capturedPiece, capturedPlace);
+                // MovePiece 함수를 쓰기 위해서는 예외처리가 더 필요하다.
                 capturedPiece.SetInPlace(capturedPlace);
                 CalculateInfluence(capturedPiece);
                 capturedPiece.IsFree = false;
+
+                DialogueManager.DialogueUnit dialogueRevive = new DialogueManager.DialogueUnit(capturedPiece.character.name, "살아났다");
+                DialogueManager.Instance.AddDialogue(dialogueRevive);
             }
+
+            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(returnPiece.character.name, "되돌아간다");
+            DialogueManager.Instance.AddDialogue(dialogue);
+
         }
 
-        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
+        DialogueManager.Instance.StartDialogue();
+
+        // 이벤트 종료 확인 후 턴 종료
+        StartCoroutine(EndTurn(null, false));
 
     }
 }
