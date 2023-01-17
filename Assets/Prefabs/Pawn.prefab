@@ -324,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.5
   jumpSpeed: 0
-  isFree: 1
+  isFree: 0
   target: {x: 0, y: 0, z: 0}
   OnWalk:
     m_PersistentCalls:
