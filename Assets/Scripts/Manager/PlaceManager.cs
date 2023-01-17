@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlaceManager : SingleTon<PlaceManager>
+public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 {
     [SerializeField]
     private Piece selectedPiece;
 
     [SerializeField]
     private CameraController camController;
+
+    [SerializeField]
+    private PlacementRememberer placementRememberer;
 
 
     public UnityEvent OnSelectPiece;
@@ -182,7 +185,17 @@ public class PlaceManager : SingleTon<PlaceManager>
         DialogueManager.Instance.StartDialogue();
 
         // 이벤트 종료 확인 후 턴 종료
-        StartCoroutine(EndTurn(piece));        
+        StartCoroutine(EndTurn(piece));
+
+
+        // 메멘토 등록
+        if(oldBoard != null && newBoard.FollowRule && oldBoard == newBoard)
+        {
+            Placement newPlacement = new Placement(piece, oldPlace.boardIndex, place.boardIndex);   // 메멘토?
+            placementRememberer.Add(SaveMemento(newPlacement));
+            Debug.Log("메멘토를 저장했다");
+        }
+            
 
     }
 
@@ -287,5 +300,9 @@ public class PlaceManager : SingleTon<PlaceManager>
         
     }
 
+    public IMemento SaveMemento(IMemento memento)
+    {
+        return memento;
+    }
 
 }
