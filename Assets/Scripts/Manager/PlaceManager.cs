@@ -281,12 +281,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         GameManager.Instance.state = GameManager.GameState.SELECTING_PLACE;
 
 
-        // 변화된 상황이 있을 수 있으므로 재 계산
-        InitInfluence(piece);
-
-        CalculateInfluence(piece);
-
-
 
         // 연출
         MarkableBoard markableBoard = piece.place.board as MarkableBoard;
