@@ -8,10 +8,21 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
     private int validMoveCount;
     private int curMoveCount;
 
+    ReachForPiece reachedLT;
+    ReachForPiece reachedRT;
+    ReachForPiece reachedLB;
+    ReachForPiece reachedRB;
+
+
     // 단계를 나눠서 강화되게 하기?
     public DiagonalMove(Piece controlled, int level) : base(controlled)
     {
         this.level = level;
+
+        reachedLT = new ReachForPiece();
+        reachedRT = new ReachForPiece();
+        reachedLB = new ReachForPiece();
+        reachedRB = new ReachForPiece();
 
         ApplyLevel();
     }
@@ -46,21 +57,22 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
         DiagonalRT(location + new Vector2Int(1, 1), boardSize.y, boardSize.x);
     }
 
-    private void DiagonalLT(Vector2Int curLocation, int boardHeight)
+    private bool DiagonalLT(Vector2Int curLocation, int boardHeight)
     {
-
-        if (curLocation.x < 0) return;
-        if (curLocation.y > boardHeight - 1) return;
+        // 허용된 위치인지 탐색
+        if (curMoveCount >= validMoveCount) return false;
+        if (curLocation.x < 0) return false;
+        if (curLocation.y > boardHeight - 1) return false;
 
         // 이동 가능 범위 등록
-        if (RecognizePiece(curLocation)) return;
+        if (RecognizePiece(curLocation)) return true;
+
 
         curMoveCount++;
 
-        if (curMoveCount >= validMoveCount) return;
-
-
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
+
+        return false;
 
         // movable에 등록?
     }

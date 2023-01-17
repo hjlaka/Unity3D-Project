@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AttackFirst
   m_EditorClassIdentifier: 
   willingToDefend: 1
-  willingToAttack: 4
+  willingToAttack: 3
   willingToThreat: 1.2
   willingToExtend: 0.5
   willingToSafe: 1.3

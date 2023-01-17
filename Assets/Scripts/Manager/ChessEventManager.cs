@@ -5,9 +5,30 @@ using UnityEngine.Events;
 
 public class ChessEventManager : SingleTon<ChessEventManager>
 {
+    public enum EventType { CHECK, CHECKMATE, GAME_END }
+
     public UnityEvent OnAIChecked;
+
+    public void AddEvent(EventType eventType, ITalkable talkable)
+    {
+        // 주체가 되는 기물
+        
+    }
+
+    private void FindEvent()
+    {
+        // 이벤트를 차례대로 찾는다. (우선순위 높은 순서대로)
+    }
+
+    public void IsCheckMate()
+    {
+
+    }
+
     public void CheckEvent(Piece piece)
     {
+
+
         piece.ChangeColor(Color.red);
         switch(piece.team.direction)
         {
@@ -23,4 +44,6 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 break;
         }
     }
+
+
 }
