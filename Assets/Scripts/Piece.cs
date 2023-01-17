@@ -68,7 +68,7 @@ public class Piece : LifeUnit, IObserver
             {
                 Debug.Log("공격하자!");
                 //AttackTo(targetPlace);
-                PlaceManager.Instance.Attack(this, targetPlace.Piece);
+                PlaceManager.Instance.MoveProcess(this, targetPlace);
             }
             else
             {
@@ -135,8 +135,11 @@ public class Piece : LifeUnit, IObserver
         Debug.Log(this + "가 " + piece + "로부터 더이상 위협받지 않는다.");
     }*/
 
-    public virtual void SetInPlace(Place place)
+    public virtual Piece SetInPlace(Place place)
     {
+        // 이동할 자리에 기존에 있던 기물
+        Piece preSetPiece = place.Piece;
+
         Place oldPlace = this.place;
         this.place = place;
         place.Piece = this;
@@ -146,6 +149,8 @@ public class Piece : LifeUnit, IObserver
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
+
+        return preSetPiece;
     }
 
     public void Move()
@@ -176,7 +181,7 @@ public class Piece : LifeUnit, IObserver
         //PlaceManager.Instance.ExpelPiece(place.Piece);
         //PlaceManager.Instance.MoveProcess(this, place);
     }
-    private void BeAttackedBy(Piece piece)
+    protected void BeAttackedBy(Piece piece)
     {
         Place attackPlace = this.place;
         PlaceManager.Instance.ExpelPiece(this);
@@ -187,13 +192,13 @@ public class Piece : LifeUnit, IObserver
 
     public void ChangeColor()
     {
-        Debug.Log("팀 색상으로 변경");
+        //Debug.Log("팀 색상으로 변경");
         curNormal = team.normal;
         render.material.color = curNormal;
     }
     public void ChangeColor(Color color)
     {
-        Debug.Log(color + " 색상으로 변경");
+        //Debug.Log(color + " 색상으로 변경");
         curNormal = color;
         render.material.color = curNormal;
 

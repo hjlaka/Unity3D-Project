@@ -37,6 +37,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public UnityEvent OnExitSelect;
 
     public Place selectedPlace;
+    public Place expelZone;
 
     [Header("Piece")]
     [SerializeField]
@@ -133,12 +134,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         return place.IsMovableToCurPiece;
 
     }
-    public void ExpelPiece(Piece piece)
-    {
-        InitInfluence(piece);
 
-        Destroy(piece.gameObject);
-    }
 
     public void MoveProcess(Piece piece, Place place)
     {
@@ -161,7 +157,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             oldBoard.PreShowEnd(piece);
 
 
-        MovePiece(piece, place);    
+        Piece attackedPiece = MovePiece(piece, place);    
 /*        // 연산
         oldPlace.Piece = null;
         InitInfluence(piece);
@@ -192,7 +188,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         // 메멘토 등록
         if(oldBoard != null && newBoard.FollowRule && oldBoard == newBoard)
         {
-            Placement newPlacement = new Placement(piece, oldPlace, place);   // 메멘토를 여기서 생성해야 할까?
+            Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece);
+            // 메멘토를 여기서 생성해야 할까? 공격 대상이 누구인지는 어떻게 확인하는가?
             SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
         }
@@ -200,15 +197,25 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     }
 
-    private void MovePiece(Piece piece, Place place)
+    private Piece MovePiece(Piece piece, Place place)
     {
-        piece.place.Piece = null;
+        Place oldPlace = piece.place;
+        if(oldPlace != null)
+            oldPlace.Piece = null;
         InitInfluence(piece);
 
 
         // 연산
-        piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
+        Piece attackedPiece = piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
+
+        if (attackedPiece != null)
+        {
+            Attack(piece, attackedPiece);
+        }
+
         CalculateInfluence(piece);
+
+        return attackedPiece;
     }
 
     private IEnumerator EndTurn(Piece endedPiece)
@@ -249,17 +256,22 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         piece.Recognized.ClearAllRecognized();
 
     }
-    
-
 
     public void Attack(Piece piece, Piece target)
     {
-        Place attackPlace = target.place;
         ExpelPiece(target);
-
         OnAttack?.Invoke();
+        // 공격자 이벤트 등록?
+        // 피공격자 이벤트 등록?
+    }
 
-        MoveProcess(piece, attackPlace);
+    public void ExpelPiece(Piece piece)
+    {
+        InitInfluence(piece);
+        piece.place = null;
+        piece.transform.Translate(new Vector3(0, 0, 0));
+        //MovePiece(piece, expelZone);
+        piece.IsFree = true;
     }
 
     public void SelectPiece(Piece piece)
@@ -342,6 +354,20 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             // 연출 없이 움직임만 복구
             // 복기한 움직임은 메멘토에 저장하지 않는다.
             MovePiece(returnPiece, returnPosition);
+
+
+            Piece capturedPiece = placement.CapturedPiece;
+            
+            if(capturedPiece != null)
+            {
+                Place capturedPlace = placement.NextPosition;
+                // 기물 복구
+                Debug.Log("기물: " + capturedPiece + " 위치 : " + capturedPlace);
+                //MovePiece(capturedPiece, capturedPlace);
+                capturedPiece.SetInPlace(capturedPlace);
+                CalculateInfluence(capturedPiece);
+                capturedPiece.IsFree = false;
+            }
         }
 
         GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);

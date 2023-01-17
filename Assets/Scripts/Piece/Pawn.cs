@@ -14,12 +14,15 @@ public class Pawn : Piece
     }
 
 
-    public override void SetInPlace(Place place)
+    public override Piece SetInPlace(Place place)
     {
+        Piece preSetPiece = place.Piece;
         movePattern.RecognizeSpecialMove(place);
         // TODO: 오버라이드 안해도 될 수도 있음
 
         base.SetInPlace(place);
+
+        return preSetPiece;
     }
 
 }

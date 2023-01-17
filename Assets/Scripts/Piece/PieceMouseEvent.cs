@@ -65,7 +65,9 @@ public class PieceMouseEvent : MonoBehaviour
                 {
                     //공격 
                     //BeAttackedBy(PlaceManager.Instance.SelectedPiece);
-                    PlaceManager.Instance.Attack(PlaceManager.Instance.SelectedPiece, piece);
+                    // 선택된 기물을 움직임
+                    // (움직임 함수 내부에서 공격 연산 수행)
+                    PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);
 
                 }
             }
