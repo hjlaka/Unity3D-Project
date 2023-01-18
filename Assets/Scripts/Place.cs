@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Place : MonoBehaviour, ISubject
 {
-    public enum PlaceType { A, B};
+    public enum PlaceType { A, B };
     private Piece piece;
     public Piece Piece
     {
@@ -20,7 +20,7 @@ public class Place : MonoBehaviour, ISubject
 
 
     [Header("Running Game")]
-   
+
     [SerializeField]
     private bool isMovableToCurPiece = false;
     [SerializeField]
@@ -67,38 +67,42 @@ public class Place : MonoBehaviour, ISubject
     public int HeatPointTopTeam
     {
         get { return heatPointTopTeam; }
-        set { heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
+        set
+        {
+            heatPointTopTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
             //Debug.Log(string.Format("위팀 과열도 {0}, 전체 과열도 {1}", heatPointTopTeam, heatPoint));
-            if(topTeamHeatUI != null) topTeamHeatUI.text = heatPointTopTeam.ToString();
+            if (topTeamHeatUI != null) topTeamHeatUI.text = heatPointTopTeam.ToString();
         }
     }
 
     public int HeatPointBottomTeam
     {
         get { return heatPointBottomTeam; }
-        set { heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
+        set
+        {
+            heatPointBottomTeam = value; HeatPoint = heatPointBottomTeam + heatPointTopTeam;
             //Debug.Log(string.Format("아래팀 과열도 {0}, 전체 과열도 {1}", heatPointBottomTeam, heatPoint));
-            if (bottomTeamHeatUI != null)  bottomTeamHeatUI.text = heatPointBottomTeam.ToString();
+            if (bottomTeamHeatUI != null) bottomTeamHeatUI.text = heatPointBottomTeam.ToString();
         }
     }
 
     public int HeatPoint
     {
         get
-        { 
-            return heatPoint; 
+        {
+            return heatPoint;
         }
         set
         {
             heatPoint = value;
 
-            if(heatPoint < 0) heatPoint = 0;
-            if(effect != null)
+            if (heatPoint < 0) heatPoint = 0;
+            if (effect != null)
                 effect.Intencity = heatPoint * 0.2f;
 
 
             //if (heatPoint >= 3) Debug.Log(heatPoint + " 과열된 자리! :" + this);
-            if (TotalHeatUI != null)  TotalHeatUI.text = heatPoint.ToString();
+            if (TotalHeatUI != null) TotalHeatUI.text = heatPoint.ToString();
         }
     }
 
@@ -130,16 +134,18 @@ public class Place : MonoBehaviour, ISubject
 
         switch (type)
         {
-            case PlaceType.A: typeColor = Color.white;
+            case PlaceType.A:
+                typeColor = Color.white;
                 break;
-            case PlaceType.B: typeColor = Color.black;
+            case PlaceType.B:
+                typeColor = Color.black;
                 break;
         }
 
         render.material.color = typeColor;
     }
 
-    private void OnMouseDown()
+    private void OnMouseUpAsButton()
     {
         //if (!GameManager.Instance.isPlayerTurn) { Debug.Log("플레이어 턴 아님"); return; }
         //Debug.Log(string.Format("{0} 클릭", gameObject.name));
@@ -151,7 +157,7 @@ public class Place : MonoBehaviour, ISubject
             Debug.Log("위치 선택 가능 상태 아님");
             return;
         }
-            
+
 
         // 기물이 선택된 상태에서 클릭시
         if (null == PlaceManager.Instance.SelectedPiece)
@@ -171,21 +177,21 @@ public class Place : MonoBehaviour, ISubject
             Debug.Log("접근 불가능한 위치임");
             return;
         }
-            
+
 
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
 
 
     }
 
-/*    public void UpdateInfluencingPieces()
-    {
-        for(int i = 0; i < influencingPieces.Count; i++)
+    /*    public void UpdateInfluencingPieces()
         {
-            Piece piece = influencingPieces[i];
-            PlaceManager.Instance.ReCalculateInfluence(piece);
-        }
-    }*/
+            for(int i = 0; i < influencingPieces.Count; i++)
+            {
+                Piece piece = influencingPieces[i];
+                PlaceManager.Instance.ReCalculateInfluence(piece);
+            }
+        }*/
 
     public void ChangeColor(Color color)
     {
@@ -197,23 +203,45 @@ public class Place : MonoBehaviour, ISubject
         render.material.color = typeColor;
     }
 
+    public void BeEmpty()
+    {
+        piece = null;
+        notifyObserver();
+    }
+
+    public void BeFilled(Piece piece)
+    {
+        this.piece = piece;
+        notifyObserver();
+    }
+
+
     public void registerObserver(IObserver observer)
     {
         influencingUnit.Add(observer as Piece);
-        Debug.Log(this + "의 옵저버 등록: " + observer);
     }
 
     public void removeObserver(IObserver observer)
     {
         influencingUnit.Remove(observer as Piece);
-        Debug.Log(this + "의 옵저버 해제: " + observer);
     }
 
     public void notifyObserver()
     {
-        for(int i = 0; i < influencingUnit.Count; i++)
+        // 옵저버에게 알리는 과정에서, 옵저버 목록이 바뀔 수 있다.
+        // 현재 목록대로 옵저버에게 알려야하므로, 복사본을 만들어야 한다.
+
+        List<IObserver> copyList = new List<IObserver>();
+
+        for (int i = 0; i < influencingUnit.Count; i++)
         {
-            ((IObserver)influencingUnit[i]).Update();
+            copyList.Add(influencingUnit[i]);
+        }
+
+        for (int i = 0; i < copyList.Count; i++)
+        {
+            copyList[i].StateUpdate();
+            Debug.Log("업데이트 호출: " + copyList[i]);
         }
     }
 }

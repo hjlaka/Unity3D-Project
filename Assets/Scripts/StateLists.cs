@@ -18,21 +18,21 @@ public class StateLists
         influenceable = new List<Place>();
     }
 
-    public void AddMovable(Place place)
+    public virtual void AddMovable(Place place)
     {
         movable.Add(place);
     }
-    public void AddDefending(Piece piece)
+    public virtual void AddDefending(Piece piece)
     {
         defending.Add(piece);
     }
 
-    public void AddThreating(Piece piece)
+    public virtual void AddThreating(Piece piece)
     {
         threating.Add(piece);
     }
 
-    public void AddInfluenceable(Place place)
+    public virtual void AddInfluenceable(Place place)
     {
         influenceable.Add(place);
     }
