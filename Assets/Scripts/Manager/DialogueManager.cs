@@ -46,18 +46,29 @@ public class DialogueManager : SingleTon<DialogueManager>
         dialogueQueue.Enqueue(new DialogueUnit("샘플2", "테스트2"));
     }
 
-
-/*    private void Update()
+    public void CheckDialogueEvent()
     {
-        if (GameManager.Instance.state != GameManager.GameState.IN_CONVERSATION) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (IsDialogueExist())
         {
-            Debug.Log("대화 다음으로 넘어가요");
+            GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
+            StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
         }
-        
-    }*/
+        else
+            Debug.Log("대화 없음");
+    }
+
+    public void NextDialogueShow()
+    {
+        if (!IsDialogueExist())
+        {
+            EndConversation();
+        }
+        else
+        {
+            SetDialogueText();
+        }
+    }
 
     public void AddDialogue(ref string name, ref string talk)
     {
@@ -72,23 +83,6 @@ public class DialogueManager : SingleTon<DialogueManager>
         Debug.Log("대화 추가했어요" + dialogueQueue.Count);
     }
 
-    public void StartDialogue()
-    {
-
-        GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
-
-        if (!SetDialogueText())
-        {
-            Debug.Log("대화 처음부터 없어요");
-            return;
-        }
-        else
-        {
-            Debug.Log("대화 시작해요");
-            StartCoroutine(ShowDialogueUIWithDelay());
-        }
-    }
-
 
     public IEnumerator ShowDialogueUIWithDelay()
     {
@@ -98,31 +92,13 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     }
 
-    private bool SetDialogueText()
-    {
-        if (dialogueQueue.Count <= 0)
-        {
-            EndConversation();
-            return false;
-        }
-
-        DialogueUnit dialogue = dialogueQueue.Dequeue();
-        dialogueName.text = dialogue.name;
-        dialogueText.text = dialogue.dialogue;
-        return true;
-    }
-
-    public void NextDialogueShow()
-    {
-        SetDialogueText();
-    }
-
     private void EndConversation()
     {
         Debug.Log("대화 끝났어요");
-        GameManager.Instance.GoBackGameState();
         DisableDialogueUI();
+        GameManager.Instance.GoBackGameState();
     }
+
 
     public void DisableDialogueUI()
     {
@@ -130,4 +106,18 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     }
 
+    private bool SetDialogueText()
+    {
+        DialogueUnit dialogue = dialogueQueue.Dequeue();
+        dialogueName.text = dialogue.name;
+        dialogueText.text = dialogue.dialogue;
+        return true;
+    }
+    private bool IsDialogueExist()
+    {
+        if (dialogueQueue.Count > 0)
+            return true;
+        else
+            return false;
+    }
 }

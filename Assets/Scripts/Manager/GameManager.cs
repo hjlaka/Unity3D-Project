@@ -10,7 +10,6 @@ public class GameManager : SingleTon<GameManager>
         START,
         SETTING_GAME,
         PREPARING_GAME,
-        PREPARING_END,
         SELECTING_PIECE, 
         SELECTING_PLACE, 
         DOING_PLAYER_TURN,
@@ -95,9 +94,8 @@ public class GameManager : SingleTon<GameManager>
     {
         switch(state)
         {
-            
             case GameState.START:
-                DialogueManager.Instance.StartDialogue();
+                DialogueManager.Instance.CheckDialogueEvent();
 
                 // 대화가 더이상 없다면 계속 진행
                 if(state == GameState.START)
@@ -118,8 +116,6 @@ public class GameManager : SingleTon<GameManager>
                 PlayerDataManager.Instance.DisablePlayerListUI();
                 break;
 
-            case GameState.PREPARING_END:
-                break;
 
             case GameState.SELECTING_PIECE:
                 break;
@@ -131,16 +127,22 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.TURN_CHANGE:
-
                 ChangeTurn();
-
                 break;
 
             case GameState.IN_CONVERSATION:
                 break;
 
             case GameState.TURN_FINISHED:
-                ChangeGameState(GameState.TURN_CHANGE);
+                // 이벤트 실행
+                // 체스 이벤트
+                // 대화 이벤트
+                DialogueManager.Instance.CheckDialogueEvent();
+
+                // 이벤트 종료 신호를 받아옴
+                // 대화가 더이상 없다면 계속 진행
+                if (state == GameState.TURN_FINISHED)
+                    ChangeGameState(GameState.TURN_CHANGE);
                 break;
 
             case GameState.AI_TURN:
@@ -148,6 +150,7 @@ public class GameManager : SingleTon<GameManager>
 
             case GameState.RETURN:
                 // 되돌리기 작업 종료 후 돌아왔을 때 아래 실행
+                ChangeGameState(GameState.TURN_CHANGE);
                 break;
 
             default: 

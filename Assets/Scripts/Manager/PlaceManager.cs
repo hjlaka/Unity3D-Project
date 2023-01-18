@@ -179,7 +179,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         OnFinishMove?.Invoke();
 
         // 이벤트
-        DialogueManager.Instance.StartDialogue();
+        DialogueManager.Instance.CheckDialogueEvent();
 
         // 이벤트 종료 확인 후 턴 종료
         StartCoroutine(EndTurn(piece, true));
@@ -368,19 +368,18 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 CalculateInfluence(capturedPiece);
                 capturedPiece.IsFree = false;
 
+                // 임시 이벤트 추가 처리
                 DialogueManager.DialogueUnit dialogueRevive = new DialogueManager.DialogueUnit(capturedPiece.character.name, "살아났다");
                 DialogueManager.Instance.AddDialogue(dialogueRevive);
             }
 
+            // 임시 이벤트 추가 처리
             DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(returnPiece.character.name, "되돌아간다");
             DialogueManager.Instance.AddDialogue(dialogue);
 
         }
-
-        DialogueManager.Instance.StartDialogue();
-
-        // 이벤트 종료 확인 후 턴 종료
-        StartCoroutine(EndTurn(null, false));
+        GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
+        // 이벤트 확인 동작 게임 매니저에서 처리
 
     }
 }
