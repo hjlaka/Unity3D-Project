@@ -202,11 +202,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     private Piece MovePiece(Piece piece, Place place)
     {
-        Place oldPlace = piece.place;
-        if(oldPlace != null)
-            oldPlace.Piece = null;
-        InitInfluence(piece);
 
+        InitInfluence(piece);
 
         // 연산
         Piece attackedPiece = piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
@@ -287,8 +284,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         SelectedPiece.ChangeColor(selectingColor);
         GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
 
-        // 버그로 인해 추가
-        ReCalculateInfluence(piece);
 
         // 연출
         MarkableBoard markableBoard = piece.place.board as MarkableBoard;

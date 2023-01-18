@@ -141,15 +141,24 @@ public class Piece : LifeUnit, IObserver
         // 이동할 자리에 기존에 있던 기물
         Piece preSetPiece = place.Piece;
 
+
         Place oldPlace = this.place;
+        this.place = null;
+        oldPlace?.BeEmpty();
+
         this.place = place;
+        place.BeFilled(this);
+
+/*        this.place = place;
         place.Piece = this;
         oldPlace?.notifyObserver();
-        place.notifyObserver();
+        place.notifyObserver();*/
         
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
+
+        Debug.Log("기존에 있던 기물: " + preSetPiece);
 
         return preSetPiece;
     }
@@ -216,9 +225,10 @@ public class Piece : LifeUnit, IObserver
 
     }
 
-    void IObserver.Update()
+    void IObserver.StateUpdate()
     {
         PlaceManager.Instance.ReCalculateInfluence(this);
+        Debug.Log("업데이트 수행: " + this);
     }
 }
 
