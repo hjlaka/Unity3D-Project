@@ -29,9 +29,8 @@ public class GameManager : SingleTon<GameManager>
         OPPONENT_TURN,
         RETURN
     }
-    private TurnState turnState;
+    public TurnState turnState;
 
-    public bool isPlayerTurn;
 
 
     [SerializeField]

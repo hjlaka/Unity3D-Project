@@ -58,7 +58,7 @@ public class AI : MonoBehaviour
 
     public void AITurn()
     {
-        if (GameManager.Instance.state != GameManager.GameState.AI_TURN)
+        if (GameManager.Instance.turnState != GameManager.TurnState.OPPONENT_TURN)
         {
             Debug.Log("AI Â÷·Ê ´Ü°è°¡ ¾Æ´Ô");
             return;

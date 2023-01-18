@@ -152,6 +152,11 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             Debug.Log("움직일 수 없는 곳");
             return;
         }
+
+        if(GameManager.Instance.turnState == GameManager.TurnState.PLAYER_TURN)
+        {
+            GameManager.Instance.ChangeGameState(GameManager.GameState.DOING_PLAYER_TURN);
+        }
             
 
         
@@ -189,7 +194,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
 
         // 메멘토 등록
-        if(oldBoard != null && newBoard.FollowRule && oldBoard == newBoard)
+        if(oldBoard != null && oldBoard.FollowRule && oldBoard == newBoard)
         {
             Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece);
             // 메멘토를 여기서 생성해야 할까? 공격 대상이 누구인지는 어떻게 확인하는가?
