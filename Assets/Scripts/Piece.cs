@@ -13,6 +13,7 @@ public class Piece : LifeUnit, IObserver
     protected int pieceScore;
     public int PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
 
+    [SerializeField]
     private DecidedStateLists recognized;
     public DecidedStateLists Recognized { get { return recognized; } private set { recognized = value; } }
 

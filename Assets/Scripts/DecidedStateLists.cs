@@ -1,9 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class DecidedStateLists : StateLists, IChessEventable
 {
+
+    public override void AddMovable(Place place)
+    {
+        movable.Add(place);
+    }
+    public override void AddDefending(Piece piece)
+    {
+        defending.Add(piece);
+        // 보호 이벤트 발동
+    }
+
+    public override void AddThreating(Piece piece)
+    {
+        threating.Add(piece);
+        // 위협 이벤트 발동
+    }
+
+
     public void Attack()
     {
         Debug.Log("공격 이벤트");
