@@ -45,6 +45,13 @@ public class DialogueManager : SingleTon<DialogueManager>
         dialogueQueue.Enqueue(new DialogueUnit("»ùÇÃ", "Å×½ºÆ®"));
         dialogueQueue.Enqueue(new DialogueUnit("»ùÇÃ2", "Å×½ºÆ®2"));
     }
+    public bool IsDialogueExist()
+    {
+        if (dialogueQueue.Count > 0)
+            return true;
+        else
+            return false;
+    }
 
     public void CheckDialogueEvent()
     {
@@ -113,11 +120,5 @@ public class DialogueManager : SingleTon<DialogueManager>
         dialogueText.text = dialogue.dialogue;
         return true;
     }
-    private bool IsDialogueExist()
-    {
-        if (dialogueQueue.Count > 0)
-            return true;
-        else
-            return false;
-    }
+
 }

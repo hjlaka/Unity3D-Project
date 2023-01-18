@@ -95,7 +95,11 @@ public class GameManager : SingleTon<GameManager>
         switch(state)
         {
             case GameState.START:
+                // 대화가 있다면 대화 상태 진입
                 DialogueManager.Instance.CheckDialogueEvent();
+
+                //if(DialogueManager.Instance.IsDialogueExist())
+                    // 대화 상태 진입
 
                 // 대화가 더이상 없다면 계속 진행
                 if(state == GameState.START)
@@ -131,6 +135,15 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.IN_CONVERSATION:
+                // 시작 부분에서
+                // ui 보여주기
+                // 대사 세팅하기
+
+                // 업데이트 부분에서
+                // 클릭 받아오기?
+
+                // 종료 부분에서
+                // 돌아가기
                 break;
 
             case GameState.TURN_FINISHED:
