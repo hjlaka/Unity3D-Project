@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class DecidePlaceStrategy
 {
-    protected int[,] scores;
+    protected ScoreMap scoreMap = new ScoreMap();
 
-    IHeatPreperStrategy heatPreperStrategy;
+    protected IHeatPreperStrategy heatPreperStrategy;
 
-    StrategyData strategyData;
+    protected StrategyData strategyData;
 
 
     protected float willingToDefend = 1f;
@@ -18,26 +18,12 @@ public class DecidePlaceStrategy
     protected float willingToSafe = 1.3f;
     protected float futureOriented = 0.1f;
 
-    public DecidePlaceStrategy()
-    {
-        scores = new int[8, 8];
-    }
-
     protected virtual void CopyData()
     {
-
+        // override
     }
 
-    protected void ClearScores()
-    {
-        for (int i = 0; i < scores.GetLength(0); i++)
-        {
-            for (int j = 0; j < scores.GetLength(1); j++)
-            {
-                scores[i, j] = -99;
-            }
-        }
-    }
+
     protected virtual float CalculateScore(Piece piece, Place place)
     {
         float score;
@@ -121,7 +107,25 @@ public class DecidePlaceStrategy
         score = attackPoint + placePreferPoint + assumePoint;
         if (GameManager.Instance.scoreDebugMode)
             Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + placePreferPoint + " /  가정 점수: " + assumePoint);
+
+        StoreToMap(place.boardIndex, attackPoint, defencePoint);
+
         return score;
+    }
+
+    protected void StoreToMap(Vector2Int location, float attackPoint, float defencePoint)
+    {
+        ScoreNode node = scoreMap.GetNode(location);
+
+        if (node == null)
+        {
+            Debug.Log("노드 없음");
+            return;
+        }
+
+        node.AttackPoint = attackPoint;
+        node.DefencdPoint = defencePoint;
+
     }
 
     protected float CalculateAssumeMoveScore(Piece piece, Place place)
@@ -211,12 +215,6 @@ public class DecidePlaceStrategy
         return assumScore;
 
 
-    }
-
-
-    protected void AddScoreToLocation(Vector2Int location, int score)
-    {
-        scores[location.x, location.y] = score;
     }
 
 }

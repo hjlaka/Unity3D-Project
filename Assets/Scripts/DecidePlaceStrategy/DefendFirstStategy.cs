@@ -22,6 +22,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
         List<Place> movablePlaces = piece.Recognized.movable;
 
         CopyData();
+        scoreMap.ClearMap();
 
         for (int i = 0; i < movablePlaces.Count; i++)
         {
@@ -43,6 +44,8 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
             Debug.Log(debug_score);
             Debug.Log(highScorePlace.boardIndex + "가 최대 점수다. : " + maxScore);
         }
+
+        scoreMap.PrintMap();
 
 
         return highScorePlace;

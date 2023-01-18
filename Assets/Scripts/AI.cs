@@ -51,7 +51,6 @@ public class AI : MonoBehaviour
 
     public void AddAIPiece(Piece piece)
     {
-        Debug.Log("전달된 것: " + piece);
         aiPieceList.Add(piece);
         Debug.Log(piece + "기물을 AI에 추가했다.");
     }
