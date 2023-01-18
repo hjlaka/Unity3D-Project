@@ -90,6 +90,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     public void ReCalculateInfluence(Piece piece)
     {
+        Debug.Log(piece + "영향 재계산");
         InitInfluence(piece);
         CalculateInfluence(piece);
     }
@@ -284,7 +285,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         SelectedPiece.ChangeColor(selectingColor);
         GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
 
-
+        // 버그로 인해 추가
+        ReCalculateInfluence(piece);
 
         // 연출
         MarkableBoard markableBoard = piece.place.board as MarkableBoard;
