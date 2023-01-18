@@ -38,7 +38,8 @@ public class Place : MonoBehaviour, ISubject
         set { isAttackableByCurPiece = value; }
     }
 
-    private List<IObserver> influencingUnit;
+    [SerializeField]
+    private List<Piece> influencingUnit; // 디버그 위해 변환
 
     [SerializeField]
     private PlaceEffect effect;
@@ -115,7 +116,7 @@ public class Place : MonoBehaviour, ISubject
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
-        influencingUnit = new List<IObserver>();
+        influencingUnit = new List<Piece>();
     }
 
     private void ChangeEffect(float intencity)
@@ -198,19 +199,21 @@ public class Place : MonoBehaviour, ISubject
 
     public void registerObserver(IObserver observer)
     {
-        influencingUnit.Add(observer);
+        influencingUnit.Add(observer as Piece);
+        Debug.Log(this + "의 옵저버 등록: " + observer);
     }
 
     public void removeObserver(IObserver observer)
     {
-        influencingUnit.Remove(observer);
+        influencingUnit.Remove(observer as Piece);
+        Debug.Log(this + "의 옵저버 해제: " + observer);
     }
 
     public void notifyObserver()
     {
         for(int i = 0; i < influencingUnit.Count; i++)
         {
-            influencingUnit[i].Update();
+            ((IObserver)influencingUnit[i]).Update();
         }
     }
 }
