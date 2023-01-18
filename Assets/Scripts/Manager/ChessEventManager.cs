@@ -5,13 +5,47 @@ using UnityEngine.Events;
 
 public class ChessEventManager : SingleTon<ChessEventManager>
 {
-    public enum EventType { CHECK, CHECKMATE, GAME_END }
+   
+
+
+    private List<ChessEvent> eventList;
 
     public UnityEvent OnAIChecked;
 
-    public void AddEvent(EventType eventType, ITalkable talkable)
+    private void Awake()
+    {
+        eventList = new List<ChessEvent>();
+    }
+
+    public void AddEvent(ChessEvent chessEvent)
     {
         // 주체가 되는 기물
+        eventList.Add(chessEvent);
+        
+    }
+
+    public void GetEvent()
+    {
+        if (eventList.Count <= 0) return;
+
+        // 모든 이벤트 다 넣기
+        for(int i = 0; i < eventList.Count; i++)
+        {
+            ChessEvent chessEvent = eventList[i];
+            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(chessEvent.Subject.character.name, "이벤트 1");
+            // 캐릭터 대사 가져오기
+
+            DialogueManager.Instance.AddDialogue(dialogue);
+
+            if(chessEvent.Target != null)
+            {
+                DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(chessEvent.Target.character.name, "이벤트 2");
+                DialogueManager.Instance.AddDialogue(dialogue2);
+                // 캐릭터 반응 가져오기
+            }
+        }
+
+        eventList.Clear();
         
     }
 

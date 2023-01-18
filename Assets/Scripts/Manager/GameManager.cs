@@ -149,6 +149,8 @@ public class GameManager : SingleTon<GameManager>
             case GameState.TURN_FINISHED:
                 // 이벤트 실행
                 // 체스 이벤트
+                ChessEventManager.Instance.GetEvent();
+
                 // 대화 이벤트
                 DialogueManager.Instance.CheckDialogueEvent();
 

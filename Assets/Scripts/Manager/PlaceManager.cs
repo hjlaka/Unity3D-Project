@@ -97,6 +97,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     public void WithDrawInfluence(Piece leftPiece)
     {
+        if (leftPiece.place == null) return;
+
         //TODO: 최적화
         if (leftPiece.team.direction == TeamData.Direction.DownToUp)
         {
@@ -371,13 +373,13 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 capturedPiece.IsFree = false;
 
                 // 임시 이벤트 추가 처리
-                DialogueManager.DialogueUnit dialogueRevive = new DialogueManager.DialogueUnit(capturedPiece.character.name, "살아났다");
-                DialogueManager.Instance.AddDialogue(dialogueRevive);
+                ChessEvent reviveEvent = new ChessEvent(ChessEvent.EventType.RETURN, capturedPiece, null);
+                ChessEventManager.Instance.AddEvent(reviveEvent);
             }
 
             // 임시 이벤트 추가 처리
-            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(returnPiece.character.name, "되돌아간다");
-            DialogueManager.Instance.AddDialogue(dialogue);
+            ChessEvent returnEvent = new ChessEvent(ChessEvent.EventType.RETURN, returnPiece, null);
+            ChessEventManager.Instance.AddEvent(returnEvent);
 
         }
         GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);

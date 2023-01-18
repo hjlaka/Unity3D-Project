@@ -45,13 +45,6 @@ public class DialogueManager : SingleTon<DialogueManager>
         dialogueQueue.Enqueue(new DialogueUnit("샘플", "테스트"));
         dialogueQueue.Enqueue(new DialogueUnit("샘플2", "테스트2"));
     }
-    public bool IsDialogueExist()
-    {
-        if (dialogueQueue.Count > 0)
-            return true;
-        else
-            return false;
-    }
 
     public void CheckDialogueEvent()
     {
@@ -63,6 +56,13 @@ public class DialogueManager : SingleTon<DialogueManager>
         }
         else
             Debug.Log("대화 없음");
+    }
+
+    private void SetDialogueText()
+    {
+        DialogueUnit dialogue = dialogueQueue.Dequeue();
+        dialogueName.text = dialogue.name;
+        dialogueText.text = dialogue.dialogue;
     }
 
     public void NextDialogueShow()
@@ -91,12 +91,11 @@ public class DialogueManager : SingleTon<DialogueManager>
     }
 
 
-    public IEnumerator ShowDialogueUIWithDelay()
+    private IEnumerator ShowDialogueUIWithDelay()
     {
         yield return new WaitForSeconds(delay);
 
         dialogueUI.gameObject.SetActive(true);
-
     }
 
     private void EndConversation()
@@ -107,18 +106,17 @@ public class DialogueManager : SingleTon<DialogueManager>
     }
 
 
-    public void DisableDialogueUI()
+    private void DisableDialogueUI()
     {
         dialogueUI.gameObject.SetActive(false);
-
     }
 
-    private bool SetDialogueText()
+    public bool IsDialogueExist()
     {
-        DialogueUnit dialogue = dialogueQueue.Dequeue();
-        dialogueName.text = dialogue.name;
-        dialogueText.text = dialogue.dialogue;
-        return true;
+        if (dialogueQueue.Count > 0)
+            return true;
+        else
+            return false;
     }
 
 }
