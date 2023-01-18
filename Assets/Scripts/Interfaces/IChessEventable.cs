@@ -10,7 +10,7 @@ public interface IChessEventable
 
     void Attack();
 
-    void Defend();
+    void Defend(Piece subject, Piece target);
 
     void CheckMate();
 }

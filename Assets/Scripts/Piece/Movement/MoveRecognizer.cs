@@ -126,8 +126,8 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
                 targetPlace.InfluencingPieces.Add(targetPiece);
             }*/
 
-            //IChessEventable chessEventable = recognizedLists as IChessEventable;
-            //chessEventable?.Defend();
+            IChessEventable chessEventable = recognizedLists as IChessEventable;
+            chessEventable?.Defend(controlled, targetPiece);
 
         }
         else

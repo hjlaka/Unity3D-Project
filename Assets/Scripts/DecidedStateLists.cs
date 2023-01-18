@@ -40,9 +40,28 @@ public class DecidedStateLists : StateLists, IChessEventable
         Debug.Log("체크 메이트 이벤트");
     }
 
-    public void Defend()
+    public void Defend(Piece subject, Piece target)
     {
-        Debug.Log("방어 이벤트");
+
+        Place targetPlace = target.place;
+        int deltaTopBottomHeat = targetPlace.HeatPointTopTeam - targetPlace.HeatPointBottomTeam;
+        //Debug.Log(string.Format("위팀 과열도 {0} - 아래팀 과열도 {1} = {2}", targetPlace.HeatPointTopTeam, targetPlace.HeatPointBottomTeam, deltaTopBottomHeat));
+        
+        // 예외처리가 필요하다.
+
+        if (target.team.direction == TeamData.Direction.UpToDown)
+        {
+            if (deltaTopBottomHeat > 0)
+                return;
+        }
+        else
+        {
+            if (deltaTopBottomHeat <= 0)
+                return;
+        }
+
+
+        Debug.Log("방어 이벤트: " + subject + " " + target + " 과열도 차이: " + deltaTopBottomHeat);
         // 이전에 방어하던 기물에 대해 방어를 유지하는가?
 
     }
