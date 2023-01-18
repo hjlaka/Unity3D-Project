@@ -58,11 +58,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         Board curBoard = newPlace.board;
 
         // 새로운 자리 과열도 추가
-
-        if (piece.team.direction == TeamData.Direction.DownToUp)
-            newPlace.HeatPointBottomTeam++;
-        else
-            newPlace.HeatPointTopTeam++;
+        // 자리 클래스로 코드 이동
 
         // 기물이 있는 곳이 보드가 아니라면 종료
         if (null == curBoard)
@@ -320,7 +316,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         SelectedPiece.ChangeColor();
 
         SelectedPiece = null;
-        GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
+        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
 
         //StartCoroutine(EndPlaceCam());
         

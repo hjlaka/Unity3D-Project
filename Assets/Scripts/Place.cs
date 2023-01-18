@@ -212,6 +212,12 @@ public class Place : MonoBehaviour, ISubject
     public void BeFilled(Piece piece)
     {
         this.piece = piece;
+
+        if (piece.team.direction == TeamData.Direction.DownToUp)
+            HeatPointBottomTeam++;
+        else
+            HeatPointTopTeam++;
+
         notifyObserver();
     }
 
