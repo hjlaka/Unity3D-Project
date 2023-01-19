@@ -35,10 +35,13 @@ public class GameSetter : MonoBehaviour
 
             instance.team = setting.opponentTeam;
             instance.character = opponent.character;
-            instance.SetInPlace(mainBoard.GetPlace(opponent.location));
+            //instance.SetInPlace(mainBoard.GetPlace(opponent.location));
+            Place place = mainBoard.GetPlace(opponent.location);
+
+            PlaceManager.Instance.MovePiece(instance, place);
 
             //과열도 적용
-            PlaceManager.Instance.CalculateInfluence(instance);
+            //PlaceManager.Instance.CalculateInfluence(instance);
 
             aiManager.AddAIPiece(instance);
         }

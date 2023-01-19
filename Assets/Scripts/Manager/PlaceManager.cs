@@ -166,9 +166,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         Piece attackedPiece = MovePiece(piece, place);
 
-        // 기물을 옮겼을 때, 변화된 자리들 알림 발송
-        oldPlace.notifyObserver();
-        place.notifyObserver();
+        
 
 
         // 연출 - 리스트 의존적 - 리스트를 받아올 수 있으면 좋을 것이다.
@@ -200,9 +198,9 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     }
 
-    private Piece MovePiece(Piece piece, Place place)
+    public Piece MovePiece(Piece piece, Place place)
     {
-
+        Place oldPlace = piece.place;
         InitInfluence(piece);
 
         // 연산
@@ -214,6 +212,10 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         }
 
         CalculateInfluence(piece);
+
+        // 기물을 옮겼을 때, 변화된 자리들 알림 발송
+        oldPlace?.notifyObserver();
+        place.notifyObserver();
 
         return attackedPiece;
     }
@@ -351,6 +353,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             // 연출 없이 움직임만 복구
             // 복기한 움직임은 메멘토에 저장하지 않는다.
             MovePiece(returnPiece, returnPosition);
+            //returnPosition.notifyObserver();
 
 
             Piece capturedPiece = placement.CapturedPiece;
@@ -361,8 +364,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 // 기물 복구
                 Debug.Log("기물: " + capturedPiece + " 위치 : " + capturedPlace);
                 // MovePiece 함수를 쓰기 위해서는 예외처리가 더 필요하다.
-                capturedPiece.SetInPlace(capturedPlace);
-                CalculateInfluence(capturedPiece);
+                MovePiece(capturedPiece, capturedPlace);
+                //capturedPlace.notifyObserver();
                 capturedPiece.IsFree = false;
 
                 // 임시 이벤트 추가 처리
