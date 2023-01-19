@@ -9,8 +9,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     [SerializeField]
     private Piece selectedPiece;
 
-    [SerializeField]
-    private CameraController camController;
 
     [SerializeField]
     private PlacementRememberer placementRememberer;
@@ -51,14 +49,12 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     
 
+    
     public void CalculateInfluence(Piece piece)
     {
         Place newPlace = piece.place;
         Vector2Int newIndex = newPlace.boardIndex;
         Board curBoard = newPlace.board;
-
-        // 새로운 자리 과열도 추가
-        // 자리 클래스로 코드 이동
 
         // 기물이 있는 곳이 보드가 아니라면 종료
         if (null == curBoard)
@@ -67,6 +63,14 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         // 규칙을 따르지 않는 보드라면 종료
         if (!curBoard.FollowRule)
             return;
+
+        // 새로운 자리 과열도 추가
+
+        Debug.Log("지금 자리 과열도 추가");
+        if (piece.team.direction == TeamData.Direction.DownToUp)
+            newPlace.HeatPointBottomTeam++;
+        else
+            newPlace.HeatPointTopTeam++;
 
         piece.RecognizeRange(piece.place.boardIndex);
 
@@ -91,10 +95,22 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         CalculateInfluence(piece);
     }
 
+
     public void WithDrawInfluence(Piece leftPiece)
     {
-        if (leftPiece.place == null) return;
-      
+        Place leftPlace = leftPiece.place;
+
+        if (leftPlace == null) return;
+
+        if (leftPiece.team.direction == TeamData.Direction.DownToUp)
+        {
+            leftPlace.HeatPointBottomTeam--;
+        }
+        else
+        {
+            leftPlace.HeatPointTopTeam--;
+        }
+
         List<Place> influencable = leftPiece.Recognized.influenceable;
         for (int i = 0; i < influencable.Count; i++)
         {
@@ -108,7 +124,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             }
             influencable[i].removeObserver(leftPiece);
         }
-
     }
 
 
@@ -149,7 +164,11 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             oldBoard.PreShowEnd(piece);
 
 
-        Piece attackedPiece = MovePiece(piece, place);    
+        Piece attackedPiece = MovePiece(piece, place);
+
+        // 기물을 옮겼을 때, 변화된 자리들 알림 발송
+        oldPlace.notifyObserver();
+        place.notifyObserver();
 
 
         // 연출 - 리스트 의존적 - 리스트를 받아올 수 있으면 좋을 것이다.
@@ -234,7 +253,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
 
     
-    private void InitInfluence(Piece piece)
+    public void InitInfluence(Piece piece)
     {
         WithDrawInfluence(piece);
 
@@ -245,6 +264,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void Attack(Piece piece, Piece target)
     {
         ExpelPiece(target);
+
+        CameraController.Instance.AddToTargetGroup(piece.transform);
         OnAttack?.Invoke();
         // 공격자 이벤트 등록?
         // 피공격자 이벤트 등록?

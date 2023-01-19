@@ -205,34 +205,12 @@ public class Place : MonoBehaviour, ISubject
 
     public void BeEmpty()
     {
-        Piece leftPiece = piece;
         piece = null;
-
-        if (leftPiece != null && leftPiece.place != null)
-        {
-            if (leftPiece.team.direction == TeamData.Direction.DownToUp)
-            {
-                leftPiece.place.HeatPointBottomTeam--;
-            }
-            else
-            {
-                leftPiece.place.HeatPointTopTeam--;
-            }
-        }
-
-        notifyObserver();
     }
 
     public void BeFilled(Piece piece)
     {
         this.piece = piece;
-
-        if (piece.team.direction == TeamData.Direction.DownToUp)
-            HeatPointBottomTeam++;
-        else
-            HeatPointTopTeam++;
-
-        notifyObserver();
     }
 
 
