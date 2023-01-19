@@ -192,7 +192,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         if(oldBoard != null && oldBoard.FollowRule && oldBoard == newBoard)
         {
             Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece);
-            // 메멘토를 여기서 생성해야 할까? 공격 대상이 누구인지는 어떻게 확인하는가?
+            // 메멘토를 여기서 생성해야 할까?
             SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
         }
@@ -243,8 +243,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             }
         }
 
-
-        //GameManager.Instance.state = GameManager.GameState.SELECTING_PIECE;
         GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
 
         // 카메라 연출
@@ -318,8 +316,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         SelectedPiece = null;
         GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
-
-        //StartCoroutine(EndPlaceCam());
         
     }
 
@@ -350,7 +346,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
             Piece returnPiece = placement.Piece;
             Place returnPosition = placement.PrevPosition;
-            //GameManager.Instance.ChangeGameState(GameManager.GameState.RETURN);
+
             GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
             // 연출 없이 움직임만 복구
             // 복기한 움직임은 메멘토에 저장하지 않는다.

@@ -19,7 +19,7 @@ public class PlacementRememberer : MonoBehaviour, ICareTaker
         if(memento is Placement)
         {
             placementStack.Push(memento as Placement);
-            Debug.Log("위치 개수: " + placementStack.Count);
+            //Debug.Log("위치 개수: " + placementStack.Count);
 
             // 디버그용
             placementList.Add(memento as Placement);

@@ -22,14 +22,6 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             wayToPiece = new List<Place>();
             meetType = MeetType.INFLUENCE;
         }
-        /*public void ChangeMeetType(Place place)
-        {
-            if(place.piece == null)
-            {
-                // 연결된 함수가 없다면 필요한 함수만 부르기는 어렵다.
-                // 최적화는 덜 되겠지만 함수 영향 범위 전체 재계산이 쉬운 선택이다.
-            }
-        }*/
     }
 
 
@@ -116,7 +108,6 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         if (targetPiece.team.TeamId == controlled.team.TeamId)
         {
             recognizedLists.AddDefending(targetPiece);
-            //targetPiece.BeDefended(controlled);
 
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
             recognizedLists.AddInfluenceable(targetPlace);
@@ -133,7 +124,6 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         else
         {
             recognizedLists.AddThreating(targetPiece);
-            //targetPiece.BeThreatened(controlled);
 
             // 공격할 수 있는 자리는 이동할 수 있는 자리 이기도 하다.
             // 공격할 수 있는 자리는 영향권 내 자리이다.

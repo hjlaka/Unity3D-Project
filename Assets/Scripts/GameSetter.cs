@@ -13,11 +13,6 @@ public class GameSetter : MonoBehaviour
 
     public UnityEvent OnOpponentSet;
 
-    /*    private void Awake()
-        {
-            gameSettings = new List<GameData>();
-        }*/
-
 
     public void SetOpponents(int index = 0)
     {
@@ -49,9 +44,6 @@ public class GameSetter : MonoBehaviour
         }
         OnOpponentSet?.Invoke();
 
-        //SetPlayers(index);
-
-        
     }
 
     public void SetPlayers(int index = 0)
@@ -83,8 +75,6 @@ public class GameSetter : MonoBehaviour
             instance.SetInPlace(initBoard.GetPlace(new Vector2Int(randX, randY)));
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
-
-
 
         }
     }

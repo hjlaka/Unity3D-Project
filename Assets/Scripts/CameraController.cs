@@ -70,12 +70,6 @@ public class CameraController : SingleTon<CameraController>
         ChangeFreeCamPriority(40);
     }
 
-    public void SetCamToSelectedPiece()
-    {
-        //Debug.Log("카메라 기물 비추기");
-        //SetFreeCam(PlaceManager.Instance.SelectedPiece.transform);
-    }
-
     public void ChangeVCamPriority(int priority)
     {
         vCam.Priority = priority;

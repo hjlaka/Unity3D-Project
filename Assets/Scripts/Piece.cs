@@ -148,11 +148,6 @@ public class Piece : LifeUnit, IObserver
         this.place = place;
         place.BeFilled(this);
 
-        /*        this.place = place;
-                place.Piece = this;
-                oldPlace?.notifyObserver();
-                place.notifyObserver();*/
-
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
@@ -182,13 +177,9 @@ public class Piece : LifeUnit, IObserver
         return null;
     }
 
-    
-    
     private void AttackTo(Place place)
     {
         PlaceManager.Instance.Attack(this, place.Piece);
-        //PlaceManager.Instance.ExpelPiece(place.Piece);
-        //PlaceManager.Instance.MoveProcess(this, place);
     }
     protected void BeAttackedBy(Piece piece)
     {
@@ -196,9 +187,6 @@ public class Piece : LifeUnit, IObserver
         PlaceManager.Instance.ExpelPiece(this);
         PlaceManager.Instance.MoveProcess(piece, attackPlace);
     }
-
-
-
     public void ChangeColor()
     {
         //Debug.Log("팀 색상으로 변경");
@@ -217,13 +205,11 @@ public class Piece : LifeUnit, IObserver
         render.material.color = color;
 
     }
-
     public void ChangeColorTempBack()
     {
         render.material.color = curNormal;
 
     }
-
     void IObserver.StateUpdate()
     {
         PlaceManager.Instance.ReCalculateInfluence(this);

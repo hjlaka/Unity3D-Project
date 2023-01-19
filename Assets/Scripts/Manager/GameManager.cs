@@ -73,22 +73,6 @@ public class GameManager : SingleTon<GameManager>
         GameStateUpdate();
     }
 
-    public void GameFlow()
-    {
-        // 시작 이벤트 실행
-
-
-        // 게임 실행
-
-        // 기물 배치 단계
-
-        // 턴 차례대로 진행
-
-
-
-    }
-
-
     public void GameStateUpdate()
     {
         switch(state)
