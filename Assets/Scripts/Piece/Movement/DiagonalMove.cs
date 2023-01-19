@@ -8,6 +8,8 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
     private int validMoveCount;
     private int curMoveCount;
 
+    Observer observerLT;
+
     ReachForPiece reachedLT;
     ReachForPiece reachedRT;
     ReachForPiece reachedLB;

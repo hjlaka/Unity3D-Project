@@ -15,7 +15,7 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         futureOriented = StrategyManager.Instance.attackFirst.futureOriented;
 
     }
-    public Place DecidePlace(Piece piece)
+    public Place DecidePlace(Piece piece, ref float will)
     {
         float maxScore = -99f;
         Place highScorePlace = null;
@@ -45,7 +45,9 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
             Debug.Log(debug_score);
             Debug.Log(highScorePlace.boardIndex + "가 최대 점수다. : " + maxScore);
         }
-       
+
+
+        will = maxScore / GetTotalWeight();
 
         return highScorePlace;
     }

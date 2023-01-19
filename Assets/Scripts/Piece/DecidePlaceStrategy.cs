@@ -11,16 +11,25 @@ public class DecidePlaceStrategy
     protected StrategyData strategyData;
 
 
-    protected float willingToDefend = 1f;
     protected float willingToAttack = 4f;
-    protected float willingToThreat = 1.2f;
+    protected float willingToDefend = 1f;
     protected float willingToExtend = 0.5f;
     protected float willingToSafe = 1.3f;
+    protected float willingToThreat = 1.2f;
     protected float futureOriented = 0.1f;
+
+    protected float totalWeight;
 
     protected virtual void CopyData()
     {
         // override
+    }
+
+    protected float GetTotalWeight()
+    {
+        totalWeight = willingToAttack + willingToDefend + willingToExtend + willingToSafe + willingToThreat + futureOriented;
+
+        return totalWeight;
     }
 
 

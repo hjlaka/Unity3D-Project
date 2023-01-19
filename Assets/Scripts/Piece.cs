@@ -50,7 +50,7 @@ public class Piece : LifeUnit, IObserver
         }   
     }
 
-    public void PlaceToDesire()
+    public void PlaceToDesire(Place targetPlace)
     {
 
         //PlaceManager.Instance.SelectPiece(this);
@@ -61,8 +61,6 @@ public class Piece : LifeUnit, IObserver
             PlaceManager.Instance.CancleSelectPiece();
             return;
         }
-
-        Place targetPlace = decideDesireStrategy.DecidePlace(this);
         if(targetPlace != null)
         {
             if(targetPlace.Piece != null)
@@ -84,6 +82,13 @@ public class Piece : LifeUnit, IObserver
         }
 
 
+    }
+
+    public Place DesireToPlace(ref float will)
+    {
+        Place targetPlace = decideDesireStrategy.DecidePlace(this, ref will);
+
+        return targetPlace;
     }
 
     private void ApplyTeamInfo()

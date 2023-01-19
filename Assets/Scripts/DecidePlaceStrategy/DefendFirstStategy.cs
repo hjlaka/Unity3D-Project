@@ -13,7 +13,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
         willingToSafe = StrategyManager.Instance.defendFirst.willingToSafe;
         futureOriented = StrategyManager.Instance.defendFirst.futureOriented;
     }
-    public Place DecidePlace(Piece piece)
+    public Place DecidePlace(Piece piece, ref float will)
     {
         float maxScore = -99f;
         Place highScorePlace = null;
@@ -47,6 +47,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
 
         scoreMap.PrintMap();
 
+        will = maxScore / GetTotalWeight();
 
         return highScorePlace;
     }

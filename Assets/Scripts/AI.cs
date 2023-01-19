@@ -91,21 +91,46 @@ public class AI : MonoBehaviour
 
         // 기물 움직임
 
+        float maxWill = 0f;
+        Piece maxWillingPiece = null;
+        Place maxWillingPlace = null;
 
-        if (null != aiPieceList[0])
+        for(int i = 0; i < aiPieceList.Count; i++)
         {
-            PlaceManager.Instance.SelectPiece(aiPieceList[0]);
-            Debug.Log(aiPieceList[0] + "턴 시작");
+            float will = 0f;
+            Place targetPlace = aiPieceList[i].DesireToPlace(ref will);
+
+            Debug.Log(string.Format("{0}의 의지 {1}", aiPieceList[i], will));
+
+            if(maxWill <= will)
+            {
+                maxWill = will;
+                maxWillingPiece = aiPieceList[i];
+                maxWillingPlace = targetPlace;
+            }
+        }
+
+        Debug.Log(string.Format("{0}의 의지 {1}", maxWillingPiece, maxWill));
+
+        if (null != maxWillingPiece)
+        {
+            PlaceManager.Instance.SelectPiece(maxWillingPiece);
+            Debug.Log(maxWillingPiece + "턴 시작. 의지는 " + maxWill);
 
             yield return new WaitForSeconds(showSelectedTime);
 
-            aiPieceList[0].PlaceToDesire();
-
+            maxWillingPiece.PlaceToDesire(maxWillingPlace);
+        }
+        else
+        {
+            Debug.Log("선정된 기물 없음");
+            // 무승부 판정
         }
 
         turnGoing = null;
 
     }
+
 
     private IEnumerator RunPieces()
     {
@@ -121,7 +146,9 @@ public class AI : MonoBehaviour
 
             yield return new WaitForSeconds(showSelectedTime);
 
-            aiPieceList[i].PlaceToDesire();
+            float will = 0f;
+            Place targetPlace = aiPieceList[i].DesireToPlace(ref will);
+            aiPieceList[i].PlaceToDesire(targetPlace);
 
             //yield return new WaitForSeconds(turnChangeTime);
             while (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
