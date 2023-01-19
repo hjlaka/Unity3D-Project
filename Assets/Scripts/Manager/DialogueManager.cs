@@ -24,16 +24,26 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     private Queue<DialogueUnit> dialogueQueue;
 
+    private DialogueUnit prevDialogue;
+
 
     public class DialogueUnit
     {
+        public Unit unit;
         public string name;
-        public string dialogue;
+        public string talk;
 
-        public DialogueUnit(string name, string dialogue)
+        public DialogueUnit(Unit unit, string talk)
+        {
+            this.unit = unit;
+            this.name = unit.GetName();
+            this.talk = talk;
+        }
+
+        public DialogueUnit(string name, string talk)
         {
             this.name = name;
-            this.dialogue = dialogue;
+            this.talk = talk;
         }
     }
 
@@ -51,6 +61,7 @@ public class DialogueManager : SingleTon<DialogueManager>
         if (IsDialogueExist())
         {
             GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
+            CameraController.Instance.SetFreeCam();
             StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
         }
@@ -62,20 +73,41 @@ public class DialogueManager : SingleTon<DialogueManager>
     {
         DialogueUnit dialogue = dialogueQueue.Dequeue();
         dialogueName.text = dialogue.name;
-        dialogueText.text = dialogue.dialogue;
+        dialogueText.text = dialogue.talk;
+        if(dialogue.unit != null)
+        {
+            CameraController.Instance.AddToTargetGroup(dialogue.unit.transform);
+        }
+
+        prevDialogue = dialogue;
+            
     }
 
     public void NextDialogueShow()
     {
         if (!IsDialogueExist())
         {
+            GetOutDialogue();
             EndConversation();
         }
         else
         {
+            GetOutDialogue();
             SetDialogueText();
         }
     }
+
+    private void GetOutDialogue()
+    {
+        if(prevDialogue != null)
+        {
+            if(prevDialogue.unit != null)
+            {
+                CameraController.Instance.RemoveFromTargetGroup(prevDialogue.unit.transform);
+            }
+        }
+    }
+
 
     public void AddDialogue(ref string name, ref string talk)
     {
@@ -103,6 +135,7 @@ public class DialogueManager : SingleTon<DialogueManager>
         Debug.Log("대화 끝났어요");
         DisableDialogueUI();
         GameManager.Instance.GoBackGameState();
+        CameraController.Instance.SetCamToTopDownView();
     }
 
 

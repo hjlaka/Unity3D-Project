@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : SingleTon<CameraController>
 {
 
     [SerializeField]
@@ -20,10 +20,17 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private CinemachineFreeLook freeCam;
 
+    [SerializeField]
+    private CinemachineTargetGroup targetGroup;
+
+    [SerializeField]
+    private Transform freeCamInitTrans;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
+        AddToTargetGroup(freeCamInitTrans);
+        RemoveFromTargetGroup(freeCamInitTrans);
     }
 
     private void Update()
@@ -58,17 +65,15 @@ public class CameraController : MonoBehaviour
         freeCam.Priority = priority;
     }
 
-    public void SetFreeCam(Transform target)
+    public void SetFreeCam()
     {
-        freeCam.LookAt = target;
-        freeCam.Follow = target;
         ChangeFreeCamPriority(40);
     }
 
     public void SetCamToSelectedPiece()
     {
         //Debug.Log("카메라 기물 비추기");
-        SetFreeCam(PlaceManager.Instance.SelectedPiece.transform);
+        //SetFreeCam(PlaceManager.Instance.SelectedPiece.transform);
     }
 
     public void ChangeVCamPriority(int priority)
@@ -81,6 +86,23 @@ public class CameraController : MonoBehaviour
         //Debug.Log("카메라 탑다운 뷰");
         ChangeVCamPriority(20);
         ChangeFreeCamPriority(10);
+    }
+
+    public void AddToTargetGroup(Transform trans)
+    {
+        targetGroup.AddMember(trans, 1, 0);
+    }
+
+    public void AddToTargetGroupAll(List<Transform> transList)
+    {
+        for(int i = 0; i < transList.Count; i++)
+        {
+            AddToTargetGroup(transList[i]);
+        }
+    }
+    public void RemoveFromTargetGroup(Transform trans)
+    {
+        targetGroup.RemoveMember(trans);
     }
 
 }

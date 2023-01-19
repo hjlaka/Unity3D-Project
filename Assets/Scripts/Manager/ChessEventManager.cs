@@ -65,19 +65,19 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         for (int i = 0; i < eventList.Count; i++)
         {
             ChessEvent chessEvent = eventList[i];
-            pieceName = chessEvent.Subject.character.name;
+            Piece subject = chessEvent.Subject;
             talk = chessEvent.GetTypeAsString();
             
-            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(pieceName, talk);
+            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(subject, talk);
             // 캐릭터 대사 가져오기 
 
             DialogueManager.Instance.AddDialogue(dialogue);
 
             if (chessEvent.Target != null)
             {
-                pieceName = chessEvent.Target.character.name;
+                subject = chessEvent.Target;
                 talk = chessEvent.GetTypeAsString() + "response";
-                DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(pieceName, talk);
+                DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(subject, talk);
                 DialogueManager.Instance.AddDialogue(dialogue2);
                 // 캐릭터 반응 가져오기
             }
