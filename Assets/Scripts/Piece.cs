@@ -158,7 +158,7 @@ public class Piece : LifeUnit, IObserver
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
 
-        Debug.Log("기존에 있던 기물: " + preSetPiece);
+        if(preSetPiece != null) Debug.Log("기존에 있던 기물: " + preSetPiece);
 
         return preSetPiece;
     }
@@ -228,7 +228,7 @@ public class Piece : LifeUnit, IObserver
     void IObserver.StateUpdate()
     {
         PlaceManager.Instance.ReCalculateInfluence(this);
-        Debug.Log("업데이트 수행: " + this);
+        //Debug.Log("업데이트 수행: " + this);
     }
 }
 

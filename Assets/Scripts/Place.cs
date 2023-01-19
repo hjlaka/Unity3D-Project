@@ -205,7 +205,21 @@ public class Place : MonoBehaviour, ISubject
 
     public void BeEmpty()
     {
+        Piece leftPiece = piece;
         piece = null;
+
+        if (leftPiece != null && leftPiece.place != null)
+        {
+            if (leftPiece.team.direction == TeamData.Direction.DownToUp)
+            {
+                leftPiece.place.HeatPointBottomTeam--;
+            }
+            else
+            {
+                leftPiece.place.HeatPointTopTeam--;
+            }
+        }
+
         notifyObserver();
     }
 
@@ -247,7 +261,7 @@ public class Place : MonoBehaviour, ISubject
         for (int i = 0; i < copyList.Count; i++)
         {
             copyList[i].StateUpdate();
-            Debug.Log("업데이트 호출: " + copyList[i]);
+            //Debug.Log("업데이트 호출: " + copyList[i]);
         }
     }
 }

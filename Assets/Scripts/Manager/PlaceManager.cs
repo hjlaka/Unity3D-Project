@@ -94,20 +94,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void WithDrawInfluence(Piece leftPiece)
     {
         if (leftPiece.place == null) return;
-
-        //TODO: 최적화
-        if (leftPiece.team.direction == TeamData.Direction.DownToUp)
-        {
-            leftPiece.place.HeatPointBottomTeam--;
-        }
-        else
-        {
-            leftPiece.place.HeatPointTopTeam--;
-        }
-        
-
+      
         List<Place> influencable = leftPiece.Recognized.influenceable;
-
         for (int i = 0; i < influencable.Count; i++)
         {
             if (leftPiece.team.direction == TeamData.Direction.DownToUp)
@@ -162,14 +150,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
 
         Piece attackedPiece = MovePiece(piece, place);    
-/*        // 연산
-        oldPlace.Piece = null;
-        InitInfluence(piece);
-
-        
-        // 연산
-        piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
-        CalculateInfluence(piece);*/
 
 
         // 연출 - 리스트 의존적 - 리스트를 받아올 수 있으면 좋을 것이다.
