@@ -145,7 +145,7 @@ public class DecidePlaceStrategy
 
         // 기물이 움직였다고 가정한 후, 기물의 움직임대로 영향권 위치를 계산한다.
         // 기물의 기존 영향 점수는 영향을 미치지 않는가?
-        piece.place.BeEmpty();
+        piece.place.Piece = null;
         piece.MovePattern.RecognizeRange(location, assumeStateLists);
 
         // 이동할 수 있는 칸 수
@@ -212,7 +212,7 @@ public class DecidePlaceStrategy
 
 
         // 되돌려 놓기
-        piece.place.BeFilled(piece);
+        piece.place.Piece = piece;
         return assumScore;
 
 
