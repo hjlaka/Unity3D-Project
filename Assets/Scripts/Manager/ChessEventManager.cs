@@ -31,14 +31,14 @@ public class ChessEventManager : SingleTon<ChessEventManager>
     public void SubmitEvent(ChessEvent chessEvent)
     {
         Piece subject = chessEvent.Subject;
-        Piece target = chessEvent.Subject;
-        string key = subject.GetInstanceID() + "/" + subject.GetInstanceID();
+        Piece target = chessEvent.Target;
+        string key = subject.GetInstanceID() + "/" + target.GetInstanceID();
         bool relationExist = relationDictionary.ContainsKey(key);
         if(relationExist)
         {
             if(chessEvent.GetType() == relationDictionary[key].GetType())
             {
-                Debug.Log("이미 있는 이벤트");
+                Debug.Log("이미 있는 이벤트--------------------------------");
             }
             else
             {
@@ -47,7 +47,9 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         }
         else
         {
-            Debug.Log("새로운 이벤트 " + chessEvent.GetTypeAsString());
+            Debug.Log("새로운 이벤트 " + subject + " " + target + " " + chessEvent.GetTypeAsString());
+            Debug.Log("키: [" + key + "]");
+            relationDictionary.Add(key, chessEvent);
             AddEvent(chessEvent);
         }
 
