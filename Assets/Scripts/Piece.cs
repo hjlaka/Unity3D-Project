@@ -140,8 +140,7 @@ public class Piece : LifeUnit, IObserver
     {
         // 이동할 자리에 기존에 있던 기물
         Piece preSetPiece = place.Piece;
-
-
+       
         Place oldPlace = this.place;
         this.place = null;
         oldPlace?.BeEmpty();
@@ -149,11 +148,11 @@ public class Piece : LifeUnit, IObserver
         this.place = place;
         place.BeFilled(this);
 
-/*        this.place = place;
-        place.Piece = this;
-        oldPlace?.notifyObserver();
-        place.notifyObserver();*/
-        
+        /*        this.place = place;
+                place.Piece = this;
+                oldPlace?.notifyObserver();
+                place.notifyObserver();*/
+
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
@@ -229,6 +228,11 @@ public class Piece : LifeUnit, IObserver
     {
         PlaceManager.Instance.ReCalculateInfluence(this);
         //Debug.Log("업데이트 수행: " + this);
+    }
+
+    public override string GetName()
+    {
+        return character.name;
     }
 }
 

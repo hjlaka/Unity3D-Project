@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LifeUnit : MonoBehaviour
+public class LifeUnit : Unit
 {
     [Header("LifeUnit")]
     [SerializeField]
