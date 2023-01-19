@@ -9,6 +9,7 @@ public class Knight : Piece
         base.Awake();
 
         movePattern = new JumpMove(this);
+        pieceScore = 3;
     }
 
 

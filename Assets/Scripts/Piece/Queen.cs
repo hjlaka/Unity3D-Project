@@ -10,5 +10,6 @@ public class Queen : Piece
 
         movePattern = new EightWayMove(this, 3);
         // 무브 패턴을 리스트화 하여 여러개 넣는 방식은 어떤가?
+        pieceScore = 9;
     }
 }

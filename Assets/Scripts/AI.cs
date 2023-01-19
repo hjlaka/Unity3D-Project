@@ -95,8 +95,10 @@ public class AI : MonoBehaviour
         Piece maxWillingPiece = null;
         Place maxWillingPlace = null;
 
+        Debug.Log("고려하는 기물 수: " + aiPieceList.Count);
         for(int i = 0; i < aiPieceList.Count; i++)
         {
+            Debug.Log(string.Format("{0}의 의지를 계산합니다.", aiPieceList[i]));
             float will = 0f;
             Place targetPlace = aiPieceList[i].DesireToPlace(ref will);
 

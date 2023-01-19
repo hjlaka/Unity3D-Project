@@ -9,6 +9,7 @@ public class Rook : Piece
         base.Awake();
 
         movePattern = new StraightMove(this, 3);
+        pieceScore = 5;
     }
     
 }
