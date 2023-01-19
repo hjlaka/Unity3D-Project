@@ -349,13 +349,13 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 capturedPiece.IsFree = false;
 
                 // 임시 이벤트 추가 처리
-                ChessEvent reviveEvent = new ChessEvent(ChessEvent.EventType.RETURN, capturedPiece, null);
-                ChessEventManager.Instance.AddEvent(reviveEvent);
+                //ChessEvent reviveEvent = new ChessEvent(ChessEvent.EventType.RETURN, capturedPiece, null);
+                //ChessEventManager.Instance.AddEvent(reviveEvent);
             }
 
             // 임시 이벤트 추가 처리
-            ChessEvent returnEvent = new ChessEvent(ChessEvent.EventType.RETURN, returnPiece, null);
-            ChessEventManager.Instance.AddEvent(returnEvent);
+            //ChessEvent returnEvent = new ChessEvent(ChessEvent.EventType.RETURN, returnPiece, null);
+            //ChessEventManager.Instance.AddEvent(returnEvent);
 
         }
         GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);

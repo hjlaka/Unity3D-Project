@@ -20,10 +20,11 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         relationDictionary = new Dictionary<string, ChessEvent>();
     }
 
-    public void AddEvent(ChessEvent chessEvent)
+    private void AddEvent(ChessEvent chessEvent)
     {
         // 주체가 되는 기물
         eventList.Add(chessEvent);
+        Debug.Log("----------------- 이벤트 추가 ------------------- : " + eventList.Count);
         
     }
 
@@ -56,18 +57,27 @@ public class ChessEventManager : SingleTon<ChessEventManager>
     {
         if (eventList.Count <= 0) return;
 
+        string pieceName;
+        string talk;
+
+        Debug.Log("이벤트 개수: " + eventList.Count);
         // 모든 이벤트 다 넣기
-        for(int i = 0; i < eventList.Count; i++)
+        for (int i = 0; i < eventList.Count; i++)
         {
             ChessEvent chessEvent = eventList[i];
-            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(chessEvent.Subject.character.name, "이벤트 1");
+            pieceName = chessEvent.Subject.character.name;
+            talk = chessEvent.GetTypeAsString();
+            
+            DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(pieceName, talk);
             // 캐릭터 대사 가져오기 
 
             DialogueManager.Instance.AddDialogue(dialogue);
 
-            if(chessEvent.Target != null)
+            if (chessEvent.Target != null)
             {
-                DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(chessEvent.Target.character.name, "이벤트 2");
+                pieceName = chessEvent.Target.character.name;
+                talk = chessEvent.GetTypeAsString() + "response";
+                DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(pieceName, talk);
                 DialogueManager.Instance.AddDialogue(dialogue2);
                 // 캐릭터 반응 가져오기
             }
