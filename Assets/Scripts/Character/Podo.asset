@@ -18,3 +18,5 @@ MonoBehaviour:
   threatening: "\uC5B4\uD765"
   defending: "\uBC29\uC5B4"
   attacking: "\uD53C\uC29D"
+  normalTalks:
+  - "\uC73C\uC330\uC73C\uC330"

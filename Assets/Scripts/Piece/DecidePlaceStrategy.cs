@@ -180,11 +180,10 @@ public class DecidePlaceStrategy
 
         // 이동 범위 확장 
         // 확장 점수 = 갈 수 있는 위치 개수 / (1 + 기물 점수)
-        extendablePoint = (float)movableCount / (piece.PieceScore);
-        extendablePoint = extendablePoint / (1 + extendablePoint);
+        extendablePoint = (float)movableCount / (1 + movableCount);
         Debug.Log("확장 점수: " + extendablePoint);
 
-        extendablePoint *= willingToExtend;
+        extendablePoint *= willingToExtend + (2 - ((float)piece.PieceScore / (1 + piece.PieceScore)));
 
         heatPreferPoint = (float)(heatPreferPoint) / (1 + heatPreferPoint);
         heatPreferPoint *= willingToSafe;

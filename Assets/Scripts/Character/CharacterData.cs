@@ -35,4 +35,7 @@ public class CharacterData : ScriptableObject
     public string defending;
     public string attacking;
 
+    public List<string> normalTalks;
+
+
 }
