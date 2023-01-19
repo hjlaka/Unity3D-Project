@@ -6,11 +6,11 @@ public interface IChessEventable
 {
     void Check(Piece targetPiece);
 
-    void Threat();
+    void Threat(Piece subject, Piece target);
 
-    void Attack();
+    void Attack(Piece subject, Piece target);
 
     void Defend(Piece subject, Piece target);
 
-    void CheckMate();
+    void CheckMate(Piece subject, Piece target);
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChessEvent : GameEvent
 {
-    public enum EventType { RETURN, CHECK, CHECKMATE, GAME_END }
+    public enum EventType { ATTACK, THREAT, DEFENCE, RETURN, CHECK, CHECKMATE, GAME_END }
 
     private EventType eventType;
 
@@ -38,5 +38,30 @@ public class ChessEvent : GameEvent
     public void SetType(EventType type)
     {
         eventType = type;
+    }
+
+    public string GetTypeAsString()
+    {
+        switch(eventType)
+        {
+            case EventType.ATTACK:
+                return "Attack";
+            case EventType.THREAT:
+                return "threat";
+            case EventType.DEFENCE:
+                return "defence";
+            case EventType.RETURN:
+                return "return";
+            case EventType.CHECK:
+                return "check";
+            case EventType.CHECKMATE:
+                return "checkmate";
+            case EventType.GAME_END:
+                return "Game end";
+
+            default: 
+                return "noneType";
+
+        }
     }
 }

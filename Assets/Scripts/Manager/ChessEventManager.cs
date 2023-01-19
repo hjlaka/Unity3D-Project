@@ -10,11 +10,14 @@ public class ChessEventManager : SingleTon<ChessEventManager>
 
     private List<ChessEvent> eventList;
 
+    private Dictionary<string, ChessEvent> relationDictionary;
+
     public UnityEvent OnAIChecked;
 
     private void Awake()
     {
         eventList = new List<ChessEvent>();
+        relationDictionary = new Dictionary<string, ChessEvent>();
     }
 
     public void AddEvent(ChessEvent chessEvent)
@@ -22,6 +25,31 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         // 주체가 되는 기물
         eventList.Add(chessEvent);
         
+    }
+
+    public void SubmitEvent(ChessEvent chessEvent)
+    {
+        Piece subject = chessEvent.Subject;
+        Piece target = chessEvent.Subject;
+        string key = subject.GetInstanceID() + "/" + subject.GetInstanceID();
+        bool relationExist = relationDictionary.ContainsKey(key);
+        if(relationExist)
+        {
+            if(chessEvent.GetType() == relationDictionary[key].GetType())
+            {
+                Debug.Log("이미 있는 이벤트");
+            }
+            else
+            {
+                Debug.Log("이미 있는 이벤트와 다름");
+            }
+        }
+        else
+        {
+            Debug.Log("새로운 이벤트 " + chessEvent.GetTypeAsString());
+            AddEvent(chessEvent);
+        }
+
     }
 
     public void GetEvent()
@@ -33,7 +61,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         {
             ChessEvent chessEvent = eventList[i];
             DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(chessEvent.Subject.character.name, "이벤트 1");
-            // 캐릭터 대사 가져오기
+            // 캐릭터 대사 가져오기 
 
             DialogueManager.Instance.AddDialogue(dialogue);
 
