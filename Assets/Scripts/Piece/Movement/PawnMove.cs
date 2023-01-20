@@ -79,6 +79,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         {
             // 벽이라면
             if (IsTopOutLocation(curLocation, boardHeight)) return;
+            if (IsBottomOutLocation(curLocation)) return;
 
             // 기물이 있다면 종료, 기물이 없다면 이동할 수 있는 범위로 등록
             if (RecognizeObstaclePiece(curLocation)) return;
