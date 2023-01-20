@@ -31,6 +31,7 @@ public class GameManager : SingleTon<GameManager>
 
     public enum OpponentType
     {
+        PLAYER,
         PLAYER2,
         AI
     }
@@ -100,6 +101,9 @@ public class GameManager : SingleTon<GameManager>
         {
             case OpponentType.AI:
                 opponentPlayer = aiManager;
+                break;
+            case OpponentType.PLAYER:
+                opponentPlayer = Player;
                 break;
             case OpponentType.PLAYER2:
                 opponentPlayer = new Player();
