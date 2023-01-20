@@ -31,7 +31,13 @@ public class PieceMouseEvent : MonoBehaviour
     
     private void OnMouseUpAsButton()
     {
-        if (piece.Belong.Turn != GameManager.Instance.turnState) return;
+        //if (piece.Belong.Turn != GameManager.Instance.turnState) return;
+        if (GameManager.Instance.CurPlayer != piece.Belong) 
+        { 
+            Debug.Log("기물 주인 턴이 아님. 턴: " + GameManager.Instance.CurPlayer + "/ 기물 주인: " + piece.Belong);  
+            return; 
+        }
+        
         // 버그: AI의 턴에 플레이어가 AI에게 속한 기물을 누를 수 있다.
 
 

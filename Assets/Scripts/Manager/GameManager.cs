@@ -7,7 +7,7 @@ public class GameManager : SingleTon<GameManager>
 {
     public enum GameState 
     { 
-        START,
+        START_GAME,
         SETTING_GAME,
         PREPARING_GAME,
         SELECTING_PIECE, 
@@ -61,6 +61,11 @@ public class GameManager : SingleTon<GameManager>
 
     private Player opponentPlayer;
 
+    private Player topPlayer;
+    private Player bottomPlayer;
+    private Player curPlayer;
+    public Player CurPlayer { get { return curPlayer; } }
+
     public Player Player { get { return player; } }
     public Player OpponentPlayer { get { return opponentPlayer; } }
 
@@ -92,7 +97,6 @@ public class GameManager : SingleTon<GameManager>
         //state = GameState.SELECTING_PIECE;
         turnState = TurnState.BOTTOM_TURN;
 
-
     }
 
     private void ApplyOpponentType()
@@ -118,14 +122,19 @@ public class GameManager : SingleTon<GameManager>
         switch (playerTeamDirection)
         {
             case TeamData.Direction.UpToDown:
-                player.SetTeamTurn(TurnState.TOP_TURN);
-                opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
-                
+                //player.SetTeamTurn(TurnState.TOP_TURN);
+                //opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
+
+                topPlayer = player;
+                bottomPlayer = opponentPlayer;
                 break;
 
             case TeamData.Direction.DownToUp:
-                player.SetTeamTurn(TurnState.BOTTOM_TURN);
-                opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
+                //player.SetTeamTurn(TurnState.BOTTOM_TURN);
+                //opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
+
+                topPlayer = opponentPlayer;
+                bottomPlayer = player;
                 break;
         }
     }
@@ -139,9 +148,10 @@ public class GameManager : SingleTon<GameManager>
     {
         switch(state)
         {
-            case GameState.START:
+            case GameState.START_GAME:
                 ApplyOpponentType();
                 ApplyBothPlayerDirection();
+                curPlayer = bottomPlayer;
                 // 대화가 있다면 대화 상태 진입
                 DialogueManager.Instance.CheckDialogueEvent();
 
@@ -149,7 +159,7 @@ public class GameManager : SingleTon<GameManager>
                     // 대화 상태 진입
 
                 // 대화가 더이상 없다면 계속 진행
-                if(state == GameState.START)
+                if(state == GameState.START_GAME)
                     ChangeGameState(GameState.SETTING_GAME);
                 break; 
 
@@ -241,21 +251,39 @@ public class GameManager : SingleTon<GameManager>
         if (turnState == TurnState.BOTTOM_TURN)
         {
             turnState = TurnState.TOP_TURN;
-            ChangeGameState(GameState.OPPONENT_TURN);
+            ChangeGameState(GameState.SELECTING_PIECE);
+            curPlayer = topPlayer;
             if(opponentPlayer is AI)
-                ((AI)opponentPlayer).DoTurn();         // 여기서 시작? - 상태 기계 만들기?
+            {
+                ((AI)opponentPlayer).DoTurn();
+                ChangeGameState(GameState.OPPONENT_TURN);
+            }
+            else
+            {
+                ChangeGameState(GameState.SELECTING_PIECE);
+            }
+                         // 여기서 시작? - 상태 기계 만들기?
         }
         else if (turnState == TurnState.TOP_TURN)
         {
             turnState = TurnState.BOTTOM_TURN;
             ChangeGameState(GameState.SELECTING_PIECE);
-            
+            curPlayer = bottomPlayer;
+            if (opponentPlayer is AI)
+            {
+                ((AI)opponentPlayer).DoTurn();
+                ChangeGameState(GameState.OPPONENT_TURN);
+            }
+            else
+            {
+                ChangeGameState(GameState.SELECTING_PIECE);
+            }
+
         }
         else if (turnState == TurnState.RETURN)
         {
             turnState = TurnState.BOTTOM_TURN;
             ChangeGameState(GameState.SELECTING_PIECE);
-
         }
     }
 
@@ -263,5 +291,4 @@ public class GameManager : SingleTon<GameManager>
     {
         turnState = turn;
     }
-
 }
