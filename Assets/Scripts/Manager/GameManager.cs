@@ -20,8 +20,7 @@ public class GameManager : SingleTon<GameManager>
         RETURN,
         GAME_END
     }
-    public GameState state;
-    private GameState beforeState;
+
 
     public enum TurnState
     {
@@ -29,16 +28,35 @@ public class GameManager : SingleTon<GameManager>
         OPPONENT_TURN,
         RETURN
     }
-    public TurnState turnState;
 
 
 
+    [Header("EngineSetting")]
     [SerializeField]
     private GameSetter gameSetter;
 
     [SerializeField]
     private AI aiManager;
 
+    [SerializeField]
+    private TextMeshProUGUI turnRemainUI;
+
+    [Header("GameSetting")]
+    [SerializeField]
+    private TeamData bottomTeam;
+
+    [SerializeField]
+    private TeamData topTeam;
+
+    [SerializeField]
+    private TeamData.Direction playerTeamSetting;
+
+    private TeamData playerTeam;
+
+    [Header("RunningGame")]
+    public GameState state;
+    private GameState beforeState;
+    public TurnState turnState;
 
     [SerializeField]
     private int trunRemain;
@@ -52,8 +70,7 @@ public class GameManager : SingleTon<GameManager>
                 turnRemainUI.text = trunRemain.ToString();
         }
     }    
-    [SerializeField]
-    private TextMeshProUGUI turnRemainUI;
+
 
     [Header("DebugMode")]
     public bool scoreDebugMode;
@@ -63,6 +80,17 @@ public class GameManager : SingleTon<GameManager>
         TurnRemain = 10;
         //state = GameState.SELECTING_PIECE;
         turnState = TurnState.PLAYER_TURN;
+
+        switch(playerTeamSetting)
+        {
+            case TeamData.Direction.UpToDown:
+                playerTeam = topTeam;
+                break;
+
+            case TeamData.Direction.DownToUp:
+                playerTeam = bottomTeam;
+                break;
+        }
 
 
 
