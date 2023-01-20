@@ -16,7 +16,7 @@ public class GameManager : SingleTon<GameManager>
         TURN_FINISHED,
         TURN_CHANGE, 
         IN_CONVERSATION, 
-        AI_TURN,
+        OPPONENT_TURN,
         RETURN,
         GAME_END
     }
@@ -24,9 +24,15 @@ public class GameManager : SingleTon<GameManager>
 
     public enum TurnState
     {
-        PLAYER_TURN,
-        OPPONENT_TURN,
+        BOTTOM_TURN,
+        TOP_TURN,
         RETURN
+    }
+
+    public enum OpponentType
+    {
+        PLAYER2,
+        AI
     }
 
 
@@ -43,15 +49,15 @@ public class GameManager : SingleTon<GameManager>
 
     [Header("GameSetting")]
     [SerializeField]
-    private TeamData bottomTeam;
+    private TeamData.Direction playerTeamDirection;
 
     [SerializeField]
-    private TeamData topTeam;
+    private OpponentType opponentType;
 
     [SerializeField]
-    private TeamData.Direction playerTeamSetting;
+    private Player player;
 
-    private TeamData playerTeam;
+    private Player opponentPlayer;
 
     [Header("RunningGame")]
     public GameState state;
@@ -79,21 +85,41 @@ public class GameManager : SingleTon<GameManager>
     {
         TurnRemain = 10;
         //state = GameState.SELECTING_PIECE;
-        turnState = TurnState.PLAYER_TURN;
+        turnState = TurnState.BOTTOM_TURN;
 
-        switch(playerTeamSetting)
+
+    }
+
+    private void ApplyOpponentType()
+    {
+        switch (opponentType)
         {
-            case TeamData.Direction.UpToDown:
-                playerTeam = topTeam;
+            case OpponentType.AI:
+                opponentPlayer = aiManager;
                 break;
-
-            case TeamData.Direction.DownToUp:
-                playerTeam = bottomTeam;
+            case OpponentType.PLAYER2:
+                opponentPlayer = new Player();
                 break;
         }
 
+    }
 
+    private void ApplyBothPlayerDirection()
+    {
+        // 상대편이 결정된 다음에 동작할 것.
+        switch (playerTeamDirection)
+        {
+            case TeamData.Direction.UpToDown:
+                player.SetTeamTurn(TurnState.TOP_TURN);
+                opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
+                
+                break;
 
+            case TeamData.Direction.DownToUp:
+                player.SetTeamTurn(TurnState.BOTTOM_TURN);
+                opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
+                break;
+        }
     }
 
     private void Update()
@@ -106,6 +132,8 @@ public class GameManager : SingleTon<GameManager>
         switch(state)
         {
             case GameState.START:
+                ApplyOpponentType();
+                ApplyBothPlayerDirection();
                 // 대화가 있다면 대화 상태 진입
                 DialogueManager.Instance.CheckDialogueEvent();
 
@@ -118,13 +146,13 @@ public class GameManager : SingleTon<GameManager>
                 break; 
 
             case GameState.SETTING_GAME:
-                gameSetter.SetOpponents(0);
+                gameSetter.SetTopTeam(0);
                 
                 ChangeGameState(GameState.PREPARING_GAME);
                 break;
             
             case GameState.PREPARING_GAME:
-                gameSetter.SetPlayers(0);
+                gameSetter.SetBottomTeam(0);
                 PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
                 // 완료 버튼을 눌렀을 시, 다음으로 넘어간다. 무언가 입력을 대기 해야 한다.// 외부에서 바꿀 수밖에 없는가? 혹은 신호를 받는 게 나은가?
                 ChangeGameState(GameState.SELECTING_PIECE);
@@ -171,7 +199,7 @@ public class GameManager : SingleTon<GameManager>
                     ChangeGameState(GameState.TURN_CHANGE);
                 break;
 
-            case GameState.AI_TURN:
+            case GameState.OPPONENT_TURN:
                 break;
 
             case GameState.RETURN:
@@ -202,21 +230,22 @@ public class GameManager : SingleTon<GameManager>
     {
         //AI와 플레이어 턴은 한번씩만 진행되는가?
 
-        if (turnState == TurnState.PLAYER_TURN)
+        if (turnState == TurnState.BOTTOM_TURN)
         {
-            turnState = TurnState.OPPONENT_TURN;
-            ChangeGameState(GameState.AI_TURN);
-            aiManager.AITurn();         // 여기서 시작? - 상태 기계 만들기?
+            turnState = TurnState.TOP_TURN;
+            ChangeGameState(GameState.OPPONENT_TURN);
+            if(opponentPlayer is AI)
+                ((AI)opponentPlayer).DoTurn();         // 여기서 시작? - 상태 기계 만들기?
         }
-        else if (turnState == TurnState.OPPONENT_TURN)
+        else if (turnState == TurnState.TOP_TURN)
         {
-            turnState = TurnState.PLAYER_TURN;
+            turnState = TurnState.BOTTOM_TURN;
             ChangeGameState(GameState.SELECTING_PIECE);
             
         }
         else if (turnState == TurnState.RETURN)
         {
-            turnState = TurnState.PLAYER_TURN;
+            turnState = TurnState.BOTTOM_TURN;
             ChangeGameState(GameState.SELECTING_PIECE);
 
         }

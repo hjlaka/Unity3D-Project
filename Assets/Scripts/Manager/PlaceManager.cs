@@ -151,7 +151,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             return;
         }
 
-        if(GameManager.Instance.turnState == GameManager.TurnState.PLAYER_TURN)
+        if(GameManager.Instance.turnState == GameManager.TurnState.BOTTOM_TURN)
         {
             GameManager.Instance.ChangeGameState(GameManager.GameState.DOING_PLAYER_TURN);
         }

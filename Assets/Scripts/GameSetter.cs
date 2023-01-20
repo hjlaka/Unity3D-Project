@@ -14,7 +14,7 @@ public class GameSetter : MonoBehaviour
     public UnityEvent OnOpponentSet;
 
 
-    public void SetOpponents(int index = 0)
+    public void SetTopTeam(int index = 0)
     {
         if (gameSettings.Count <= index) return;
 
@@ -29,7 +29,7 @@ public class GameSetter : MonoBehaviour
         Debug.Log("배치할 기물 수: " + setting.opponents.Count);
         for (int i = 0; i < setting.opponents.Count; i++)
         {
-            GameData.OpponentPiece opponent = setting.opponents[i];
+            GameData.CallingPiece opponent = setting.opponents[i];
             Piece instance = Instantiate(opponent.piecePrefab);
 
             Debug.Log("배치중인 기물: " + opponent.piecePrefab);
@@ -41,13 +41,13 @@ public class GameSetter : MonoBehaviour
             instance.place = targetPlace;
 
 
-            aiManager.AddAIPiece(instance);
+            aiManager.AddPiece(instance);
         }
         OnOpponentSet?.Invoke();
 
     }
 
-    public void SetPlayers(int index = 0)
+    public void SetBottomTeam(int index = 0)
     {
 
         if (gameSettings.Count <= index) return;
@@ -60,7 +60,7 @@ public class GameSetter : MonoBehaviour
 
         for (int i = 0; i < setting.players.Count; i++)
         {
-            GameData.PlayerPiece player = setting.players[i];
+            GameData.CallingPiece player = setting.players[i];
             Debug.Log("배치중인 기물: " + player.piecePrefab);
 
             Piece instance = Instantiate(player.piecePrefab);
