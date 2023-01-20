@@ -13,7 +13,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
         willingToSafe = StrategyManager.Instance.defendFirst.willingToSafe;
         futureOriented = StrategyManager.Instance.defendFirst.futureOriented;
     }
-    public Place DecidePlace(Piece piece, ref float will)
+    public Place DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet)
     {
         float maxScore = -99f;
         Place highScorePlace = null;
@@ -29,7 +29,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
         {
             Place place = movablePlaces[i];
             Vector2Int location = movablePlaces[i].boardIndex;
-            ScoreNode scoreSet = CalculateScore(piece, place);
+            scoreSet = CalculateScore(piece, place);
             float score = scoreSet.WillPoint;
             debug_score += score + " / ";
 

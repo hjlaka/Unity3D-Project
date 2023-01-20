@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RandomPlaceStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
 {
-    public Place DecidePlace(Piece piece, ref float will)
+    public Place DecidePlace(Piece piece, ref float will, out ScoreNode scoreset)
     {
 
         List<Place> movablePlaces = piece.Recognized.movable;
@@ -12,6 +12,7 @@ public class RandomPlaceStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         int randIndex = Random.Range(0, movablePlaces.Count);
 
         will = 0.7f;
+        scoreset = new ScoreNode();
 
         return movablePlaces[randIndex];
     }

@@ -37,6 +37,9 @@ public class AI : Player
     [Range(0f, 3f)]
     private float showSelectedTime;
 
+    [SerializeField]
+    private IAIStrategy aiStrategy;
+
 
 
 
@@ -98,8 +101,12 @@ public class AI : Player
         for(int i = 0; i < pieceList.Count; i++)
         {
             Debug.Log(string.Format("==============={0}의 의지를 계산합니다.===============", pieceList[i]));
+            Piece piece = pieceList[i];
             float will = 0f;
-            Place targetPlace = pieceList[i].DesireToPlace(ref will);
+            ScoreNode scoreSet;
+            Place targetPlace = piece.DesireToPlace(ref will, out scoreSet);
+
+            //aiStrategy.AddPossibility(scoreSet, piece, targetPlace);
 
             Debug.Log(string.Format("{0}의 의지 {1}", pieceList[i], will));
 

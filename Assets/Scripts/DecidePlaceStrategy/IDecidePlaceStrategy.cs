@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDecidePlaceStrategy
 {
     public enum StategyType { AttackFirst, DefenceFirst, SaftyFirst }
-    Place DecidePlace(Piece piece, ref float will);
+    Place DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet);
 }

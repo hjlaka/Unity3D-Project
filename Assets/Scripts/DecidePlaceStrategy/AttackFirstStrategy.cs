@@ -15,7 +15,7 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         futureOriented = StrategyManager.Instance.attackFirst.futureOriented;
 
     }
-    public Place DecidePlace(Piece piece, ref float will)
+    public Place DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet)
     {
         float maxScore = -99f;
         Place highScorePlace = null;
@@ -29,7 +29,7 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         for (int i = 0; i < movablePlaces.Count; i++)
         {
             Place place = movablePlaces[i];
-            ScoreNode scoreSet = CalculateScore(piece, place);
+            scoreSet = CalculateScore(piece, place);
             float score = scoreSet.WillPoint;
 
             // 저장해 둔 점수 중 가장 높은 점수 가져오기? (왕 보호에 대한 것 외에는 차선을 가져올 수도 있도록?)
