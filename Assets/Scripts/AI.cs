@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI : MonoBehaviour
+public class AI : Player
 {
     // AI편의 기물을 보유한다.
 
@@ -38,26 +38,25 @@ public class AI : MonoBehaviour
     private float showSelectedTime;
 
 
-    [SerializeField]
-    private List<Piece> aiPieceList;
+
 
     private Coroutine turnGoing;
 
 
     private void Awake()
     {
-        aiPieceList = new List<Piece>();
+        pieceList = new List<Piece>();
     }
 
-    public void AddAIPiece(Piece piece)
+    public override void AddPiece(Piece piece)
     {
-        aiPieceList.Add(piece);
+        pieceList.Add(piece);
         Debug.Log(piece + "기물을 AI에 추가했다.");
     }
 
-    public void AITurn()
+    public override void DoTurn()
     {
-        if (GameManager.Instance.turnState != GameManager.TurnState.OPPONENT_TURN)
+        if (GameManager.Instance.turnState != GameManager.TurnState.TOP_TURN)
         {
             Debug.Log("AI 차례 단계가 아님");
             return;
@@ -95,19 +94,19 @@ public class AI : MonoBehaviour
         Piece maxWillingPiece = null;
         Place maxWillingPlace = null;
 
-        Debug.Log("고려하는 기물 수: " + aiPieceList.Count);
-        for(int i = 0; i < aiPieceList.Count; i++)
+        Debug.Log("고려하는 기물 수: " + pieceList.Count);
+        for(int i = 0; i < pieceList.Count; i++)
         {
-            Debug.Log(string.Format("{0}의 의지를 계산합니다.", aiPieceList[i]));
+            Debug.Log(string.Format("==============={0}의 의지를 계산합니다.===============", pieceList[i]));
             float will = 0f;
-            Place targetPlace = aiPieceList[i].DesireToPlace(ref will);
+            Place targetPlace = pieceList[i].DesireToPlace(ref will);
 
-            Debug.Log(string.Format("{0}의 의지 {1}", aiPieceList[i], will));
+            Debug.Log(string.Format("{0}의 의지 {1}", pieceList[i], will));
 
             if(maxWill <= will)
             {
                 maxWill = will;
-                maxWillingPiece = aiPieceList[i];
+                maxWillingPiece = pieceList[i];
                 maxWillingPlace = targetPlace;
             }
         }
@@ -136,21 +135,21 @@ public class AI : MonoBehaviour
 
     private IEnumerator RunPieces()
     {
-        Debug.Log("AI 턴 실행 개수: " + aiPieceList.Count);
+        Debug.Log("AI 턴 실행 개수: " + pieceList.Count);
 
-        for (int i = 0; i < aiPieceList.Count; i++)
+        for (int i = 0; i < pieceList.Count; i++)
         {
 
-            if (null == aiPieceList[i]) continue;
+            if (null == pieceList[i]) continue;
 
-            PlaceManager.Instance.SelectPiece(aiPieceList[i]);
-            Debug.Log(aiPieceList[i] + "턴 시작");
+            PlaceManager.Instance.SelectPiece(pieceList[i]);
+            Debug.Log(pieceList[i] + "턴 시작");
 
             yield return new WaitForSeconds(showSelectedTime);
 
             float will = 0f;
-            Place targetPlace = aiPieceList[i].DesireToPlace(ref will);
-            aiPieceList[i].PlaceToDesire(targetPlace);
+            Place targetPlace = pieceList[i].DesireToPlace(ref will);
+            pieceList[i].PlaceToDesire(targetPlace);
 
             //yield return new WaitForSeconds(turnChangeTime);
             while (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)

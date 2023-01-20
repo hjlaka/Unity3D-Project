@@ -43,7 +43,7 @@ public class PieceCreateButton : MonoBehaviour
 
 
         if (team.direction == TeamData.Direction.UpToDown)
-            aiManager.AddAIPiece(instance);
+            aiManager.AddPiece(instance);
         else
             PlayerDataManager.Instance.AddPlayerPiece(instance);
         

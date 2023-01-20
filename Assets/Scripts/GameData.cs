@@ -12,23 +12,13 @@ public class GameData : ScriptableObject
     public TeamData playerTeam;
     public TeamData opponentTeam;
 
-    public List<OpponentPiece> opponents;
-    public List<PlayerPiece> players;
+    public List<CallingPiece> opponents;
+    public List<CallingPiece> players;
 
 
 
     [Serializable]
-    public struct OpponentPiece
-    {
-        public Piece piecePrefab;
-
-        public CharacterData character;
-
-        public Vector2Int location;
-    }
-
-    [Serializable]
-    public struct PlayerPiece
+    public struct CallingPiece
     {
         public Piece piecePrefab;
 
