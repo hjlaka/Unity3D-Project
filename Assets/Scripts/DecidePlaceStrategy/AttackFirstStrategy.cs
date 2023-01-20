@@ -19,17 +19,18 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
     {
         float maxScore = -99f;
         Place highScorePlace = null;
-        ScoreNode highWillScoreSet = null;
         string debug_score = "";
+        scoreSet = null;
 
         List<Place> movablePlaces = piece.Recognized.movable;
 
         CopyData();
+     
 
         for (int i = 0; i < movablePlaces.Count; i++)
         {
             Place place = movablePlaces[i];
-            scoreSet = CalculateScore(piece, place);
+            ScoreNode tempScoreSet = CalculateScore(piece, place);
             float score = scoreSet.WillPoint;
 
             // 저장해 둔 점수 중 가장 높은 점수 가져오기? (왕 보호에 대한 것 외에는 차선을 가져올 수도 있도록?)
@@ -38,7 +39,7 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
             {
                 highScorePlace = place;
                 maxScore = score;
-                highWillScoreSet = scoreSet;
+                scoreSet = tempScoreSet;
             }
         }
         if(GameManager.Instance.scoreDebugMode)

@@ -155,7 +155,8 @@ public class AI : Player
             yield return new WaitForSeconds(showSelectedTime);
 
             float will = 0f;
-            Place targetPlace = pieceList[i].DesireToPlace(ref will);
+            ScoreNode scoreSet;
+            Place targetPlace = pieceList[i].DesireToPlace(ref will, out scoreSet);
             pieceList[i].PlaceToDesire(targetPlace);
 
             //yield return new WaitForSeconds(turnChangeTime);

@@ -17,8 +17,8 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
     {
         float maxScore = -99f;
         Place highScorePlace = null;
-        ScoreNode highWillScoreSet = null;
         string debug_score = "";
+        scoreSet = null;
 
         List<Place> movablePlaces = piece.Recognized.movable;
 
@@ -29,7 +29,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
         {
             Place place = movablePlaces[i];
             Vector2Int location = movablePlaces[i].boardIndex;
-            scoreSet = CalculateScore(piece, place);
+            ScoreNode tempScoreSet = CalculateScore(piece, place);
             float score = scoreSet.WillPoint;
             debug_score += score + " / ";
 
@@ -39,7 +39,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
             {
                 highScorePlace = place;
                 maxScore = score;
-                highWillScoreSet = scoreSet;
+                scoreSet = tempScoreSet;
             }
         }
         if (GameManager.Instance.scoreDebugMode)
