@@ -251,9 +251,8 @@ public class GameManager : SingleTon<GameManager>
         if (turnState == TurnState.BOTTOM_TURN)
         {
             turnState = TurnState.TOP_TURN;
-            ChangeGameState(GameState.SELECTING_PIECE);
             curPlayer = topPlayer;
-            if(opponentPlayer is AI)
+            if(curPlayer is AI)
             {
                 ((AI)opponentPlayer).DoTurn();
                 ChangeGameState(GameState.OPPONENT_TURN);
@@ -267,9 +266,8 @@ public class GameManager : SingleTon<GameManager>
         else if (turnState == TurnState.TOP_TURN)
         {
             turnState = TurnState.BOTTOM_TURN;
-            ChangeGameState(GameState.SELECTING_PIECE);
             curPlayer = bottomPlayer;
-            if (opponentPlayer is AI)
+            if (curPlayer is AI)
             {
                 ((AI)opponentPlayer).DoTurn();
                 ChangeGameState(GameState.OPPONENT_TURN);
