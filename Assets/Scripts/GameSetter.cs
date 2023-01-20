@@ -36,14 +36,10 @@ public class GameSetter : MonoBehaviour
 
             instance.team = setting.opponentTeam;
             instance.character = opponent.character;
-            //instance.SetInPlace(mainBoard.GetPlace(opponent.location));
-            Place setPlace = mainBoard.GetPlace(opponent.location);
-            instance.place = setPlace;
 
-            //PlaceManager.Instance.MovePiece(instance, place);
+            Place targetPlace = mainBoard.GetPlace(opponent.location);
+            instance.place = targetPlace;
 
-            //과열도 적용
-            //PlaceManager.Instance.CalculateInfluence(instance);
 
             aiManager.AddAIPiece(instance);
         }
@@ -60,8 +56,6 @@ public class GameSetter : MonoBehaviour
 
         Board initBoard = GameObject.Find("InitialBoard").GetComponent<Board>();
 
-        //Debug.Log("찾아낸 보드: " + mainBoard);
-
         GameData setting = gameSettings[index];
 
         for (int i = 0; i < setting.players.Count; i++)
@@ -77,8 +71,9 @@ public class GameSetter : MonoBehaviour
             int randY = Random.Range(0, 3);
 
             Debug.Log("랜덤 위치: " + randX + ", " + randY);
-            //instance.SetInPlace(initBoard.GetPlace(new Vector2Int(randX, randY)));
-            instance.place = initBoard.GetPlace(new Vector2Int(randX, randY));
+            Place targetPlace = initBoard.GetPlace(new Vector2Int(randX, randY));
+            instance.place = targetPlace;
+            //PlaceManager.Instance.MovePiece(instance, targetPlace);
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
 

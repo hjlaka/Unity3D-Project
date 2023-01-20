@@ -30,6 +30,11 @@ public class PawnMove : MoveRecognizer, IPieceMovable
             canDoubleMove = true;
         else
             canDoubleMove = false;
+        /*            Debug.Log("특수 이동 체크: " + canDoubleMove);
+                if (canDoubleMove && controlled.MoveCount > 0)
+                    canDoubleMove = false;
+                Debug.Log("특수 이동 체크2: " + canDoubleMove);
+        */
     }
     // 중간에 기물이 폰이 되면 두번 움직임을 허용할 것인가?
     // 조건 변경? 정해진 행에서만 두번 움직일 수 있게 하기?
@@ -43,7 +48,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         if (RecognizeObstaclePiece(curLocation)) return;
 
         // 기물이 없고, 두번 움직이는 조건이 충족된다면 한번 더 확인
-        MoveDoubleForward(curLocation + new Vector2Int(0, 1), boardHeight);
+        MoveDoubleForward(curLocation + new Vector2Int(0, controlled.forwardY), boardHeight);
     }
 
     private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)

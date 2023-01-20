@@ -17,6 +17,10 @@ public class Piece : LifeUnit, IObserver
     private DecidedStateLists recognized;
     public DecidedStateLists Recognized { get { return recognized; } private set { recognized = value; } }
 
+    [SerializeField]
+    private uint moveCount;
+    public uint MoveCount { get { return moveCount; } }
+
 
     public IReturnHeat returnHeat;
 
@@ -46,8 +50,13 @@ public class Piece : LifeUnit, IObserver
 
         if (place != null)
         {
-            PlaceManager.Instance.MovePiece(this, place);
-        }   
+            place.BeFilled(this);
+            Move();
+
+            PlaceManager.Instance.CalculateInfluence(this);
+
+            place.notifyObserver();
+        }
     }
 
     public void PlaceToDesire(Place targetPlace)
@@ -156,6 +165,7 @@ public class Piece : LifeUnit, IObserver
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
+        moveCount++;
 
         if(preSetPiece != null) Debug.Log("기존에 있던 기물: " + preSetPiece);
 
