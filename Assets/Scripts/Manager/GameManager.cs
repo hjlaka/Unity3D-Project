@@ -54,10 +54,14 @@ public class GameManager : SingleTon<GameManager>
     [SerializeField]
     private OpponentType opponentType;
 
+
     [SerializeField]
     private Player player;
 
     private Player opponentPlayer;
+
+    public Player Player { get { return player; } }
+    public Player OpponentPlayer { get { return opponentPlayer; } }
 
     [Header("RunningGame")]
     public GameState state;

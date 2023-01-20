@@ -43,9 +43,17 @@ public class PieceCreateButton : MonoBehaviour
 
 
         if (team.direction == TeamData.Direction.UpToDown)
-            aiManager.AddPiece(instance);
+        {
+            GameManager.Instance.OpponentPlayer.AddPiece(instance);
+            // 테스트를 위해 생성된 기물의 조작은 플레이어가 함
+            instance.Belong = GameManager.Instance.Player;
+        }
         else
+        {
             PlayerDataManager.Instance.AddPlayerPiece(instance);
+            instance.BelongTo(GameManager.Instance.Player);
+        }
+            
         
     }
 

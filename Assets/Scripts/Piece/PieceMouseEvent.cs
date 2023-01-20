@@ -29,6 +29,7 @@ public class PieceMouseEvent : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
+        if (piece.Belong.Turn != GameManager.Instance.turnState) return;
         /*if (!GameManager.Instance.isPlayerTurn)
         {
             Debug.Log("플레이어의 차례가 아닙니다.");

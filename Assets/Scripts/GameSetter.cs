@@ -9,8 +9,6 @@ public class GameSetter : MonoBehaviour
     // 데이터는 미리 넣어둔다고 가정한다.
     public List<GameData> gameSettings;
 
-    public AI aiManager;
-
     public UnityEvent OnOpponentSet;
 
 
@@ -40,8 +38,7 @@ public class GameSetter : MonoBehaviour
             Place targetPlace = mainBoard.GetPlace(opponent.location);
             instance.place = targetPlace;
 
-
-            aiManager.AddPiece(instance);
+            instance.BelongTo(GameManager.Instance.OpponentPlayer);
         }
         OnOpponentSet?.Invoke();
 
@@ -76,6 +73,9 @@ public class GameSetter : MonoBehaviour
             //PlaceManager.Instance.MovePiece(instance, targetPlace);
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
+
+            instance.BelongTo(GameManager.Instance.Player);
+
 
         }
     }

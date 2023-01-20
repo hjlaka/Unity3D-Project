@@ -6,6 +6,9 @@ public class Piece : LifeUnit, IObserver
     [Header("InGame")]
     public Place place;
     public TeamData team;
+    [SerializeField]
+    private Player belong;
+    public Player Belong { get { return belong; } set { belong = value; } }
 
 
     public int forwardY;
@@ -42,6 +45,12 @@ public class Piece : LifeUnit, IObserver
         render = GetComponentInChildren<Renderer>();
 
         recognized = new DecidedStateLists();
+    }
+
+    public void BelongTo(Player player)
+    {
+        this.belong = player;
+        belong.AddPiece(this);
     }
 
     private void Start()
