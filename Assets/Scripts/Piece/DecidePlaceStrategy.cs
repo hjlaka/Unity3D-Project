@@ -33,7 +33,7 @@ public class DecidePlaceStrategy
     }
 
 
-    protected virtual float CalculateScore(Piece piece, Place place)
+    protected virtual ScoreNode CalculateScore(Piece piece, Place place)
     {
         float score;
         float attackPoint = 0;
@@ -62,6 +62,7 @@ public class DecidePlaceStrategy
 
 
         }
+        Debug.Log("공격점수: " + attackPoint);
         // 과열도 점수?
         // 과열도가 높은 곳에 갈 것인가?
         // 과열도가 낮은 곳에 갈 것인가?
@@ -99,42 +100,44 @@ public class DecidePlaceStrategy
         {
             heatPreferPoint *= 0.5f;
         }
-
+        
         //안정도 점수
         // 안정도 점수 = (과열도 선호 점수 / (1 + 과열도 선호 점수))
         // 0, 1/2, 2/3, ...
         placePreferPoint = heatPreferPoint / (1 + heatPreferPoint);
-
+        Debug.Log("위치 선호 점수: " + placePreferPoint);
 
 
         // 이동해본다음에 계산해야한다.
         assumePoint = CalculateAssumeMoveScore(piece, place);
         assumePoint *= futureOriented;
         //assumePoint = 0;
-
+        Debug.Log("가정 점수: " + assumePoint);
 
         score = attackPoint + placePreferPoint + assumePoint;
         if (GameManager.Instance.scoreDebugMode)
             Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + placePreferPoint + " /  가정 점수: " + assumePoint);
 
-        StoreToMap(place.boardIndex, attackPoint, defencePoint);
+        
 
-        return score;
+
+        ScoreNode scoreSet = new ScoreNode();
+        scoreSet.AttackPoint = attackPoint;
+        scoreSet.DefencdPoint = defencePoint;
+        scoreSet.ExtendPoint = assumePoint;
+        scoreSet.DeltaHeatPoint = deltaHeat;
+        scoreSet.DefencdPoint = defencePoint;
+        scoreSet.WillPoint = score;
+
+        StoreToMap(place.boardIndex, scoreSet);
+
+
+        return scoreSet;
     }
 
-    protected void StoreToMap(Vector2Int location, float attackPoint, float defencePoint)
+    protected void StoreToMap(Vector2Int location, ScoreNode scoreSet)
     {
-        ScoreNode node = scoreMap.GetNode(location);
-
-        if (node == null)
-        {
-            Debug.Log("노드 없음");
-            return;
-        }
-
-        node.AttackPoint = attackPoint;
-        node.DefencdPoint = defencePoint;
-
+        scoreMap.SetNode(location, scoreSet);
     }
 
     protected float CalculateAssumeMoveScore(Piece piece, Place place)
@@ -181,9 +184,9 @@ public class DecidePlaceStrategy
         // 이동 범위 확장 
         // 확장 점수 = 갈 수 있는 위치 개수 / (1 + 기물 점수)
         extendablePoint = (float)movableCount / (1 + movableCount);
-        Debug.Log("확장 점수: " + extendablePoint);
 
         extendablePoint *= willingToExtend + (2 - ((float)piece.PieceScore / (1 + piece.PieceScore)));
+        Debug.Log("확장 점수: " + extendablePoint);
 
         heatPreferPoint = (float)(heatPreferPoint) / (1 + heatPreferPoint);
         heatPreferPoint *= willingToSafe;
@@ -215,7 +218,7 @@ public class DecidePlaceStrategy
 
         defendablePoint *= willingToDefend;
 
-        assumScore = extendablePoint + heatPreferPoint + threatablePoint + defendablePoint;
+        assumScore = /*extendablePoint +*/ heatPreferPoint + threatablePoint + defendablePoint;
         if(GameManager.Instance.scoreDebugMode)
             Debug.Log(string.Format("{0}에서부터 가정된 위치 점수 {5}-------\n 영향권: {1}, 과열도 안정적 점수: {2}, 위협: {3}, 보호 {4}",
             location, extendablePoint, heatPreferPoint, threatablePoint, defendablePoint, assumScore));

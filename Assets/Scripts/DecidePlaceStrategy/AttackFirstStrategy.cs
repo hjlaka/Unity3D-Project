@@ -19,6 +19,7 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
     {
         float maxScore = -99f;
         Place highScorePlace = null;
+        ScoreNode highWillScoreSet = null;
         string debug_score = "";
 
         List<Place> movablePlaces = piece.Recognized.movable;
@@ -28,9 +29,8 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         for (int i = 0; i < movablePlaces.Count; i++)
         {
             Place place = movablePlaces[i];
-            Vector2Int location = movablePlaces[i].boardIndex;
-            float score = CalculateScore(piece, place);
-            debug_score += score + " / ";
+            ScoreNode scoreSet = CalculateScore(piece, place);
+            float score = scoreSet.WillPoint;
 
             // 저장해 둔 점수 중 가장 높은 점수 가져오기? (왕 보호에 대한 것 외에는 차선을 가져올 수도 있도록?)
             // 점수 저장이 의미 있을까?
@@ -38,12 +38,13 @@ public class AttackFirstStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
             {
                 highScorePlace = place;
                 maxScore = score;
+                highWillScoreSet = scoreSet;
             }
         }
         if(GameManager.Instance.scoreDebugMode)
         {
             Debug.Log(debug_score);
-            Debug.Log(highScorePlace.boardIndex + "가 최대 점수다. : " + maxScore);
+            Debug.Log(highScorePlace?.boardIndex + "가 최대 점수다. : " + maxScore);
         }
 
 

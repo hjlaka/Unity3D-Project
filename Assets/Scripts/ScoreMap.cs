@@ -26,6 +26,15 @@ public class ScoreMap
         return scoreNodes[location.x, location.y];
     }
 
+    public void SetNode(Vector2Int location, ScoreNode scoreSet)
+    {
+        // 오류 상황
+/*        if (location.x < 0 || location.y < 0) return;
+        if (location.x >= 8 || location.y >= 8) return;*/
+
+        scoreNodes[location.x, location.y] = scoreSet;
+    }
+
     public void PrintMap()
     {
         string mapInfo = "";
@@ -34,7 +43,7 @@ public class ScoreMap
         {
             for (int j = 0; j < scoreNodes.GetLength(1); j++)
             {
-                mapInfo += scoreNodes[i, j].TotalPoint + " ";
+                mapInfo += scoreNodes[i, j].WillPoint + " ";
             }
             mapInfo += "\n";
         }
