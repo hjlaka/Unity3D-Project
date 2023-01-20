@@ -53,7 +53,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void CalculateInfluence(Piece piece)
     {
         Place newPlace = piece.place;
-        Vector2Int newIndex = newPlace.boardIndex;
         Board curBoard = newPlace.board;
 
         // 기물이 있는 곳이 보드가 아니라면 종료

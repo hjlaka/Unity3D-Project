@@ -46,7 +46,7 @@ public class Piece : LifeUnit, IObserver
 
         if (place != null)
         {
-            SetInPlace(place);
+            PlaceManager.Instance.MovePiece(this, place);
         }   
     }
 

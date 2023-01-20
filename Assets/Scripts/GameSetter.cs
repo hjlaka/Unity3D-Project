@@ -26,6 +26,7 @@ public class GameSetter : MonoBehaviour
 
         GameData setting = gameSettings[index];
 
+        Debug.Log("배치할 기물 수: " + setting.opponents.Count);
         for (int i = 0; i < setting.opponents.Count; i++)
         {
             GameData.OpponentPiece opponent = setting.opponents[i];
@@ -36,9 +37,10 @@ public class GameSetter : MonoBehaviour
             instance.team = setting.opponentTeam;
             instance.character = opponent.character;
             //instance.SetInPlace(mainBoard.GetPlace(opponent.location));
-            Place place = mainBoard.GetPlace(opponent.location);
+            Place setPlace = mainBoard.GetPlace(opponent.location);
+            instance.place = setPlace;
 
-            PlaceManager.Instance.MovePiece(instance, place);
+            //PlaceManager.Instance.MovePiece(instance, place);
 
             //과열도 적용
             //PlaceManager.Instance.CalculateInfluence(instance);
@@ -75,7 +77,8 @@ public class GameSetter : MonoBehaviour
             int randY = Random.Range(0, 3);
 
             Debug.Log("랜덤 위치: " + randX + ", " + randY);
-            instance.SetInPlace(initBoard.GetPlace(new Vector2Int(randX, randY)));
+            //instance.SetInPlace(initBoard.GetPlace(new Vector2Int(randX, randY)));
+            instance.place = initBoard.GetPlace(new Vector2Int(randX, randY));
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
 
