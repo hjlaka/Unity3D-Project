@@ -200,7 +200,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public Piece MovePiece(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
-        InitInfluence(piece);
+        if(oldPlace != null)
+            InitInfluence(piece);
 
         // 연산
         Piece attackedPiece = piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
