@@ -27,14 +27,14 @@ public class PieceMouseEvent : MonoBehaviour
         piece.ChangeColorTempBack();
     }
 
+
+    
     private void OnMouseUpAsButton()
     {
         if (piece.Belong.Turn != GameManager.Instance.turnState) return;
-        /*if (!GameManager.Instance.isPlayerTurn)
-        {
-            Debug.Log("플레이어의 차례가 아닙니다.");
-            return;
-        }*/
+        // 버그: AI의 턴에 플레이어가 AI에게 속한 기물을 누를 수 있다.
+
+
         if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
         {
             //Debug.Log(string.Format("{0} 클릭", gameObject.name));
