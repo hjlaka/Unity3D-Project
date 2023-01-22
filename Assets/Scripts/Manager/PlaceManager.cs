@@ -63,6 +63,13 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         if (!curBoard.FollowRule)
             return;
 
+        piece.RecognizeRange(piece.place.boardIndex);
+
+    }
+
+    public void ApplyInfluence(Piece piece)
+    {
+        Place newPlace = piece.place;
         // 새로운 자리 과열도 추가
 
         Debug.Log("지금 자리 과열도 추가");
@@ -71,10 +78,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         else
             newPlace.HeatPointTopTeam++;
 
-        piece.RecognizeRange(piece.place.boardIndex);
-
         // 계산 완료된 영향권의 과열도 추가
-        for(int i = 0; i < piece.Recognized.influenceable.Count; i++)
+        for (int i = 0; i < piece.Recognized.influenceable.Count; i++)
         {
             Place curPlace = piece.Recognized.influenceable[i];
             if (piece.team.direction == TeamData.Direction.DownToUp)
@@ -84,7 +89,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
             curPlace.registerObserver(piece.PlaceObserver);
         }
-
     }
 
     public void ReCalculateInfluence(Piece piece)
@@ -92,6 +96,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         Debug.Log(piece + "영향 재계산");
         InitInfluence(piece);
         CalculateInfluence(piece);
+        ApplyInfluence(piece);
     }
 
 
@@ -212,6 +217,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         }
 
         CalculateInfluence(piece);
+        ApplyInfluence(piece);
 
         // 기물을 옮겼을 때, 변화된 자리들 알림 발송
         oldPlace?.notifyObserver();
