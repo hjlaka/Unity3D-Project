@@ -9,7 +9,7 @@ public class RandomAIStrategy : MonoBehaviour, IAIStrategy
     public void AddPossibility(ScoreNode scoreSet, Piece piece, Place place)
     {
         // piece¿Í place
-        possibilities.Add(new Placement(piece, piece.place, place, place.Piece));
+        possibilities.Add(new Placement(piece, piece.place, place, place.Piece, null));
     }
 
     public Placement GetBestInOwnWay()

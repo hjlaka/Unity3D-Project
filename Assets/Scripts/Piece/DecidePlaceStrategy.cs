@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DecidePlaceStrategy
+public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
 {
     protected ScoreMap scoreMap = new ScoreMap();
 
@@ -20,6 +20,7 @@ public class DecidePlaceStrategy
 
     protected float totalWeight;
 
+    public abstract Placement DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet);
     protected virtual void CopyData()
     {
         // override

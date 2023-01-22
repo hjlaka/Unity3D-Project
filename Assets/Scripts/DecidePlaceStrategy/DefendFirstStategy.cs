@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
+public class DefendFirstStategy : DecidePlaceStrategy
 {
     protected override void CopyData()
     {
@@ -13,7 +13,7 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
         willingToSafe = StrategyManager.Instance.defendFirst.willingToSafe;
         futureOriented = StrategyManager.Instance.defendFirst.futureOriented;
     }
-    public Place DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet)
+    public override Placement DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet)
     {
         float maxScore = -99f;
         Place highScorePlace = null;
@@ -52,7 +52,9 @@ public class DefendFirstStategy : DecidePlaceStrategy, IDecidePlaceStrategy
 
         will = maxScore / GetTotalWeight();
 
-        return highScorePlace;
+        Placement placement = new Placement(piece, piece.place, highScorePlace, highScorePlace.Piece, null);
+
+        return placement;
     }
     /* public Place DecidePlace(Piece piece)
      {

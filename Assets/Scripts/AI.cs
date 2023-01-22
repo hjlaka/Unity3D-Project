@@ -104,7 +104,8 @@ public class AI : Player
             Piece piece = pieceList[i];
             float will = 0f;
             ScoreNode scoreSet;
-            Place targetPlace = piece.DesireToPlace(ref will, out scoreSet);
+            Placement placement = piece.DesireToPlace(ref will, out scoreSet);
+            Place targetPlace = placement.NextPosition;
 
             //aiStrategy.AddPossibility(scoreSet, piece, targetPlace);
 
@@ -156,7 +157,8 @@ public class AI : Player
 
             float will = 0f;
             ScoreNode scoreSet;
-            Place targetPlace = pieceList[i].DesireToPlace(ref will, out scoreSet);
+            Placement placement = pieceList[i].DesireToPlace(ref will, out scoreSet);
+            Place targetPlace = placement.NextPosition;
             pieceList[i].PlaceToDesire(targetPlace);
 
             //yield return new WaitForSeconds(turnChangeTime);

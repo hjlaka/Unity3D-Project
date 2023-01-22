@@ -121,9 +121,9 @@ public class Piece : LifeUnit
 
     }
 
-    public Place DesireToPlace(ref float will, out ScoreNode scoreSet)
+    public Placement DesireToPlace(ref float will, out ScoreNode scoreSet)
     {
-        Place targetPlace = decideDesireStrategy.DecidePlace(this, ref will, out scoreSet);
+        Placement targetPlace = decideDesireStrategy.DecidePlace(this, ref will, out scoreSet);
 
         return targetPlace;
     }

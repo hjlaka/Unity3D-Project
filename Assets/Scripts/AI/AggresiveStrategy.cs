@@ -12,7 +12,7 @@ public class AggresiveStrategy : MonoBehaviour, IAIStrategy
         // 자체적으로 계산
 
         // 소티드 리스트에 넣는다.
-        Placement placement = new Placement(piece, piece.place, place, place.Piece);
+        Placement placement = new Placement(piece, piece.place, place, place.Piece, null);
     }
 
     public Placement GetBestInOwnWay()

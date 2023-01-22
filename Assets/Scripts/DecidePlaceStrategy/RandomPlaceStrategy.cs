@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomPlaceStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
+public class RandomPlaceStrategy : DecidePlaceStrategy
 {
-    public Place DecidePlace(Piece piece, ref float will, out ScoreNode scoreset)
+    public override Placement DecidePlace(Piece piece, ref float will, out ScoreNode scoreset)
     {
 
         List<Place> movablePlaces = piece.Recognized.movable;
@@ -14,7 +14,9 @@ public class RandomPlaceStrategy : DecidePlaceStrategy, IDecidePlaceStrategy
         will = 0.7f;
         scoreset = new ScoreNode();
 
-        return movablePlaces[randIndex];
+        Placement placement = new Placement(piece, piece.place, movablePlaces[randIndex], movablePlaces[randIndex].Piece, null);
+
+        return placement;
     }
 
 }
