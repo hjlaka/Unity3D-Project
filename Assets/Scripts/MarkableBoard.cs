@@ -6,13 +6,7 @@ using UnityEngine;
 public class MarkableBoard : Board, IMarkable
 {
 
-    public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE }
-
-    public void PostShow(Piece finishedPiece)
-    {
-        ShowInfluence(finishedPiece);
-        ShowThreatAndDefence(finishedPiece);
-    }
+    public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, INFLUENCE }
 
     public void PreShow(Piece selecetedPiece)
     {
@@ -27,10 +21,15 @@ public class MarkableBoard : Board, IMarkable
         ShowThreatAndDefenceEnd(endedPiece);
     }
 
+    public void PostShow(Piece finishedPiece)
+    {
+        ShowInfluence(finishedPiece);
+        ShowThreatAndDefence(finishedPiece);
+    }
     public void PostShowEnd(Piece endedPiece)
     {
         Debug.Log("마무리 표시 해제중: " + endedPiece);
-        ShowMovableEnd(endedPiece);
+        ShowThreatAndDefenceEnd(endedPiece);
         ShowInfluenceEnd(endedPiece);
     }
     public void ShowMovable(Piece piece)
@@ -58,8 +57,7 @@ public class MarkableBoard : Board, IMarkable
         List<Place> influencing = piece.Recognized.influenceable;
         for (int i = 0; i < influencing.Count; i++)
         {
-            //TODO: 영향권을 나타내는 색 따로 설정
-            ChangePlaceColor(influencing[i].boardIndex, PlaceType.MOVABLE);
+            ChangePlaceColor(influencing[i].boardIndex, PlaceType.INFLUENCE);
         }
     }
 
@@ -144,7 +142,7 @@ public class MarkableBoard : Board, IMarkable
                 places[location.x, location.y].ChangeColor(PlaceManager.Instance.highlight);
                 break;
 
-            case PlaceType.SPECIALMOVE:
+            case PlaceType.INFLUENCE:
                 places[location.x, location.y].ChangeColor(Color.gray);
                 break;
         }
