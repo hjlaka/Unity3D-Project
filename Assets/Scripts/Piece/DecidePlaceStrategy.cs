@@ -131,6 +131,8 @@ public class DecidePlaceStrategy
 
         StoreToMap(place.boardIndex, scoreSet);
 
+        Debug.Log("스코어 셋: " + scoreSet);
+
 
         return scoreSet;
     }
