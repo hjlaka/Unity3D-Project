@@ -147,6 +147,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         Place oldPlace = piece.place;
         IMarkable oldBoard = oldPlace.board as IMarkable;
         IMarkable newBoard = place.board as IMarkable;
+        Placement subsequent = null;
 
 
         // 움직일 수 있는 곳인지 확인
@@ -171,6 +172,10 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         Piece attackedPiece = MovePiece(piece, place);
 
         
+        if(oldPlace.MoveAction != null)
+        {
+            subsequent = oldPlace.MoveAction.DoAction();
+        }
 
 
         // 연출 - 리스트 의존적 - 리스트를 받아올 수 있으면 좋을 것이다.
@@ -193,7 +198,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         // 메멘토 등록
         if(oldBoard != null && oldBoard == newBoard)
         {
-            Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece);
+            Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece, subsequent);
             // 메멘토를 여기서 생성해야 할까?
             SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
@@ -204,6 +209,9 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     public Piece MovePiece(Piece piece, Place place)
     {
+        if(piece == null || place == null) 
+            return null;
+
         Place oldPlace = piece.place;
         if(oldPlace != null)
             InitInfluence(piece);
@@ -340,27 +348,43 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             Debug.Log("기물 선택 단계가 아님");
             return;
         }
-        
+
+        GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
 
         // 기본적으로 두번 복기한다.
 
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             Placement placement = placementRememberer.Get() as Placement;
             
+            // 연달은 수 먼저 복구
+            // TODO: 오류의 여지가 없다면 후에 재귀문으로 변경 / 혹은 배열 처리로 변경
+            if(placement.Subsequent != null)
+            {
+                Placement subsequent = placement.Subsequent;
+                Piece subsequentPiece = subsequent.Piece;
+                Place subsequentPosition = subsequent.PrevPosition;
+
+                MovePiece(subsequentPiece, subsequentPosition);
+
+                Piece subsequentCaptured = subsequent.CapturedPiece;
+                if (subsequentCaptured != null)
+                {
+                    MovePiece(subsequentCaptured, subsequent.NextPosition);
+                    subsequentCaptured.IsFree = false;
+                }
+            }
+
 
             if (placement == null) return;
             Debug.Log("복구 대상: " + placement.Piece);
 
             Piece returnPiece = placement.Piece;
             Place returnPosition = placement.PrevPosition;
-
-            GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
+          
             // 연출 없이 움직임만 복구
             // 복기한 움직임은 메멘토에 저장하지 않는다.
             MovePiece(returnPiece, returnPosition);
-            //returnPosition.notifyObserver();
-
 
             Piece capturedPiece = placement.CapturedPiece;
             

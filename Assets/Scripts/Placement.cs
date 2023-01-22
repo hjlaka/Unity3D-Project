@@ -17,6 +17,10 @@ public class Placement : IMemento
     private Piece capturedPiece;
     public Piece CapturedPiece { get { return capturedPiece; } }
 
+    private Place capturedPlace;
+
+    public Place CapturedPlace { get { return capturedPlace; } }
+
 
 
     private Place prevPlace;
@@ -24,12 +28,22 @@ public class Placement : IMemento
     private Place nextPlace;
     public Place NextPosition { get { return nextPlace; } }
 
-    public Placement(Piece piece, Place prevPlace, Place nextPlace, Piece capturedPiece)
+    // 배열로 받을 수도 있다.
+    private Placement subsequent;
+    public Placement Subsequent { get { return subsequent; } }
+
+    public Placement(Piece piece, Place prevPlace, Place nextPlace, Piece capturedPiece, Placement subsequent)
     {
         this.piece = piece;
         this.prevPlace = prevPlace;
         this.nextPlace = nextPlace;
         this.capturedPiece = capturedPiece;
+        this.subsequent = subsequent;
+    }
+
+    public void SetSubsequent(Placement subsequent)
+    {
+        this.subsequent = subsequent;
     }
 
     public IMemento GetState()
