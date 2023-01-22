@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Piece : LifeUnit, IObserver
+
+[RequireComponent(typeof(PlaceObserver))]
+public class Piece : LifeUnit
 {
     [Header("InGame")]
     public Place place;
@@ -25,6 +27,9 @@ public class Piece : LifeUnit, IObserver
     public uint MoveCount { get { return moveCount; } }
 
 
+    public PlaceObserver PlaceObserver { get; private set; }
+
+
     public IReturnHeat returnHeat;
 
     [Header("Charecter")]
@@ -39,12 +44,16 @@ public class Piece : LifeUnit, IObserver
     protected IPieceMovable movePattern;
     public IPieceMovable MovePattern { get { return movePattern; } private set { movePattern = value; } }
 
+    
+
 
     protected virtual void Awake()
     {
         render = GetComponentInChildren<Renderer>();
 
         recognized = new DecidedStateLists();
+
+        PlaceObserver = GetComponent<PlaceObserver>();
     }
 
     public void BelongTo(Player player)
@@ -233,11 +242,6 @@ public class Piece : LifeUnit, IObserver
     {
         render.material.color = curNormal;
 
-    }
-    void IObserver.StateUpdate()
-    {
-        PlaceManager.Instance.ReCalculateInfluence(this);
-        //Debug.Log("업데이트 수행: " + this);
     }
 
     public override string GetName()

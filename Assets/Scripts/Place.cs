@@ -39,7 +39,7 @@ public class Place : MonoBehaviour, ISubject
     }
 
     [SerializeField]
-    private List<Piece> influencingUnit; // 디버그 위해 변환
+    private List<PlaceObserver> influencingUnit;
 
     [SerializeField]
     private PlaceEffect effect;
@@ -120,7 +120,7 @@ public class Place : MonoBehaviour, ISubject
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
-        influencingUnit = new List<Piece>();
+        influencingUnit = new List<PlaceObserver>();
     }
 
     private void ChangeEffect(float intencity)
@@ -216,12 +216,12 @@ public class Place : MonoBehaviour, ISubject
 
     public void registerObserver(IObserver observer)
     {
-        influencingUnit.Add(observer as Piece);
+        influencingUnit.Add(observer as PlaceObserver);
     }
 
     public void removeObserver(IObserver observer)
     {
-        influencingUnit.Remove(observer as Piece);
+        influencingUnit.Remove(observer as PlaceObserver);
     }
 
     public void notifyObserver()
