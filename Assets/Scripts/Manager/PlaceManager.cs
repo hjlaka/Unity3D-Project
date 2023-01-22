@@ -140,8 +140,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void MoveProcess(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
-        MarkableBoard oldBoard = oldPlace.board as MarkableBoard;
-        MarkableBoard newBoard = place.board as MarkableBoard;
+        IMarkable oldBoard = oldPlace.board as IMarkable;
+        IMarkable newBoard = place.board as IMarkable;
 
 
         // 움직일 수 있는 곳인지 확인
@@ -186,7 +186,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
 
         // 메멘토 등록
-        if(oldBoard != null && oldBoard.FollowRule && oldBoard == newBoard)
+        if(oldBoard != null && oldBoard == newBoard)
         {
             Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece);
             // 메멘토를 여기서 생성해야 할까?
@@ -237,11 +237,11 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         if(endMark)
         {
-            MarkableBoard markableBoard = endedPiece.place.board as MarkableBoard;
-            if (markableBoard != null)
+            IMarkable markable = endedPiece.place.board as IMarkable;
+            if (markable != null)
             {
-                markableBoard.ShowMovableEnd(endedPiece);
-                markableBoard.ShowInfluenceEnd(endedPiece);
+                markable.PostShowEnd(endedPiece);
+                Debug.Log("표시 종료");
             }
         }
 
@@ -288,9 +288,9 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
 
         // 연출
-        MarkableBoard markableBoard = piece.place.board as MarkableBoard;
-        if (markableBoard)
-            markableBoard.PreShow(piece);
+        IMarkable markable = piece.place.board as IMarkable;
+        if (markable != null)
+            markable.PreShow(piece);
         //TODO: 이동 가능 상태 변수와 연출을 하나로 묶어도 좋을듯
 
         OnSelectPiece?.Invoke();
@@ -304,9 +304,9 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         // 선택된 기물을 바로 취소하는 경우
 
         //연출
-        MarkableBoard markableBoard = selectedPiece.place.board as MarkableBoard;
-        if (markableBoard)
-            markableBoard.PreShowEnd(selectedPiece);
+        IMarkable markable = selectedPiece.place.board as IMarkable;
+        if (markable != null)
+            markable.PreShowEnd(selectedPiece);
 
         SelectedPieceInit();
     }

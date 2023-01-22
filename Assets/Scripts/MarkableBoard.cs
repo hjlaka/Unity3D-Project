@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class MarkableBoard : Board
+public class MarkableBoard : Board, IMarkable
 {
 
     public enum PlaceType { DEFENCE, ATTACK, MOVABLE, NORMAL, SPECIALMOVE }
@@ -13,11 +14,11 @@ public class MarkableBoard : Board
         ShowThreatAndDefence(finishedPiece);
     }
 
-    public void PreShow(Piece seleceted)
+    public void PreShow(Piece selecetedPiece)
     {
-        ShowMovable(seleceted);
+        ShowMovable(selecetedPiece);
         //ShowInfluence(seleceted);
-        ShowThreatAndDefence(seleceted);
+        ShowThreatAndDefence(selecetedPiece);
     }
     public void PreShowEnd(Piece endedPiece)
     {
@@ -26,13 +27,10 @@ public class MarkableBoard : Board
         ShowThreatAndDefenceEnd(endedPiece);
     }
 
-    private IEnumerator PostShowEnd(Piece endedPiece)
+    public void PostShowEnd(Piece endedPiece)
     {
-        yield return new WaitForSeconds(1f);
-        //yield return null;
-
+        Debug.Log("마무리 표시 해제중: " + endedPiece);
         ShowMovableEnd(endedPiece);
-        //ShowThreatAndDefenceEnd(endedPiece);
         ShowInfluenceEnd(endedPiece);
     }
     public void ShowMovable(Piece piece)
@@ -101,6 +99,7 @@ public class MarkableBoard : Board
     public void ShowInfluenceEnd(Piece endedPiece)
     {
         List<Place> influenceList = endedPiece.Recognized.influenceable;
+        Debug.Log("영향권 표시 해제 " + influenceList.Count);
         for (int i = 0; i < influenceList.Count; i++)
         {
             influenceList[i].ChangeColor();
