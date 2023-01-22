@@ -154,7 +154,9 @@ public class DecidePlaceStrategy
         StateLists assumeStateLists = new StateLists();
 
         Vector2Int location = place.boardIndex;
-
+        
+        // 한번 움직인 상황임을 전제한다.
+        piece.MoveCount++;
 
 
         // 기물이 움직였다고 가정한 후, 기물의 움직임대로 영향권 위치를 계산한다.
@@ -228,6 +230,7 @@ public class DecidePlaceStrategy
 
         // 되돌려 놓기
         piece.place.Piece = piece;
+        piece.MoveCount--;
         return assumScore;
 
 

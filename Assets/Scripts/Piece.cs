@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlaceObserver))]
+[RequireComponent (typeof(UnitObserver))]
+[RequireComponent(typeof(Subject))]
 public class Piece : LifeUnit
 {
     [Header("InGame")]
@@ -24,10 +26,14 @@ public class Piece : LifeUnit
 
     [SerializeField]
     private uint moveCount;
-    public uint MoveCount { get { return moveCount; } }
+    public uint MoveCount { get { return moveCount; } set { moveCount = value; } }
 
 
     public PlaceObserver PlaceObserver { get; private set; }
+    public UnitObserver UnitObserver { get; private set; }
+
+    public Subject ChessSubject { get; private set; }
+    // TODO: king 클래스에 subjectAsKing 추가
 
 
     public IReturnHeat returnHeat;
@@ -54,16 +60,14 @@ public class Piece : LifeUnit
         recognized = new DecidedStateLists();
 
         PlaceObserver = GetComponent<PlaceObserver>();
-    }
-
-    public void BelongTo(Player player)
-    {
-        this.belong = player;
-        belong.AddPiece(this);
+        UnitObserver = GetComponent<UnitObserver>();
+        ChessSubject = GetComponent<Subject>();
+        Debug.Log("서브젝트 할당: " + ChessSubject);
     }
 
     private void Start()
     {
+        moveCount = 0;
         ApplyTeamInfo();
 
         if (place != null)
@@ -72,9 +76,15 @@ public class Piece : LifeUnit
             Move();
 
             PlaceManager.Instance.CalculateInfluence(this);
+            PlaceManager.Instance.ApplyInfluence(this);
 
             place.notifyObserver();
         }
+    }
+    public void BelongTo(Player player)
+    {
+        this.belong = player;
+        belong.AddPiece(this);
     }
 
     public void PlaceToDesire(Place targetPlace)
@@ -183,7 +193,8 @@ public class Piece : LifeUnit
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
-        moveCount++;
+        if(oldPlace.board == place.board && place.board.FollowRule)
+            moveCount++;
 
         if(preSetPiece != null) Debug.Log("기존에 있던 기물: " + preSetPiece);
 
