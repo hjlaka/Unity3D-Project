@@ -62,6 +62,35 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             return false;
     }
 
+    public bool RecognizePiece(Vector2Int curLocation)
+    {
+        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
+        Place targetPlace = controlled.place.board.places[curLocation.x, curLocation.y];
+
+        if (targetPiece != null)
+        {
+            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
+
+            return true;
+        }
+        else
+        {
+
+            RecognizeMovableVoidPlace(curLocation, targetPlace);
+
+            return false;
+        }
+    }
+
+    private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
+    {
+        recognizedLists.AddMovable(targetPlace);
+        recognizedLists.AddInfluenceable(targetPlace);
+
+        // 중요한 자리일 경우 이벤트 발생?
+    }
+
+    // 폰 움직임 {
     public bool RecognizeObstaclePiece(Vector2Int curLocation)
     {
         Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
@@ -101,7 +130,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             return false;
         }
     }
-    // } 폰 움직임을 위해 추가 -----------------------------------------------------------
+    // } 폰 움직임
 
     private void RecognizeDefendOrAttack(Vector2Int curLocation, Piece targetPiece, Place targetPlace)
     {
@@ -147,38 +176,8 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         }
     }
 
-    public bool RecognizePiece(Vector2Int curLocation)
-    {
-        Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
-        Place targetPlace = controlled.place.board.places[curLocation.x, curLocation.y];
-
-        if (targetPiece != null)
-        {
-            RecognizeDefendOrAttack(curLocation, targetPiece, targetPlace);
-
-            return true;
-        }
-        else
-        {
-
-            RecognizeMovableVoidPlace(curLocation, targetPlace);
-
-            return false;
-        }
-    }
-
-    private void RecognizeMovableVoidPlace(Vector2Int curLocation, Place targetPlace)
-    {
-        recognizedLists.AddMovable(targetPlace);
-        recognizedLists.AddInfluenceable(targetPlace);
-
-        // 중요한 자리일 경우 이벤트 발생?
-    }
-
     protected void AddMovable(Place place)
     {
         recognizedLists.AddMovable(place);
     }
-
-
 }
