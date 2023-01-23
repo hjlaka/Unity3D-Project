@@ -370,10 +370,12 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         for (int i = 0; i < 2; i++)
         {
             Placement placement = placementRememberer.Get() as Placement;
-            
+            if (placement == null) return;
+            Debug.Log("복구 대상: " + placement.Piece);
+
             // 연달은 수 먼저 복구
             // TODO: 오류의 여지가 없다면 후에 재귀문으로 변경 / 혹은 배열 처리로 변경
-            if(placement.Subsequent != null)
+            if (placement.Subsequent != null)
             {
                 Placement subsequent = placement.Subsequent;
                 Piece subsequentPiece = subsequent.Piece;
@@ -388,10 +390,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                     subsequentCaptured.IsFree = false;
                 }
             }
-
-
-            if (placement == null) return;
-            Debug.Log("복구 대상: " + placement.Piece);
 
             Piece returnPiece = placement.Piece;
             Place returnPosition = placement.PrevPosition;
