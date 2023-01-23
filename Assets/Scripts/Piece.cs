@@ -193,7 +193,7 @@ public class Piece : LifeUnit
         Move();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
-        if(oldPlace.board == place.board && place.board.FollowRule)
+        if(oldPlace != null && oldPlace.board == place.board && place.board.FollowRule)
             moveCount++;
 
         if(preSetPiece != null) Debug.Log("기존에 있던 기물: " + preSetPiece);

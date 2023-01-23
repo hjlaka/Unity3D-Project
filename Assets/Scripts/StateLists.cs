@@ -10,12 +10,15 @@ public class StateLists
 
     public List<Place> influenceable;
 
+    public List<Place> special;
+
     public StateLists()
     {
         movable = new List<Place>();
         threating = new List<Piece>();
         defending = new List<Piece>();
         influenceable = new List<Place>();
+        special = new List<Place>();
     }
 
     public virtual void AddMovable(Place place)
@@ -37,12 +40,18 @@ public class StateLists
         influenceable.Add(place);
     }
 
+    public virtual void AddSpecial(Place place)
+    {
+        special.Add(place);
+    }
+
     public void ClearAllRecognized()
     {
         ClearMovable();
         ClearThreating();
         ClearDefending();
         ClearInfluenceable();
+        ClearSpecial();
     }
 
     public void ClearMovable()
@@ -68,5 +77,10 @@ public class StateLists
     {
         //Debug.Log("영향권 클리어" + Influenceable.Count);
         influenceable.Clear();
+    }
+
+    public void ClearSpecial()
+    {
+        special.Clear();
     }
 }

@@ -89,6 +89,13 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
             curPlace.registerObserver(piece.PlaceObserver);
         }
+
+        for(int i = 0; i < piece.Recognized.special.Count; i++)
+        {
+            Place curPlace = piece.Recognized.special[i];
+
+            curPlace.registerObserver(piece.PlaceObserver);
+        }
     }
 
     public void ReCalculateInfluence(Piece piece)
@@ -127,6 +134,13 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 influencable[i].HeatPointTopTeam--;
             }
             influencable[i].removeObserver(leftPiece.PlaceObserver);
+        }
+
+        for (int i = 0; i < leftPiece.Recognized.special.Count; i++)
+        {
+            Place curPlace = leftPiece.Recognized.special[i];
+
+            curPlace.removeObserver(leftPiece.PlaceObserver);
         }
     }
 

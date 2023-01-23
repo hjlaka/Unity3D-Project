@@ -105,6 +105,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             Debug.Log("앞에 장애물 없다");
 
             recognizedLists.AddMovable(targetPlace);
+            recognizedLists.AddSpecial(targetPlace);
             //연출 이동
 
             return false;
