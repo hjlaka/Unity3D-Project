@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerDataManager : SingleTon<PlayerDataManager>
 {
-    private List<Piece> playerPieces;
+    [SerializeField]
+    private List<Piece> playerPieces = new List<Piece>();
 
     public List<Piece> unitList;
 
@@ -28,7 +29,6 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
 
     private void Awake()
     {
-        playerPieces = new List<Piece>();
         unitList = new List<Piece>();
     }
 

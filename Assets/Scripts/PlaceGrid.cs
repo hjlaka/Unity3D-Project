@@ -28,14 +28,12 @@ public class PlaceGrid : MonoBehaviour
     private void Awake()
     {
         places = new Place[gridSize.x, gridSize.y];
-    }
-    private void Start()
-    {
         CreateBoard();
     }
 
     private void CreateBoard()
     {
+        
         GameObject boardObject = new GameObject();
 
         if (isMarkable)
@@ -46,6 +44,7 @@ public class PlaceGrid : MonoBehaviour
         boardObject.gameObject.name = boardName;
 
         Board board = boardObject.GetComponent<Board>();
+        Debug.Log("보드를 만드는 중 " + board);
         board.Size = gridSize;
         board.FollowRule = followRule;
 
