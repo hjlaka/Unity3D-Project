@@ -101,6 +101,7 @@ public class DialogueManager : SingleTon<DialogueManager>
         }
         else
         {
+            GetOutDialogue();
             SetDialogueText();
         }
     }
