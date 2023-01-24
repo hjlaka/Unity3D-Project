@@ -21,6 +21,9 @@ public class CameraController : SingleTon<CameraController>
     private CinemachineFreeLook freeCam;
 
     [SerializeField]
+    private CinemachineVirtualCamera dollyCam;
+
+    [SerializeField]
     private CinemachineTargetGroup targetGroup;
 
     [SerializeField]
@@ -29,8 +32,8 @@ public class CameraController : SingleTon<CameraController>
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        AddToTargetGroup(freeCamInitTrans);
-        RemoveFromTargetGroup(freeCamInitTrans);
+        //AddToTargetGroup(freeCamInitTrans);
+        //RemoveFromTargetGroup(freeCamInitTrans);
     }
 
     private void Update()
@@ -82,9 +85,9 @@ public class CameraController : SingleTon<CameraController>
         ChangeFreeCamPriority(10);
     }
 
-    public void AddToTargetGroup(Transform trans)
+    public void AddToTargetGroup(Transform trans, float weight = 1)
     {
-        targetGroup.AddMember(trans, 1, 0);
+        targetGroup.AddMember(trans, weight, 0);
     }
 
     public void AddToTargetGroupAll(List<Transform> transList)

@@ -10,7 +10,7 @@ public class PlaceObserver : MonoBehaviour, IObserver
     {
         piece = GetComponent<Piece>();
     }
-    public void StateUpdate()
+    public void StateUpdate(ISubject subject)
     {
         PlaceManager.Instance.ReCalculateInfluence(piece);
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Observer : IObserver
 {
-    public void StateUpdate()
+    public void StateUpdate(ISubject subject)
     {
         // 기물에 대해 반응?
 

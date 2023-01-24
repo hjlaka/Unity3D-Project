@@ -17,8 +17,8 @@ public class Piece : LifeUnit
 
     public int forwardY;
     [SerializeField]
-    protected int pieceScore;
-    public int PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
+    protected float pieceScore;
+    public float PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
 
     [SerializeField]
     private DecidedStateLists recognized;
@@ -67,6 +67,9 @@ public class Piece : LifeUnit
 
     private void Start()
     {
+        if (IsFree)
+            return;
+
         moveCount = 0;
         ApplyTeamInfo();
 
@@ -83,6 +86,7 @@ public class Piece : LifeUnit
     }
     public void BelongTo(Player player)
     {
+        Debug.Log("받아온 플레이어: " + player);
         this.belong = player;
         belong.AddPiece(this);
     }
