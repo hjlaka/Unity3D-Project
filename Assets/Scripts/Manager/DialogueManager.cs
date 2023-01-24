@@ -26,6 +26,8 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     private DialogueUnit prevDialogue;
 
+    private List<Unit> participations;
+
 
     public class DialogueUnit
     {
@@ -44,6 +46,7 @@ public class DialogueManager : SingleTon<DialogueManager>
         {
             this.name = name;
             this.talk = talk;
+            this.unit = null;
         }
     }
 
@@ -54,6 +57,8 @@ public class DialogueManager : SingleTon<DialogueManager>
         
         dialogueQueue.Enqueue(new DialogueUnit("샘플", "테스트"));
         dialogueQueue.Enqueue(new DialogueUnit("샘플2", "테스트2"));
+
+        participations = new List<Unit>();
     }
 
     public void CheckDialogueEvent()
@@ -61,7 +66,6 @@ public class DialogueManager : SingleTon<DialogueManager>
         if (IsDialogueExist())
         {
             GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
-            CameraController.Instance.SetFreeCam();
             StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
         }
@@ -76,7 +80,13 @@ public class DialogueManager : SingleTon<DialogueManager>
         dialogueText.text = dialogue.talk;
         if(dialogue.unit != null)
         {
-            CameraController.Instance.AddToTargetGroup(dialogue.unit.transform);
+            participations.Add(dialogue.unit);
+            CameraController.Instance.AddToTargetGroup(dialogue.unit.transform, participations.Count);
+            CameraController.Instance.SetFreeCam();
+        }
+        else
+        {
+            CameraController.Instance.SetCamToTopDownView();
         }
 
         prevDialogue = dialogue;
@@ -87,12 +97,10 @@ public class DialogueManager : SingleTon<DialogueManager>
     {
         if (!IsDialogueExist())
         {
-            GetOutDialogue();
             EndConversation();
         }
         else
         {
-            GetOutDialogue();
             SetDialogueText();
         }
     }
@@ -134,8 +142,18 @@ public class DialogueManager : SingleTon<DialogueManager>
     {
         Debug.Log("대화 끝났어요");
         DisableDialogueUI();
+        DeleteParticipations();
         GameManager.Instance.GoBackGameState();
         CameraController.Instance.SetCamToTopDownView();
+    }
+
+    private void DeleteParticipations()
+    {
+        for(int i = 0; i < participations.Count; i++)
+        {
+            CameraController.Instance.RemoveFromTargetGroup(participations[i].transform);
+        }
+        participations.Clear();
     }
 
 

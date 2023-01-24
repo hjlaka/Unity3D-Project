@@ -99,46 +99,6 @@ public class GameManager : SingleTon<GameManager>
 
     }
 
-    private void ApplyOpponentType()
-    {
-        switch (opponentType)
-        {
-            case OpponentType.AI:
-                opponentPlayer = aiManager;
-                break;
-            case OpponentType.PLAYER:
-                opponentPlayer = Player;
-                break;
-            case OpponentType.PLAYER2:
-                opponentPlayer = new Player();
-                break;
-        }
-
-    }
-
-    private void ApplyBothPlayerDirection()
-    {
-        // 상대편이 결정된 다음에 동작할 것.
-        switch (playerTeamDirection)
-        {
-            case TeamData.Direction.UpToDown:
-                //player.SetTeamTurn(TurnState.TOP_TURN);
-                //opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
-
-                topPlayer = player;
-                bottomPlayer = opponentPlayer;
-                break;
-
-            case TeamData.Direction.DownToUp:
-                //player.SetTeamTurn(TurnState.BOTTOM_TURN);
-                //opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
-
-                topPlayer = opponentPlayer;
-                bottomPlayer = player;
-                break;
-        }
-    }
-
     private void Update()
     {
         GameStateUpdate();
@@ -152,25 +112,32 @@ public class GameManager : SingleTon<GameManager>
                 ApplyOpponentType();
                 ApplyBothPlayerDirection();
                 curPlayer = bottomPlayer;
-                // 대화가 있다면 대화 상태 진입
-                DialogueManager.Instance.CheckDialogueEvent();
-
-                //if(DialogueManager.Instance.IsDialogueExist())
-                    // 대화 상태 진입
-
-                // 대화가 더이상 없다면 계속 진행
-                if(state == GameState.START_GAME)
-                    ChangeGameState(GameState.SETTING_GAME);
+                
+                ChangeGameState(GameState.SETTING_GAME);
                 break; 
 
             case GameState.SETTING_GAME:
+                // 대화가 있다면 대화 상태 진입
+                DialogueManager.Instance.CheckDialogueEvent();
+
+                // 대화가 더이상 없다면 계속 진행
+                if (state != GameState.SETTING_GAME) break;
+                    
                 gameSetter.SetTopTeam(0);
+                gameSetter.SetSettingEvent(0);
                 
+
                 ChangeGameState(GameState.PREPARING_GAME);
                 break;
             
             case GameState.PREPARING_GAME:
+                DialogueManager.Instance.CheckDialogueEvent();
+
+                // 대화가 더이상 없다면 계속 진행
+                if (state != GameState.PREPARING_GAME) break;
+
                 gameSetter.SetBottomTeam(0);
+
                 PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
                 // 완료 버튼을 눌렀을 시, 다음으로 넘어간다. 무언가 입력을 대기 해야 한다.// 외부에서 바꿀 수밖에 없는가? 혹은 신호를 받는 게 나은가?
                 ChangeGameState(GameState.SELECTING_PIECE);
@@ -227,6 +194,46 @@ public class GameManager : SingleTon<GameManager>
 
             default: 
                 state = GameState.TURN_CHANGE; 
+                break;
+        }
+    }
+
+    private void ApplyOpponentType()
+    {
+        switch (opponentType)
+        {
+            case OpponentType.AI:
+                opponentPlayer = aiManager;
+                break;
+            case OpponentType.PLAYER:
+                opponentPlayer = Player;
+                break;
+            case OpponentType.PLAYER2:
+                opponentPlayer = new Player();
+                break;
+        }
+
+    }
+
+    private void ApplyBothPlayerDirection()
+    {
+        // 상대편이 결정된 다음에 동작할 것.
+        switch (playerTeamDirection)
+        {
+            case TeamData.Direction.UpToDown:
+                //player.SetTeamTurn(TurnState.TOP_TURN);
+                //opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
+
+                topPlayer = player;
+                bottomPlayer = opponentPlayer;
+                break;
+
+            case TeamData.Direction.DownToUp:
+                //player.SetTeamTurn(TurnState.BOTTOM_TURN);
+                //opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
+
+                topPlayer = opponentPlayer;
+                bottomPlayer = player;
                 break;
         }
     }
