@@ -29,7 +29,7 @@ public class GameManager : SingleTon<GameManager>
         RETURN
     }
 
-    public enum OpponentType
+    public enum PlayerType
     {
         PLAYER,
         PLAYER2,
@@ -53,7 +53,9 @@ public class GameManager : SingleTon<GameManager>
     private TeamData.Direction playerTeamDirection;
 
     [SerializeField]
-    private OpponentType opponentType;
+    private PlayerType playerType;
+    [SerializeField]
+    private PlayerType opponentType;
 
 
     [SerializeField]
@@ -109,6 +111,7 @@ public class GameManager : SingleTon<GameManager>
         switch(state)
         {
             case GameState.START_GAME:
+                ApplyPlayerType();
                 ApplyOpponentType();
                 ApplyBothPlayerDirection();
                 curPlayer = bottomPlayer;
@@ -124,7 +127,7 @@ public class GameManager : SingleTon<GameManager>
                 if (state != GameState.SETTING_GAME) break;
                     
                 gameSetter.SetTopTeam(0);
-                gameSetter.SetSettingEvent(0);
+                //gameSetter.SetSettingEvent(0);
                 
 
                 ChangeGameState(GameState.PREPARING_GAME);
@@ -197,19 +200,41 @@ public class GameManager : SingleTon<GameManager>
                 break;
         }
     }
+    private void ApplyPlayerType()
+    {
+        switch (playerType)
+        {
+            case PlayerType.AI:
+                GameObject playerObj = player.gameObject;
+                Destroy(player);
+                playerObj.AddComponent<AI>();
+                player = playerObj.GetComponent<AI>();
+                break;
+            case PlayerType.PLAYER:
+                player = Player;
+                break;
+            case PlayerType.PLAYER2:
+                GameObject player2Player = new GameObject();
+                player2Player.AddComponent<Player>();
+                player = player2Player.GetComponent<Player>();
+                break;
+        }
 
+    }
     private void ApplyOpponentType()
     {
         switch (opponentType)
         {
-            case OpponentType.AI:
+            case PlayerType.AI:
                 opponentPlayer = aiManager;
                 break;
-            case OpponentType.PLAYER:
+            case PlayerType.PLAYER:
                 opponentPlayer = Player;
                 break;
-            case OpponentType.PLAYER2:
-                opponentPlayer = new Player();
+            case PlayerType.PLAYER2:
+                GameObject player2Opponent = new GameObject();
+                player2Opponent.AddComponent<Player>();
+                opponentPlayer = player2Opponent.GetComponent<Player>();
                 break;
         }
 
@@ -276,7 +301,7 @@ public class GameManager : SingleTon<GameManager>
             curPlayer = bottomPlayer;
             if (curPlayer is AI)
             {
-                ((AI)opponentPlayer).DoTurn();
+                ((AI)player).DoTurn();
                 ChangeGameState(GameState.OPPONENT_TURN);
             }
             else

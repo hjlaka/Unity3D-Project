@@ -9,7 +9,7 @@ public class EventDialogue : ScriptableObject
     [Serializable]
     public struct EventDialogueUnit
     {
-        public int unitID;
+        public Unit unit;
         public string unitName;
         public string dialogue;
     }

@@ -15,6 +15,11 @@ MonoBehaviour:
   characterName: "\uB85C\uB77C"
   piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
   decidePlaceStrategyType: 0
-  threatening: "\uB108 \uC870\uC2EC\uD574\uB77C"
+  threating: "\uACF5\uACA9\uD574\uC8FC\uB9C8"
   defending: "\uBC29\uC5B4\uD574\uC8FC\uB9C8"
   attacking: "\uC5D0\uC787"
+  called: "\uB3C4\uCC29"
+  beThreated: "\uD574\uBCFC\uD14C\uBA74 \uD574\uBD10"
+  beDefended: "\uB4E0\uB4E0\uD558\uAD70!"
+  beAttacked: "\uC548\uB3FC!"
+  normalTalks: []

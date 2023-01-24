@@ -27,18 +27,20 @@ public class GameSetter : MonoBehaviour
         Debug.Log("배치할 기물 수: " + setting.opponents.Count);
         for (int i = 0; i < setting.opponents.Count; i++)
         {
-            GameData.CallingPiece opponent = setting.opponents[i];
-            Piece instance = Instantiate(opponent.piecePrefab);
+            GameData.CallingPiece calling = setting.opponents[i];
+            Piece instance = Instantiate(calling.piecePrefab);
 
-            Debug.Log("배치중인 기물: " + opponent.piecePrefab);
+            Debug.Log("배치중인 기물: " + calling.piecePrefab);
 
             instance.team = setting.opponentTeam;
-            instance.character = opponent.character;
+            instance.character = calling.character;
 
-            Place targetPlace = mainBoard.GetPlace(opponent.location);
+            Place targetPlace = mainBoard.GetPlace(calling.location);
             instance.place = targetPlace;
+            SetSettingDialogue(instance, calling);
 
             instance.BelongTo(GameManager.Instance.OpponentPlayer);
+
         }
         OnOpponentSet?.Invoke();
 
@@ -51,7 +53,8 @@ public class GameSetter : MonoBehaviour
 
         Debug.Log("세팅 시작");
 
-        Board initBoard = GameObject.Find("InitialBoard").GetComponent<Board>();
+        //Board initBoard = GameObject.Find("InitialBoard").GetComponent<Board>();
+        Board initBoard = GameObject.Find("HandMadeBoard").GetComponent<Board>();
 
         GameData setting = gameSettings[index];
 
@@ -64,20 +67,48 @@ public class GameSetter : MonoBehaviour
             instance.team = setting.playerTeam;
             instance.character = player.character;
 
-            int randX = Random.Range(0, 3);
-            int randY = Random.Range(0, 3);
+            //int randX = Random.Range(0, 3);
+            //int randY = Random.Range(0, 3);
 
-            Debug.Log("랜덤 위치: " + randX + ", " + randY);
-            Place targetPlace = initBoard.GetPlace(new Vector2Int(randX, randY));
+            //Debug.Log("랜덤 위치: " + randX + ", " + randY);
+            Place targetPlace = initBoard.transform.GetChild(i).GetComponent<Place>();
             instance.place = targetPlace;
             //PlaceManager.Instance.MovePiece(instance, targetPlace);
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
 
+            Debug.Log("플레이어: " + GameManager.Instance.Player);
             instance.BelongTo(GameManager.Instance.Player);
 
 
         }
+    }
+
+    public void SetSettingEvent(int index = 0)
+    {
+        if (gameSettings.Count <= index) return;
+
+        List<EventDialogue.EventDialogueUnit> eventDialogues = gameSettings[index].eventDialogue.eventDialogues;
+
+        for (int i = 0; i < eventDialogues.Count; i++)
+        {
+            DialogueManager.DialogueUnit dialogueUnit = new DialogueManager.DialogueUnit(eventDialogues[i].unitName, eventDialogues[i].dialogue);
+            DialogueManager.Instance.AddDialogue(dialogueUnit);
+        }
+    }
+
+    private void SetSettingDialogue(Unit unit, GameData.CallingPiece calling)
+    {
+        List<string> calledgDialogue = calling.calledDialogue;
+        string dialogue;
+
+        for(int i = 0; i < calledgDialogue.Count; i++)
+        {
+            dialogue = calledgDialogue[i];
+            DialogueManager.DialogueUnit dialogueUnit = new DialogueManager.DialogueUnit(unit, dialogue);
+            DialogueManager.Instance.AddDialogue(dialogueUnit);
+        }
+        
     }
 
 }

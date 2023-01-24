@@ -12,6 +12,8 @@ public class GameData : ScriptableObject
     public TeamData playerTeam;
     public TeamData opponentTeam;
 
+    public EventDialogue eventDialogue;
+
     public List<CallingPiece> opponents;
     public List<CallingPiece> players;
 
@@ -25,6 +27,8 @@ public class GameData : ScriptableObject
         public CharacterData character;
 
         public Vector2Int location;
+
+        public List<string> calledDialogue;
     }
 
 }

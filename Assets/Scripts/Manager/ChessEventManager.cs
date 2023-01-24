@@ -68,8 +68,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         {
             ChessEvent chessEvent = eventList[i];
             Piece subject = chessEvent.Subject;
-            talk = chessEvent.GetTypeAsString();
-            
+            talk = GetDialogue(subject.character, chessEvent.Type);
             DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(subject, talk);
             // 캐릭터 대사 가져오기 
 
@@ -78,7 +77,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
             if (chessEvent.Target != null)
             {
                 subject = chessEvent.Target;
-                talk = chessEvent.GetTypeAsString() + "response";
+                talk = GetResponseDialogue(subject.character, chessEvent.Type);
                 DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(subject, talk);
                 DialogueManager.Instance.AddDialogue(dialogue2);
                 // 캐릭터 반응 가져오기
@@ -101,8 +100,6 @@ public class ChessEventManager : SingleTon<ChessEventManager>
 
     public void CheckEvent(Piece piece)
     {
-
-
         piece.ChangeColor(Color.red);
         switch(piece.team.direction)
         {
@@ -116,6 +113,44 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 // AI의 반응 호출
                 OnAIChecked?.Invoke();                
                 break;
+        }
+    }
+
+    public string GetDialogue(CharacterData character, ChessEvent.EventType eventType)
+    {
+        switch(eventType)
+        {
+            case ChessEvent.EventType.ATTACK:
+                return character.attacking;
+            case ChessEvent.EventType.THREAT:
+                return character.threating;
+            case ChessEvent.EventType.DEFENCE:
+                return character.defending;
+            case ChessEvent.EventType.RETURN:
+                return "Return";
+            case ChessEvent.EventType.CHECK:
+                return "Check";
+            default:
+                return "Default";
+        }
+    }
+
+    public string GetResponseDialogue(CharacterData character, ChessEvent.EventType eventType)
+    {
+        switch (eventType)
+        {
+            case ChessEvent.EventType.ATTACK:
+                return character.beAttacked;
+            case ChessEvent.EventType.THREAT:
+                return character.beThreated;
+            case ChessEvent.EventType.DEFENCE:
+                return character.beDefended;
+            case ChessEvent.EventType.RETURN:
+                return "Return";
+            case ChessEvent.EventType.CHECK:
+                return "Check";
+            default:
+                return "Default";
         }
     }
 

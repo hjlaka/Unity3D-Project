@@ -6,7 +6,8 @@ public class ChessEvent : GameEvent
 {
     public enum EventType { ATTACK, THREAT, DEFENCE, RETURN, CHECK, CHECKMATE, GAME_END }
 
-    private EventType eventType;
+    private EventType type;
+    public EventType Type { get { return type; } set { type = value; } }
 
     private Piece subject;
     public Piece Subject { get { return subject; } }
@@ -20,9 +21,9 @@ public class ChessEvent : GameEvent
         target = null;
     }
 
-    public ChessEvent(EventType eventType, Piece subject, Piece target)
+    public ChessEvent(EventType type, Piece subject, Piece target)
     {
-        this.eventType = eventType;
+        this.type = type;
         this.subject = subject;
         this.target = target;
     }
@@ -35,14 +36,10 @@ public class ChessEvent : GameEvent
     {
         target = piece;
     }
-    public void SetType(EventType type)
-    {
-        eventType = type;
-    }
 
     public string GetTypeAsString()
     {
-        switch(eventType)
+        switch(type)
         {
             case EventType.ATTACK:
                 return "Attack";

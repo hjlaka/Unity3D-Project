@@ -31,11 +31,16 @@ public class CharacterData : ScriptableObject
         }
     }
 
-    public string threatening;
+    public string threating;
     public string defending;
     public string attacking;
+    public string called;
+
+    public string beThreated;
+    public string beDefended;
+    public string beAttacked;
+
 
     public List<string> normalTalks;
-
 
 }

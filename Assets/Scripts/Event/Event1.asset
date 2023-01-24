@@ -13,4 +13,13 @@ MonoBehaviour:
   m_Name: Event1
   m_EditorClassIdentifier: 
   eventID: 0
-  eventDialogues: []
+  eventDialogues:
+  - unitID: 0
+    unitName: "\uC801\uAD70"
+    dialogue: "\uC548\uB155!!!!!"
+  - unitID: 0
+    unitName: "\uC801\uAD70"
+    dialogue: "\uC6B0\uB9AC\uAC00 \uC654\uC5B4!!!!"
+  - unitID: 0
+    unitName: "\uC801\uAD70"
+    dialogue: "\uC640\uC11C \uC6B0\uB9AC\uB791 \uC2F8\uC6CC!!!!!"
