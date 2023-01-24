@@ -11,4 +11,5 @@ public class StrategyData : ScriptableObject
     public float willingToExtend = 0.5f;
     public float willingToSafe = 1.3f;
     public float futureOriented = 0.1f;
+    public float floatingMind = 0.1f;
 }

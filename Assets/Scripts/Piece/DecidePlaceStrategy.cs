@@ -17,13 +17,20 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
     protected float willingToSafe = 1.3f;
     protected float willingToThreat = 1.2f;
     protected float futureOriented = 0.1f;
+    protected float floatingMind = 0.1f;
 
     protected float totalWeight;
 
     public abstract Placement DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet);
     protected virtual void CopyData()
     {
-        // override
+        willingToDefend = strategyData.willingToDefend;
+        willingToAttack = strategyData.willingToAttack;
+        willingToThreat = strategyData.willingToThreat;
+        willingToExtend = strategyData.willingToExtend;
+        willingToSafe = strategyData.willingToSafe;
+        futureOriented = strategyData.futureOriented;
+        floatingMind = strategyData.floatingMind;
     }
 
     protected float GetTotalWeight()
@@ -41,6 +48,8 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         float placePreferPoint;
         float defencePoint = 0;
         float assumePoint;
+        float mindPoint;
+        float extentPoint;
         //float futureOrientPoint;
 
         Piece targetPiece = place.Piece;
@@ -82,7 +91,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         }
         else if (deltaHeat == 1)
         {
-            heatPreferPoint = 4;
+            heatPreferPoint = 5;
         }
         else if (deltaHeat == -1)
         {
@@ -90,7 +99,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         }
         else if (deltaHeat > 1)
         {
-            heatPreferPoint = 4;
+            heatPreferPoint = 1;
         }
         else if (deltaHeat < -1)
         {
@@ -101,12 +110,22 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         {
             heatPreferPoint *= 0.5f;
         }
-        
+
         //안정도 점수
         // 안정도 점수 = (과열도 선호 점수 / (1 + 과열도 선호 점수))
         // 0, 1/2, 2/3, ...
+        float tempPieceScore = 1 - ((float)piece.PieceScore / (1 + piece.PieceScore));
+        tempPieceScore *= 3;
+        heatPreferPoint += tempPieceScore;
+        Debug.Log("기물 이동 보정 점수: " + tempPieceScore);
         placePreferPoint = heatPreferPoint / (1 + heatPreferPoint);
         Debug.Log("위치 선호 점수: " + placePreferPoint);
+
+        extentPoint = Mathf.Abs(place.boardIndex.x - piece.place.boardIndex.x) + Mathf.Abs(place.boardIndex.y - piece.place.boardIndex.y);
+        extentPoint /= piece.PieceScore;
+        extentPoint = extentPoint / (1 + extentPoint);
+        Debug.Log("멀리 가기 점수: " + extentPoint);
+        extentPoint *= willingToExtend;
 
 
         // 이동해본다음에 계산해야한다.
@@ -115,9 +134,14 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         //assumePoint = 0;
         Debug.Log("가정 점수: " + assumePoint);
 
-        score = attackPoint + placePreferPoint + assumePoint;
+        mindPoint = Random.Range(0, 3);
+        mindPoint = mindPoint / (1 + mindPoint);
+        mindPoint *= floatingMind;
+
+        score = attackPoint + placePreferPoint + assumePoint + extentPoint + mindPoint;
         if (GameManager.Instance.scoreDebugMode)
-            Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + placePreferPoint + " /  가정 점수: " + assumePoint);
+            Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + placePreferPoint + " /  가정 점수: " + assumePoint + 
+                " / 확장 점수: " + extentPoint + "/ 랜덤 점수: " + mindPoint);
 
         
 
@@ -132,7 +156,6 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
 
         StoreToMap(place.boardIndex, scoreSet);
 
-        Debug.Log("스코어 셋: " + scoreSet);
 
 
         return scoreSet;
@@ -149,7 +172,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         float defendablePoint = 0;
         float threatablePoint = 0;
         float extendablePoint = 0;
-        float heatPreferPoint = -99;
+        float heatPreferPoint = 0;
 
 
         StateLists assumeStateLists = new StateLists();
@@ -183,18 +206,20 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             movableCount += 1;
 
             if (maxHeatPoint < deltaHeatPoint)
-                maxHeatPoint = deltaHeatPoint;
+                maxHeatPoint = deltaHeatPoint;  // 확장 점수에 보너스
         }
 
         // 이동 범위 확장 
         // 확장 점수 = 갈 수 있는 위치 개수 / (1 + 기물 점수)
-        extendablePoint = (float)movableCount / (1 + movableCount);
+        extendablePoint = (float)movableCount / (piece.PieceScore * piece.PieceScore);
 
-        extendablePoint *= willingToExtend + (2 - ((float)piece.PieceScore / (1 + piece.PieceScore)));
+        extendablePoint *= willingToExtend;
         Debug.Log("확장 점수: " + extendablePoint);
 
-        heatPreferPoint = (float)(heatPreferPoint) / (1 + heatPreferPoint);
-        heatPreferPoint *= willingToSafe;
+        if (piece.returnHeat.ReturnOpponentHeat(place) > 0)
+        {
+            heatPreferPoint *= 0.5f;
+        }
 
         // 공격할 수 있는 기물
         for (int i = 0; i < assumeStateLists.threating.Count; i++)
@@ -202,12 +227,14 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             // 공격 점수 식에 따라 공격 점수를 반환받는다.
             Piece threatablePiece = assumeStateLists.threating[i];
 
+            if (threatablePiece.PieceScore < piece.PieceScore) continue;
+
             // 위협 점수 = 공격할 수 있는 기물들에 대한 공격 점수의 합
             threatablePoint += (float)(threatablePiece.PieceScore) / (1 + threatablePiece.PieceScore);
         }
 
-        // 위협은 자신이 위험에 노출되는 상황이기도 하다.
-        threatablePoint *= (willingToThreat - willingToSafe);
+        // 위협은 자신이 위험에 노출되는 상황이기도 하다. - 하지만 다음 이동에 관한 것이므로 아직 고려할 필요 없다.
+        threatablePoint *= willingToThreat;
 
         // 방어할 수 있는 기물
         for (int i = 0; i < assumeStateLists.defending.Count; i++)
@@ -216,7 +243,13 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             Debug.Log("방어 대상 기물: " + defendablePiece);
             // 가정된 상황에서 자신을 방어하는 경우를 빼야 한다. - 기물을 임시 이동 시켰다.
 
-            defendablePoint += (float)(defendablePiece.PieceScore) / (1 + defendablePiece.PieceScore); // * 과열도의 긴박한 정도. (과열도 차가 작을 수록 긴박함?)
+            int targetDeltaHeat = piece.returnHeat.ReturnTeamHeat(defendablePiece.place) - piece.returnHeat.ReturnOpponentHeat(defendablePiece.place);
+            int backUpPoint;
+            if (targetDeltaHeat < 0) backUpPoint = 2;
+            if (targetDeltaHeat == 0) backUpPoint = 1;
+            else backUpPoint = 0;
+
+            defendablePoint += ((float)(defendablePiece.PieceScore) / (1 + defendablePiece.PieceScore)) * backUpPoint; // * 과열도의 긴박한 정도. (과열도 차가 작을 수록 긴박함?)
 
             // 구원이 필요한 정도 + 구원하고자 하는 의지 (합산? 곱?)
         }

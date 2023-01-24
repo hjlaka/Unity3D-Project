@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class DefendFirstStategy : DecidePlaceStrategy
 {
-    protected override void CopyData()
+    public DefendFirstStategy()
     {
-        willingToDefend = StrategyManager.Instance.defendFirst.willingToDefend;
-        willingToAttack = StrategyManager.Instance.defendFirst.willingToAttack;
-        willingToThreat = StrategyManager.Instance.defendFirst.willingToThreat;
-        willingToExtend = StrategyManager.Instance.defendFirst.willingToExtend;
-        willingToSafe = StrategyManager.Instance.defendFirst.willingToSafe;
-        futureOriented = StrategyManager.Instance.defendFirst.futureOriented;
+        strategyData = StrategyManager.Instance.defendFirst;
     }
     public override Placement DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet)
     {

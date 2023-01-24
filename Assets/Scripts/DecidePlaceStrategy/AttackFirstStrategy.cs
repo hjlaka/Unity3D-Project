@@ -4,16 +4,9 @@ using UnityEngine;
 
 public class AttackFirstStrategy : DecidePlaceStrategy
 {
-
-    protected override void CopyData()
+    public AttackFirstStrategy()
     {
-        willingToDefend = StrategyManager.Instance.attackFirst.willingToDefend;
-        willingToAttack = StrategyManager.Instance.attackFirst.willingToAttack;
-        willingToThreat = StrategyManager.Instance.attackFirst.willingToThreat;
-        willingToExtend = StrategyManager.Instance.attackFirst.willingToExtend;
-        willingToSafe = StrategyManager.Instance.attackFirst.willingToSafe;
-        futureOriented = StrategyManager.Instance.attackFirst.futureOriented;
-
+        strategyData = StrategyManager.Instance.attackFirst;
     }
     public override Placement DecidePlace(Piece piece, ref float will, out ScoreNode scoreSet)
     {
@@ -30,7 +23,6 @@ public class AttackFirstStrategy : DecidePlaceStrategy
         {
             Place place = movablePlaces[i];
             ScoreNode tempScoreSet = CalculateScore(piece, place);
-            Debug.Log("-스코어 셋: " + tempScoreSet);
             float score = tempScoreSet.WillPoint;
 
             // 저장해 둔 점수 중 가장 높은 점수 가져오기? (왕 보호에 대한 것 외에는 차선을 가져올 수도 있도록?)
@@ -51,7 +43,7 @@ public class AttackFirstStrategy : DecidePlaceStrategy
         will = maxScore / GetTotalWeight();
         scoreSet = highScoreSet;
 
-        Placement placement = new Placement(piece, piece.place, highScorePlace, highScorePlace.Piece, null);
+        Placement placement = new Placement(piece, piece.place, highScorePlace, highScorePlace?.Piece, null);
 
         return placement;
     }
