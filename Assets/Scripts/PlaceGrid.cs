@@ -19,6 +19,8 @@ public class PlaceGrid : MonoBehaviour
     private Vector2Int gridSize;
     [SerializeField]
     private float placeSize;
+    [SerializeField]
+    private bool isCheck;
 
 
     private Place[,] places;
@@ -57,7 +59,10 @@ public class PlaceGrid : MonoBehaviour
                 Vector3 size = new Vector3(placeSize, 0, placeSize);
                 Place instance = Instantiate(placePrefab, center, Quaternion.identity, board.transform);
 
-                instance.type = ((x + y) % 2 == 0) ? Place.PlaceType.A : Place.PlaceType.B;
+                if (isCheck)
+                    instance.type = ((x + y) % 2 == 0) ? Place.PlaceType.A : Place.PlaceType.B;
+                else
+                    instance.type = Place.PlaceType.V;
 
                 instance.gameObject.name = "Place" + x + y;
                 instance.boardIndex = new Vector2Int(x, y);

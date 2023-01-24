@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Place : MonoBehaviour, ISubject
 {
-    public enum PlaceType { A, B };
+    public enum PlaceType { A, B, V };
     private Piece piece;
     public Piece Piece
     {
@@ -37,6 +37,14 @@ public class Place : MonoBehaviour, ISubject
         get { return isAttackableByCurPiece; }
         set { isAttackableByCurPiece = value; }
     }
+
+    private SpecialMove moveAction;
+    public SpecialMove MoveAction
+    {
+        get { return moveAction; }
+        set { moveAction = value; }
+    }
+
 
     [SerializeField]
     private List<PlaceObserver> influencingUnit;
@@ -111,8 +119,6 @@ public class Place : MonoBehaviour, ISubject
 
 
     private Renderer render;
-    private bool isApprochable;
-    public bool IsApprochable { get { return isApprochable; } set { isApprochable = value; } }
 
 
 
@@ -130,7 +136,6 @@ public class Place : MonoBehaviour, ISubject
 
     private void Start()
     {
-        IsApprochable = true;
 
         switch (type)
         {
@@ -139,6 +144,9 @@ public class Place : MonoBehaviour, ISubject
                 break;
             case PlaceType.B:
                 typeColor = Color.black;
+                break;
+            case PlaceType.V:
+                typeColor = Color.green;
                 break;
         }
 
@@ -172,11 +180,6 @@ public class Place : MonoBehaviour, ISubject
             return;
         }
 
-        if (!isApprochable)
-        {
-            Debug.Log("접근 불가능한 위치임");
-            return;
-        }
 
 
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
@@ -224,7 +227,7 @@ public class Place : MonoBehaviour, ISubject
         influencingUnit.Remove(observer as PlaceObserver);
     }
 
-    public void notifyObserver()
+    public ISubject notifyObserver()
     {
         // 옵저버에게 알리는 과정에서, 옵저버 목록이 바뀔 수 있다.
         // 현재 목록대로 옵저버에게 알려야하므로, 복사본을 만들어야 한다.
@@ -238,8 +241,10 @@ public class Place : MonoBehaviour, ISubject
 
         for (int i = 0; i < copyList.Count; i++)
         {
-            copyList[i].StateUpdate();
+            copyList[i].StateUpdate(this);
             //Debug.Log("업데이트 호출: " + copyList[i]);
         }
+
+        return this;
     }
 }
