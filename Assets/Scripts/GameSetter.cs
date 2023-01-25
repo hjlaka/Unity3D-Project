@@ -23,11 +23,13 @@ public class GameSetter : MonoBehaviour
         Debug.Log("찾아낸 보드: " + mainBoard);
 
         GameData setting = gameSettings[index];
+        List<GameData.CallingPiece> callings = setting.opponents;
+        Player teamPlayer = GameManager.Instance.OpponentPlayer;
 
-        Debug.Log("배치할 기물 수: " + setting.opponents.Count);
-        for (int i = 0; i < setting.opponents.Count; i++)
+        Debug.Log("배치할 기물 수: " + callings.Count);
+        for (int i = 0; i < callings.Count; i++)
         {
-            GameData.CallingPiece calling = setting.opponents[i];
+            GameData.CallingPiece calling = callings[i];
             Piece instance = Instantiate(calling.piecePrefab);
 
             Debug.Log("배치중인 기물: " + calling.piecePrefab);
@@ -37,9 +39,13 @@ public class GameSetter : MonoBehaviour
 
             Place targetPlace = mainBoard.GetPlace(calling.location);
             instance.place = targetPlace;
+            instance.IsOnGame = true;
             SetSettingDialogue(instance, calling);
 
-            instance.BelongTo(GameManager.Instance.OpponentPlayer);
+            instance.BelongTo(teamPlayer);
+
+            if (calling.isCoreUnit)
+                teamPlayer.CoreUnit = instance;
 
         }
         OnOpponentSet?.Invoke();
@@ -57,15 +63,17 @@ public class GameSetter : MonoBehaviour
         Board initBoard = GameObject.Find("HandMadeBoard").GetComponent<Board>();
 
         GameData setting = gameSettings[index];
+        List<GameData.CallingPiece> callings = setting.players;
+        Player teamPlayer = GameManager.Instance.Player;
 
-        for (int i = 0; i < setting.players.Count; i++)
+        for (int i = 0; i < callings.Count; i++)
         {
-            GameData.CallingPiece player = setting.players[i];
-            Debug.Log("배치중인 기물: " + player.piecePrefab);
+            GameData.CallingPiece calling = callings[i];
+            Debug.Log("배치중인 기물: " + calling.piecePrefab);
 
-            Piece instance = Instantiate(player.piecePrefab);
+            Piece instance = Instantiate(calling.piecePrefab);
             instance.team = setting.playerTeam;
-            instance.character = player.character;
+            instance.character = calling.character;
 
             //int randX = Random.Range(0, 3);
             //int randY = Random.Range(0, 3);
@@ -73,12 +81,16 @@ public class GameSetter : MonoBehaviour
             //Debug.Log("랜덤 위치: " + randX + ", " + randY);
             Place targetPlace = initBoard.transform.GetChild(i).GetComponent<Place>();
             instance.place = targetPlace;
+            instance.IsOnGame = true;
             //PlaceManager.Instance.MovePiece(instance, targetPlace);
 
             PlayerDataManager.Instance.AddPlayerPiece(instance);
 
-            Debug.Log("플레이어: " + GameManager.Instance.Player);
-            instance.BelongTo(GameManager.Instance.Player);
+            Debug.Log("플레이어: " + teamPlayer);
+            instance.BelongTo(teamPlayer);
+
+            if (calling.isCoreUnit)
+                teamPlayer.CoreUnit = instance;
 
 
         }

@@ -91,6 +91,11 @@ public class Piece : LifeUnit
         belong.AddPiece(this);
     }
 
+    public virtual void SetFree(bool value)
+    {
+        IsFree = value;
+    }
+
     public void PlaceToDesire(Place targetPlace)
     {
 

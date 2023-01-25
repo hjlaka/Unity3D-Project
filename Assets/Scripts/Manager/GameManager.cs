@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : SingleTon<GameManager>
 {
+    public UnityEvent OnTest;
     public enum GameState 
     { 
         START_GAME,
@@ -18,7 +20,8 @@ public class GameManager : SingleTon<GameManager>
         IN_CONVERSATION, 
         OPPONENT_TURN,
         RETURN,
-        GAME_END
+        GAME_END,
+        OUT_OF_GAME
     }
 
 
@@ -111,6 +114,7 @@ public class GameManager : SingleTon<GameManager>
         switch(state)
         {
             case GameState.START_GAME:
+                OnTest?.Invoke();
                 ApplyPlayerType();
                 ApplyOpponentType();
                 ApplyBothPlayerDirection();
@@ -174,6 +178,13 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.TURN_FINISHED:
+                // 이벤트 종료 신호를 받아옴
+                if (IsEnded())
+                {
+                    Debug.Log("게임 종료 인식");
+                    ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.GAME_END, null, null));
+                    ChangeGameState(GameState.GAME_END);
+                }   
                 // 이벤트 실행
                 // 체스 이벤트
                 ChessEventManager.Instance.GetEvent();
@@ -181,7 +192,8 @@ public class GameManager : SingleTon<GameManager>
                 // 대화 이벤트
                 DialogueManager.Instance.CheckDialogueEvent();
 
-                // 이벤트 종료 신호를 받아옴
+                
+
                 // 대화가 더이상 없다면 계속 진행
                 if (state == GameState.TURN_FINISHED)
                     ChangeGameState(GameState.TURN_CHANGE);
@@ -193,6 +205,12 @@ public class GameManager : SingleTon<GameManager>
             case GameState.RETURN:
                 // 되돌리기 작업 종료 후 돌아왔을 때 아래 실행
                 ChangeGameState(GameState.TURN_CHANGE);
+                break;
+
+            case GameState.GAME_END:
+                break;
+
+            case GameState.OUT_OF_GAME:
                 break;
 
             default: 
@@ -320,5 +338,20 @@ public class GameManager : SingleTon<GameManager>
     public void ChangeTurn(TurnState turn)
     {
         turnState = turn;
+    }
+
+    private bool IsEnded()
+    {
+        if (player.CoreUnit != null && !player.CoreUnit.IsOnGame)
+            return true;
+        else if (opponentPlayer.CoreUnit != null && !opponentPlayer.CoreUnit.IsOnGame)
+            return true;
+        else
+            return false;
+    }
+
+    public void GameEnd()
+    {
+
     }
 }

@@ -22,6 +22,8 @@ public class GameData : ScriptableObject
     [Serializable]
     public struct CallingPiece
     {
+        public bool isCoreUnit;
+
         public Piece piecePrefab;
 
         public CharacterData character;
@@ -29,6 +31,8 @@ public class GameData : ScriptableObject
         public Vector2Int location;
 
         public List<string> calledDialogue;
+
+        
     }
 
 }

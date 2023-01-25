@@ -15,7 +15,11 @@ public class LifeUnit : Unit
     public bool IsFree
     {
         get { return isFree; }
-        set { isFree = value; }
+        set 
+        { 
+            isFree = value;
+            isOnGame = !isFree;
+        }
     }
     [SerializeField]
     private Vector3 target;
