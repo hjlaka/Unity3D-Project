@@ -8,7 +8,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
    
 
 
-    private List<ChessEvent> eventList;
+    private Heap<ChessEvent> eventList;
 
     private Dictionary<string, ChessEvent> relationDictionary;
 
@@ -16,14 +16,15 @@ public class ChessEventManager : SingleTon<ChessEventManager>
 
     private void Awake()
     {
-        eventList = new List<ChessEvent>();
+        eventList = new Heap<ChessEvent>();
         relationDictionary = new Dictionary<string, ChessEvent>();
     }
 
-    private void AddEvent(ChessEvent chessEvent)
+    private void AddEvent(float importance, ChessEvent chessEvent)
     {
         // 주체가 되는 기물
-        eventList.Add(chessEvent);
+        Node<ChessEvent> node = new Node<ChessEvent>(importance, chessEvent);
+        eventList.Push(node);
         Debug.Log("----------------- 이벤트 추가 ------------------- : " + eventList.Count);
         
     }
@@ -50,7 +51,8 @@ public class ChessEventManager : SingleTon<ChessEventManager>
             Debug.Log("새로운 이벤트 " + subject + " " + target + " " + chessEvent.GetTypeAsString());
             Debug.Log("키: [" + key + "]");
             relationDictionary.Add(key, chessEvent);
-            AddEvent(chessEvent);
+            float importance = subject.PieceScore + target.PieceScore + target.place.HeatPoint;
+            AddEvent(importance, chessEvent);
         }
 
     }
@@ -63,7 +65,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         string talk;
 
         Debug.Log("이벤트 개수: " + eventList.Count);
-        // 모든 이벤트 다 넣기
+/*        // 모든 이벤트 다 넣기
         for (int i = 0; i < eventList.Count; i++)
         {
             ChessEvent chessEvent = eventList[i];
@@ -82,7 +84,30 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 DialogueManager.Instance.AddDialogue(dialogue2);
                 // 캐릭터 반응 가져오기
             }
+        }*/
+
+        // 중요한 이벤트만 발동시키기
+
+        Node<ChessEvent> node = eventList.Pop();
+        ChessEvent chessEvent = node.obj;
+        Debug.Log("이벤트 중요도: " + node.value);
+       
+        Piece subject = chessEvent.Subject;
+        talk = GetDialogue(subject.character, chessEvent.Type);
+        DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(subject, talk);
+        // 캐릭터 대사 가져오기 
+
+        DialogueManager.Instance.AddDialogue(dialogue);
+
+        if (chessEvent.Target != null)
+        {
+            subject = chessEvent.Target;
+            talk = GetResponseDialogue(subject.character, chessEvent.Type);
+            DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(subject, talk);
+            DialogueManager.Instance.AddDialogue(dialogue2);
+            // 캐릭터 반응 가져오기
         }
+       
 
         eventList.Clear();
         
