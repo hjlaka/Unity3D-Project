@@ -34,18 +34,19 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         {
             case ChessEvent.EventType.GAME_END:
                 Debug.Log("게임 종료 이벤트 제출");
-                AddEvent(9999, chessEvent);
+                AddEvent(chessEvent.GetEventTypeScore(), chessEvent);
                 break;
             default:
                 Piece subject = chessEvent.Subject;
                 Piece target = chessEvent.Target;
                 string key = subject.GetInstanceID() + "/" + target.GetInstanceID();
+                Debug.Log("키: " + key);
                 bool relationExist = relationDictionary.ContainsKey(key);
                 if (relationExist)
                 {
                     if (chessEvent.GetType() == relationDictionary[key].GetType())
                     {
-                        Debug.Log("이미 있는 이벤트--------------------------------");
+                        Debug.Log("이미 있는 이벤트--------------------------------" + chessEvent.Type);
                     }
                     else
                     {
@@ -57,7 +58,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                     Debug.Log("새로운 이벤트 " + subject + " " + target + " " + chessEvent.GetTypeAsString());
                     Debug.Log("키: [" + key + "]");
                     relationDictionary.Add(key, chessEvent);
-                    float importance = subject.PieceScore + target.PieceScore + target.place.HeatPoint;
+                    float importance = subject.PieceScore + target.PieceScore + target.place.HeatPoint + chessEvent.GetEventTypeScore();
                     AddEvent(importance, chessEvent);
                 }
                 break;
@@ -174,6 +175,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 return "Default";
         }
     }
+
 
 
 }

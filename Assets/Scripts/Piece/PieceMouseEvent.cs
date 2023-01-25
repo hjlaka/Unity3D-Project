@@ -34,9 +34,9 @@ public class PieceMouseEvent : MonoBehaviour
 
         if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
         {
-            if (GameManager.Instance.CurPlayer != piece.Belong)
+            if (GameManager.Instance.curPlayer != piece.Belong)
             {
-                Debug.Log("기물 주인 턴이 아님. 턴: " + GameManager.Instance.CurPlayer + "/ 기물 주인: " + piece.Belong);
+                Debug.Log("기물 주인 턴이 아님. 턴: " + GameManager.Instance.curPlayer + "/ 기물 주인: " + piece.Belong);
                 return;
             }
             if (piece.Belong is AI)

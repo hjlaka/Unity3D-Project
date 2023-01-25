@@ -61,4 +61,26 @@ public class ChessEvent : GameEvent
 
         }
     }
+
+    public float GetEventTypeScore()
+    {
+        switch(type)
+        {
+            case EventType.ATTACK:
+                return 109f;
+
+            case EventType.DEFENCE:
+                return 1f;
+
+            case EventType.THREAT:
+                return 1f;
+
+            case EventType.GAME_END:
+                return 999f;
+
+            default:
+                return 0f;
+
+        }
+    }
 }
