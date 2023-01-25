@@ -12,7 +12,7 @@ namespace GameState
               ApplyPlayerType();
               ApplyOpponentType();
               ApplyBothPlayerDirection();
-              manager.CurPlayer = manager.bottomPlayer;
+              manager.curPlayer = manager.bottomPlayer;
           }
 
           public void StateExit()
@@ -35,7 +35,7 @@ namespace GameState
                     Destroy(manager.Player);
                     playerObj.AddComponent<AI>();
 
-                    manager.Player = playerObj.GetComponent<AI>();
+                    manager.player = playerObj.GetComponent<AI>();
                     break;
 
                 case GameManager.PlayerType.PLAYER:
@@ -45,7 +45,7 @@ namespace GameState
                     GameObject player2Player = new GameObject();
                     player2Player.AddComponent<Player>();
 
-                    manager.Player = player2Player.GetComponent<Player>();
+                    manager.player = player2Player.GetComponent<Player>();
                     break;
             }
 
@@ -55,15 +55,15 @@ namespace GameState
             switch (manager.opponentType)
             {
                 case GameManager.PlayerType.AI:
-                    manager.OpponentPlayer = manager.aiManager;
+                    manager.opponentPlayer = manager.aiManager;
                     break;
                 case GameManager.PlayerType.PLAYER:
-                    manager.OpponentPlayer = manager.Player;
+                    manager.opponentPlayer = manager.Player;
                     break;
                 case GameManager.PlayerType.PLAYER2:
                     GameObject player2Opponent = new GameObject();
                     player2Opponent.AddComponent<Player>();
-                    manager.OpponentPlayer = player2Opponent.GetComponent<Player>();
+                    manager.opponentPlayer = player2Opponent.GetComponent<Player>();
                     break;
             }
 

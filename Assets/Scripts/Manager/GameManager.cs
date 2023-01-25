@@ -14,10 +14,12 @@ public class GameManager : SingleTon<GameManager>
         PREPARING_GAME,
         SELECTING_PIECE, 
         SELECTING_PLACE, 
+        DOING_PLAYER_TURN_START,
         DOING_PLAYER_TURN,
         TURN_FINISHED,
         TURN_CHANGE, 
-        IN_CONVERSATION, 
+        IN_CONVERSATION,
+        OPPONENT_TURN_START,
         OPPONENT_TURN,
         RETURN,
         GAME_END,
@@ -43,33 +45,32 @@ public class GameManager : SingleTon<GameManager>
 
     [Header("EngineSetting")]
     [SerializeField]
-    private GameSetter gameSetter;
+    public GameSetter gameSetter;
 
     [SerializeField]
-    private AI aiManager;
+    public AI aiManager;
 
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
 
     [Header("GameSetting")]
     [SerializeField]
-    private TeamData.Direction playerTeamDirection;
+    public TeamData.Direction playerTeamDirection;
 
     [SerializeField]
-    private PlayerType playerType;
+    public PlayerType playerType;
     [SerializeField]
-    private PlayerType opponentType;
+    public PlayerType opponentType;
 
 
     [SerializeField]
-    private Player player;
+    public Player player;
 
-    private Player opponentPlayer;
+    public Player opponentPlayer;
 
-    private Player topPlayer;
-    private Player bottomPlayer;
-    private Player curPlayer;
-    public Player CurPlayer { get { return curPlayer; } }
+    public Player topPlayer;
+    public Player bottomPlayer;
+    public Player curPlayer;
 
     public Player Player { get { return player; } }
     public Player OpponentPlayer { get { return opponentPlayer; } }
@@ -157,11 +158,16 @@ public class GameManager : SingleTon<GameManager>
 
             case GameState.SELECTING_PLACE:
                 break;
-                
-            case GameState.DOING_PLAYER_TURN:
+
+            case GameState.DOING_PLAYER_TURN_START:
+                ChangeGameState(GameState.DOING_PLAYER_TURN);
                 Debug.Log("플레이어턴");
                 ChessEventManager.Instance.GetEvent();
                 DialogueManager.Instance.CheckDialogueEvent();
+                break;
+                
+            case GameState.DOING_PLAYER_TURN:
+                
                 break;
 
             case GameState.TURN_CHANGE:
@@ -182,6 +188,7 @@ public class GameManager : SingleTon<GameManager>
 
             case GameState.TURN_FINISHED:
                 // 이벤트 종료 신호를 받아옴
+                Debug.Log("게임 종료 검사");
                 if (IsEnded())
                 {
                     Debug.Log("게임 종료 인식");
@@ -202,10 +209,14 @@ public class GameManager : SingleTon<GameManager>
                     ChangeGameState(GameState.TURN_CHANGE);
                 break;
 
-            case GameState.OPPONENT_TURN:
+            case GameState.OPPONENT_TURN_START:
+                ChangeGameState(GameState.OPPONENT_TURN);
                 Debug.Log("상대턴");
                 ChessEventManager.Instance.GetEvent();
                 DialogueManager.Instance.CheckDialogueEvent();
+                break;
+
+            case GameState.OPPONENT_TURN:
                 break;
 
             case GameState.RETURN:

@@ -18,7 +18,10 @@ public class LifeUnit : Unit
         set 
         { 
             isFree = value;
-            isOnGame = !isFree;
+            IsOnGame = !isFree;
+
+            if(isFree)
+            { Debug.Log("자유의 몸이 되었다! "); }
         }
     }
     [SerializeField]

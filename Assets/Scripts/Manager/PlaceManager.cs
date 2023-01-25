@@ -173,11 +173,11 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         if(GameManager.Instance.turnState == GameManager.TurnState.BOTTOM_TURN)
         {
-            GameManager.Instance.ChangeGameState(GameManager.GameState.DOING_PLAYER_TURN);
+            GameManager.Instance.ChangeGameState(GameManager.GameState.DOING_PLAYER_TURN_START);
         }
         else if(GameManager.Instance.turnState == GameManager.TurnState.TOP_TURN)
         {
-            GameManager.Instance.ChangeGameState(GameManager.GameState.OPPONENT_TURN);
+            GameManager.Instance.ChangeGameState(GameManager.GameState.OPPONENT_TURN_START);
         }
             
 
@@ -341,6 +341,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             markable.PreShowEnd(selectedPiece);
 
         SelectedPieceInit();
+        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
     }
 
     public void SelectedPieceInit()
@@ -349,7 +350,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         SelectedPiece.ChangeColor();
 
         SelectedPiece = null;
-        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
         
     }
 
