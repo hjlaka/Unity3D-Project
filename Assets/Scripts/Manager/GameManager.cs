@@ -159,6 +159,9 @@ public class GameManager : SingleTon<GameManager>
                 break;
                 
             case GameState.DOING_PLAYER_TURN:
+                Debug.Log("플레이어턴");
+                ChessEventManager.Instance.GetEvent();
+                DialogueManager.Instance.CheckDialogueEvent();
                 break;
 
             case GameState.TURN_CHANGE:
@@ -200,6 +203,9 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.OPPONENT_TURN:
+                Debug.Log("상대턴");
+                ChessEventManager.Instance.GetEvent();
+                DialogueManager.Instance.CheckDialogueEvent();
                 break;
 
             case GameState.RETURN:
@@ -305,7 +311,7 @@ public class GameManager : SingleTon<GameManager>
             if(curPlayer is AI)
             {
                 ((AI)opponentPlayer).DoTurn();
-                ChangeGameState(GameState.OPPONENT_TURN);
+                ChangeGameState(GameState.SELECTING_PIECE);
             }
             else
             {
@@ -320,7 +326,7 @@ public class GameManager : SingleTon<GameManager>
             if (curPlayer is AI)
             {
                 ((AI)player).DoTurn();
-                ChangeGameState(GameState.OPPONENT_TURN);
+                ChangeGameState(GameState.SELECTING_PIECE);
             }
             else
             {

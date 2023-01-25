@@ -5,9 +5,6 @@ using UnityEngine.Events;
 
 public class ChessEventManager : SingleTon<ChessEventManager>
 {
-   
-
-
     private Heap<ChessEvent> eventList;
 
     private Dictionary<string, ChessEvent> relationDictionary;
@@ -74,9 +71,6 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         string pieceName;
         string talk;
 
-        Debug.Log("이벤트 개수: " + eventList.Count);
-        Debug.Log("첫번째 이벤트 중요도: " + eventList.GetNode(0).value);
-        Debug.Log("마지막 이벤트 중요도: " + eventList.GetNode(eventList.Count - 1).value);
 
         // 중요한 이벤트만 발동시키기
         Node<ChessEvent> node = eventList.Pop();
@@ -108,17 +102,11 @@ public class ChessEventManager : SingleTon<ChessEventManager>
             }
         }
 
-       
-        
-
         // 나머지 등록된 이벤트 순회.
         // 참가자로 등록 시키기.
         // 혹은 후속 대사로 등록 시키기.
 
-       
-
-        eventList.Clear();
-        
+        eventList.Clear();     
     }
 
     private void FindEvent()

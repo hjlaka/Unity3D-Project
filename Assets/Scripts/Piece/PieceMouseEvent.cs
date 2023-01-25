@@ -39,9 +39,9 @@ public class PieceMouseEvent : MonoBehaviour
                 Debug.Log("기물 주인 턴이 아님. 턴: " + GameManager.Instance.CurPlayer + "/ 기물 주인: " + piece.Belong);
                 return;
             }
-            if (GameManager.Instance.state == GameManager.GameState.OPPONENT_TURN)
+            if (piece.Belong is AI)
             {
-                Debug.Log("상대 차례의 기물은 선택할 수 없음");
+                Debug.Log("ai의 기물은 선택할 수 없음");
                 return;
             }
             //Debug.Log(string.Format("{0} 클릭", gameObject.name));
@@ -75,6 +75,7 @@ public class PieceMouseEvent : MonoBehaviour
                     //BeAttackedBy(PlaceManager.Instance.SelectedPiece);
                     // 선택된 기물을 움직임
                     // (움직임 함수 내부에서 공격 연산 수행)
+                    ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, PlaceManager.Instance.SelectedPiece, piece));
                     PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);
 
                 }

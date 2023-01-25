@@ -175,6 +175,10 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         {
             GameManager.Instance.ChangeGameState(GameManager.GameState.DOING_PLAYER_TURN);
         }
+        else if(GameManager.Instance.turnState == GameManager.TurnState.TOP_TURN)
+        {
+            GameManager.Instance.ChangeGameState(GameManager.GameState.OPPONENT_TURN);
+        }
             
 
         

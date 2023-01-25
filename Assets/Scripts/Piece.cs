@@ -113,6 +113,7 @@ public class Piece : LifeUnit
             {
                 Debug.Log("공격하자!");
                 //AttackTo(targetPlace);
+                ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, this, targetPlace.Piece));
                 PlaceManager.Instance.MoveProcess(this, targetPlace);
             }
             else
