@@ -11,11 +11,11 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
     protected StrategyData strategyData;
 
 
-    protected float willingToAttack = 4f;
-    protected float willingToDefend = 1f;
+    protected float willingToAttack = 1.1f;
+    protected float willingToDefend = 1.1f;
     protected float willingToExtend = 0.5f;
-    protected float willingToSafe = 1.3f;
-    protected float willingToThreat = 1.2f;
+    protected float willingToSafe = 1.1f;
+    protected float willingToThreat = 1f;
     protected float futureOriented = 0.1f;
     protected float floatingMind = 0.1f;
 

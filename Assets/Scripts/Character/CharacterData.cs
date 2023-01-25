@@ -25,6 +25,8 @@ public class CharacterData : ScriptableObject
                     return new DefendFirstStategy();
                 case IDecidePlaceStrategy.StategyType.SaftyFirst:
                     return new SaftyFirstStrategy();
+                case IDecidePlaceStrategy.StategyType.Normal:
+                    return new NormalStrategy();
                 default:
                     return null;
             }
