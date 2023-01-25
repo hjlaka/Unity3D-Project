@@ -25,7 +25,7 @@ public class LifeUnit : Unit
         }
     }
     [SerializeField]
-    private Vector3 target;
+    protected Vector3 targetLocation;
 
     public UnityEvent OnWalk;
 
@@ -33,7 +33,7 @@ public class LifeUnit : Unit
     {
         if(isFree)
         {
-            MoveToTarget(target);
+            MoveToTarget(targetLocation);
         }
     }
     protected virtual void Walk(Vector3 directionVec)

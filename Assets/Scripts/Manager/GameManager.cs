@@ -70,15 +70,21 @@ public class GameManager : SingleTon<GameManager>
 
     public Player topPlayer;
     public Player bottomPlayer;
-    public Player curPlayer;
+
 
     public Player Player { get { return player; } }
     public Player OpponentPlayer { get { return opponentPlayer; } }
+
+    [Header("HomeSetting")]
+    public Transform topHome;
+    public Transform bottomHome;
 
     [Header("RunningGame")]
     public GameState state;
     private GameState beforeState;
     public TurnState turnState;
+
+    public Player curPlayer;
 
     [SerializeField]
     private int trunRemain;
@@ -225,6 +231,9 @@ public class GameManager : SingleTon<GameManager>
                 break;
 
             case GameState.GAME_END:
+                topPlayer.GoToHome();
+                bottomPlayer.GoToHome();
+                ChangeGameState(GameState.OUT_OF_GAME);
                 break;
 
             case GameState.OUT_OF_GAME:
@@ -296,6 +305,9 @@ public class GameManager : SingleTon<GameManager>
                 bottomPlayer = player;
                 break;
         }
+
+        topPlayer.homeLocation = topHome;
+        bottomPlayer.homeLocation = bottomHome;
     }
 
     public void ChangeGameState(GameState nextState)

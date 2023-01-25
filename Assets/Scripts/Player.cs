@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     protected Unit coreUnit;
 
+    public Transform homeLocation;
+
     public Unit CoreUnit { get { return coreUnit; } set { coreUnit = value; } }
 
 
@@ -22,6 +24,15 @@ public class Player : MonoBehaviour
     public virtual void DoTurn()
     {
 
+    }
+
+    public void GoToHome()
+    {
+        for(int i = 0; i < pieceList.Count; i++)
+        {
+            if (pieceList[i].IsFree) continue;
+            pieceList[i].IsFree = true;
+        }
     }
 
 }

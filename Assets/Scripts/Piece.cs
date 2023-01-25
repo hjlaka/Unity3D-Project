@@ -88,6 +88,7 @@ public class Piece : LifeUnit
     {
         Debug.Log("받아온 플레이어: " + player);
         this.belong = player;
+        targetLocation = belong.homeLocation.position;
         belong.AddPiece(this);
     }
 

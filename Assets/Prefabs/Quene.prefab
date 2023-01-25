@@ -44,6 +44,9 @@ GameObject:
   - component: {fileID: 1443156753202429635}
   - component: {fileID: 7888784587551533827}
   - component: {fileID: 1572638889183707523}
+  - component: {fileID: 5175667373221139249}
+  - component: {fileID: 9177693710839098441}
+  - component: {fileID: 5372860334329293443}
   m_Layer: 0
   m_Name: Quene
   m_TagString: Untagged
@@ -99,11 +102,31 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   OnWalk:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4631859615578494881}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Walk
+          m_BoolArgument: 0
+        m_CallState: 2
   place: {fileID: 0}
   team: {fileID: 0}
+  belong: {fileID: 0}
   forwardY: 0
   pieceScore: 0
+  recognized:
+    movable: []
+    threating: []
+    defending: []
+    influenceable: []
+    special: []
+  moveCount: 0
   character: {fileID: 0}
 --- !u!114 &1572638889183707523
 MonoBehaviour:
@@ -118,6 +141,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseOver: {r: 1, g: 0.538504, b: 0.0141509175, a: 0}
+--- !u!114 &5175667373221139249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9724bb774b39f8f4f82e8b693bf32a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9177693710839098441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9123d3a9560279543b4f87b261376084, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5372860334329293443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196825123279805262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97030908c2369241b9a9ba015356062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6654140259625080856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,3 +243,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4607164402640316, guid: be3573ba2ba53ea4f8979e64874c493d, type: 3}
   m_PrefabInstance: {fileID: 6654140259625080856}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6655942864558029924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1945632463053948, guid: be3573ba2ba53ea4f8979e64874c493d, type: 3}
+  m_PrefabInstance: {fileID: 6654140259625080856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4631859615578494881
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6655942864558029924}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1ae3b6cad3254b848942cea678f244c7, type: 3}
+  m_Controller: {fileID: 9100000, guid: 59db183142c9af9459eee73d520ecb96, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

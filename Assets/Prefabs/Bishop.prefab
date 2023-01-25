@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 78764825}
   - component: {fileID: 78764828}
   - component: {fileID: -8375780089909688814}
+  - component: {fileID: 4098820972500300037}
+  - component: {fileID: 3526089480911422795}
+  - component: {fileID: 7452560071599792112}
   m_Layer: 0
   m_Name: Bishop
   m_TagString: Untagged
@@ -67,11 +70,31 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   OnWalk:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2928343626242063079}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Walk
+          m_BoolArgument: 0
+        m_CallState: 2
   place: {fileID: 0}
   team: {fileID: 0}
+  belong: {fileID: 0}
   forwardY: 0
   pieceScore: 0
+  recognized:
+    movable: []
+    threating: []
+    defending: []
+    influenceable: []
+    special: []
+  moveCount: 0
   character: {fileID: 0}
 --- !u!114 &-8375780089909688814
 MonoBehaviour:
@@ -86,6 +109,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseOver: {r: 0.3253131, g: 1, b: 0, a: 0}
+--- !u!114 &4098820972500300037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3703165187794129851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9724bb774b39f8f4f82e8b693bf32a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3526089480911422795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3703165187794129851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9123d3a9560279543b4f87b261376084, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7452560071599792112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3703165187794129851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97030908c2369241b9a9ba015356062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9057237387769693036
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +250,31 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8aada6718c6671d45b604a50ac3f2717, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c0f2faf14460a5478057fd4e0575576, type: 3}
+--- !u!1 &9126168700292200640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1028868664329696, guid: 1c0f2faf14460a5478057fd4e0575576, type: 3}
+  m_PrefabInstance: {fileID: 9125715427114515744}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2928343626242063079
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9126168700292200640}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1ae3b6cad3254b848942cea678f244c7, type: 3}
+  m_Controller: {fileID: 9100000, guid: 59db183142c9af9459eee73d520ecb96, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &9130312095070892458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4626390214331530, guid: 1c0f2faf14460a5478057fd4e0575576, type: 3}
