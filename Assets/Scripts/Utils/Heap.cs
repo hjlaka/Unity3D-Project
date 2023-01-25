@@ -2,17 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heap<T>
+public class Heap<T> : MonoBehaviour
 {
 
     private List<Node<T>> heapList;
+
+    [SerializeField]
+    private Compare comp;
 
     public int Count { get { return heapList.Count; } }
 
     public Heap()
     {
         heapList = new List<Node<T>>();
+
+        this.comp = new Greater();
+
     }
+    public Heap(Compare comp)
+    {
+        heapList = new List<Node<T>>();
+
+        this.comp = comp;
+
+    }
+
 
     private bool Empty()
     {
@@ -24,26 +38,36 @@ public class Heap<T>
         heapList.Clear();
     }
 
-    private void Swap(Node<T> valueA, Node<T> valueB)
+    private void Swap( Node<T> valueA,  Node<T> valueB) 
     {
+        Debug.Log("A, B " + valueA.value + " " + valueB.value);
         Node<T> temp = valueA;
         valueA = valueB;
         valueB = temp;
+        Debug.Log("A, B " + valueA.value + " " + valueB.value);
+    }
+
+    private void SwapInList(int indexA, int indexB)
+    {
+        Node<T> temp = heapList[indexA];
+        heapList[indexA] = heapList[indexB];
+        heapList[indexB] = temp;
     }
 
     private void PushHeap(Node<T> data)
     {
-        Debug.Log(string.Format("들어온 노드 {0} / 값: {1} / 내용물: {2}", data, data.value, data.obj));
         heapList.Add(data);
 
         int curIndex = Count - 1;
-        int parentIndex = (curIndex - 1) / 2;
+
 
         while(curIndex > 0)
         {
-            if (heapList[curIndex].value > heapList[parentIndex].value)
+            int parentIndex = (curIndex - 1) / 2;
+
+            if (comp.CompareBetween(heapList[curIndex].value, heapList[parentIndex].value))
             {
-                Swap(heapList[curIndex], heapList[parentIndex]);
+                SwapInList(curIndex, parentIndex);
                 curIndex = parentIndex;
             }
             else
@@ -60,7 +84,7 @@ public class Heap<T>
 
         Node<T> poped = heapList[0];
 
-        Swap(heapList[0], heapList[Count - 1]);
+        SwapInList(0, Count - 1);
         heapList.RemoveAt(Count - 1);
 
         int curIndex = 0;
@@ -72,14 +96,14 @@ public class Heap<T>
         {
             if(rightChildIndex < Count)
             {
-                if (heapList[leftChildIndex].value > heapList[rightChildIndex].value)
+                if (comp.CompareBetween(heapList[leftChildIndex].value, heapList[rightChildIndex].value))
                     compareIndex = leftChildIndex;
                 else
                     compareIndex = rightChildIndex;
 
-                if (heapList[curIndex].value > heapList[compareIndex].value)
+                if (comp.CompareBetween(heapList[curIndex].value, heapList[compareIndex].value))
                 {
-                    Swap(heapList[curIndex], heapList[compareIndex]);
+                    SwapInList(curIndex, compareIndex);
                     curIndex = compareIndex;
                 }
                 else
@@ -91,9 +115,9 @@ public class Heap<T>
             {
                 compareIndex = leftChildIndex;
 
-                if (heapList[curIndex].value > heapList[compareIndex].value)
+                if (comp.CompareBetween(heapList[curIndex].value, heapList[compareIndex].value))
                 {
-                    Swap(heapList[curIndex], heapList[compareIndex]);
+                    SwapInList(curIndex, compareIndex);
                     curIndex = compareIndex;
                 }
                 else
@@ -125,6 +149,34 @@ public class Heap<T>
         if (Count <= 0) return null;
 
         return heapList[0];
+    }
+
+    public Node<T> GetNode(int index)
+    {
+        if (index > Count - 1) return null;
+
+        return heapList[index];
+
+    }
+
+    public void PrintHeap()
+    {
+        int floorNum = 0;
+        string debug = "내용물 순서";
+
+        for(int i = 0; i < Count; i++)
+        {
+            if (i == floorNum)
+            {
+                Debug.Log(debug);
+                debug = "";
+                floorNum = floorNum * 2 + 1;
+            }
+            debug += "(" + heapList[i].value + "/" + heapList[i].obj + ") ";
+
+        }
+
+        Debug.Log(debug);
     }
 
 }
