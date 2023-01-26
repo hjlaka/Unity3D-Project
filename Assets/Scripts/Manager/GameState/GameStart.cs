@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace GameState
 {
-    public class GameStart : GameStateMachine, IState
+    public class GameStart : GameStateMachine
     {
-          public void StateEnter()
+          public override void StateEnter()
           {
               manager.OnTest?.Invoke();
               ApplyPlayerType();
@@ -15,12 +15,12 @@ namespace GameState
               manager.curPlayer = manager.bottomPlayer;
           }
 
-          public void StateExit()
+          public override void StateExit()
           {
             //manager.ChangeGameState(GameState.SETTING_GAME);
           }
 
-          public void StateUpdate()
+          public override void StateUpdate()
           {
 
           }

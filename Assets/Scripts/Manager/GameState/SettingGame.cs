@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace GameState
 {
-    public class SettingGame : GameStateMachine, IState
+    public class SettingGame : GameStateMachine
     {
-        public void StateEnter()
+        public override void StateEnter()
         {
             DialogueManager.Instance.CheckDialogueEvent();
             manager.gameSetter.SetTopTeam(0);
         }
 
-        public void StateExit()
+        public override void StateExit()
         {
             //ChangeGameState(GameState.PREPARING_GAME);
         }
 
-        public void StateUpdate()
+        public override void StateUpdate()
         {
             throw new System.NotImplementedException();
         }
