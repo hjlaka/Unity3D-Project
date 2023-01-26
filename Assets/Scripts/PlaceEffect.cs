@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlaceEffect : MonoBehaviour
 {
     private Renderer render;
+    private ParticleSystem particle;
 
     private float intencity;
     public float Intencity
@@ -23,7 +24,8 @@ public class PlaceEffect : MonoBehaviour
 
     private void Awake()
     {
-        render = GetComponent<Renderer>();
+        render = GetComponentInChildren<Renderer>();
+        particle = GetComponentInChildren<ParticleSystem>();
         intencity = 0f;
         ChangeIntencity(0f);
 

@@ -10,6 +10,7 @@ public class GameManager : SingleTon<GameManager>
     public enum GameState 
     { 
         START_GAME,
+        SELECTING_AI,
         SETTING_GAME,
         PREPARING_GAME,
         PREPARING_GAME_ON,
@@ -27,6 +28,8 @@ public class GameManager : SingleTon<GameManager>
         GAME_END,
         OUT_OF_GAME
     }
+
+    GameStateMachine gameState;
 
 
     public enum TurnState
@@ -53,7 +56,7 @@ public class GameManager : SingleTon<GameManager>
     public AI aiManager;
 
     [SerializeField]
-    private PlayerSetter playerSetter;
+    public PlayerSetter playerSetter;
 
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
@@ -91,6 +94,8 @@ public class GameManager : SingleTon<GameManager>
 
     public Player curPlayer;
 
+    public UnityEvent OnOutOfGame;
+
     [SerializeField]
     private int trunRemain;
     public int TurnRemain
@@ -111,8 +116,9 @@ public class GameManager : SingleTon<GameManager>
     private void Start()
     {
         TurnRemain = 10;
-        //state = GameState.SELECTING_PIECE;
+        state = GameState.OUT_OF_GAME;
         turnState = TurnState.BOTTOM_TURN;
+        OnOutOfGame?.Invoke();
 
     }
 
@@ -125,6 +131,8 @@ public class GameManager : SingleTon<GameManager>
     {
         switch(state)
         {
+            case GameState.SELECTING_AI:
+                break;
             case GameState.START_GAME:
                 OnTest?.Invoke();
                 ApplyPlayerType();
@@ -168,6 +176,7 @@ public class GameManager : SingleTon<GameManager>
             case GameState.PREPARING_GAME_ON:
                 playerSetter.GetBoard();
                 playerSetter.MakeBoardSetable();
+                Debug.Log("준비 단계 진행");
 
                 break;
 
@@ -353,13 +362,10 @@ public class GameManager : SingleTon<GameManager>
             if(curPlayer is AI)
             {
                 ((AI)opponentPlayer).DoTurn();
-                ChangeGameState(GameState.SELECTING_PIECE);
+                
             }
-            else
-            {
-                ChangeGameState(GameState.SELECTING_PIECE);
-            }
-                         // 여기서 시작? - 상태 기계 만들기?
+            ChangeGameState(GameState.SELECTING_PIECE);
+            // 여기서 시작? - 상태 기계 만들기?
         }
         else if (turnState == TurnState.TOP_TURN)
         {
@@ -368,12 +374,8 @@ public class GameManager : SingleTon<GameManager>
             if (curPlayer is AI)
             {
                 ((AI)player).DoTurn();
-                ChangeGameState(GameState.SELECTING_PIECE);
             }
-            else
-            {
-                ChangeGameState(GameState.SELECTING_PIECE);
-            }
+            ChangeGameState(GameState.SELECTING_PIECE);
 
         }
         else if (turnState == TurnState.RETURN)
@@ -401,5 +403,23 @@ public class GameManager : SingleTon<GameManager>
     public void GameEnd()
     {
 
+    }
+
+    private void ChangeGameStateMachine(GameStateMachine nextGameState)
+    {
+        gameState.StateExit();
+        gameState = nextGameState;
+        gameState.StateEnter();
+    }
+
+    private void GetGameStateInstance(GameState gameState)
+    {
+        switch(gameState)
+        {
+            case GameState.START_GAME:
+                return;
+            default:
+                return;
+        }
     }
 }
