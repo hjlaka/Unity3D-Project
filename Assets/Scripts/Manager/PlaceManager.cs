@@ -299,6 +299,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         CameraController.Instance.AddToTargetGroup(piece.transform);
         OnAttack?.Invoke();
+        CameraController.Instance.RemoveFromTargetGroup(piece.transform);
         // 공격자 이벤트 등록?
         // 피공격자 이벤트 등록?
     }
@@ -348,6 +349,9 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void SelectedPieceInit()
     {
         Debug.Log("기물 선택 해제");
+        if (selectedPiece == null) 
+            return;
+
         SelectedPiece.ChangeColor();
 
         SelectedPiece = null;
