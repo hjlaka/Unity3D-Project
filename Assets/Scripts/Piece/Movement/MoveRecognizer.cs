@@ -75,7 +75,6 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         }
         else
         {
-
             RecognizeMovableVoidPlace(curLocation, targetPlace);
 
             return false;
@@ -98,6 +97,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
 
         if (targetPiece != null)
         {
+            recognizedLists.AddSpecial(targetPlace);
             return true;
         }
         else
