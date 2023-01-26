@@ -12,6 +12,8 @@ public class GameManager : SingleTon<GameManager>
         START_GAME,
         SETTING_GAME,
         PREPARING_GAME,
+        PREPARING_GAME_ON,
+        PREPARING_GAME_END,
         SELECTING_PIECE, 
         SELECTING_PLACE, 
         DOING_PLAYER_TURN_START,
@@ -49,6 +51,9 @@ public class GameManager : SingleTon<GameManager>
 
     [SerializeField]
     public AI aiManager;
+
+    [SerializeField]
+    private PlayerSetter playerSetter;
 
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
@@ -154,6 +159,20 @@ public class GameManager : SingleTon<GameManager>
 
                 PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
                 // 완료 버튼을 눌렀을 시, 다음으로 넘어간다. 무언가 입력을 대기 해야 한다.// 외부에서 바꿀 수밖에 없는가? 혹은 신호를 받는 게 나은가?
+
+
+                ChangeGameState(GameState.PREPARING_GAME_ON);
+                
+                break;
+
+            case GameState.PREPARING_GAME_ON:
+                playerSetter.GetBoard();
+                playerSetter.MakeBoardSetable();
+
+                break;
+
+            case GameState.PREPARING_GAME_END:
+                playerSetter.MakeBoardSetableNot();
                 ChangeGameState(GameState.SELECTING_PIECE);
                 PlayerDataManager.Instance.DisablePlayerListUI();
                 break;
