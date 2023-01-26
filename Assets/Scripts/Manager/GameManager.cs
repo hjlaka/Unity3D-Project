@@ -61,6 +61,8 @@ public class GameManager : SingleTon<GameManager>
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
 
+    public UnityEvent OnTurnFinished;
+
     [Header("GameSetting")]
     [SerializeField]
     public TeamData.Direction playerTeamDirection;
@@ -184,6 +186,8 @@ public class GameManager : SingleTon<GameManager>
                 playerSetter.MakeBoardSetableNot();
                 ChangeGameState(GameState.SELECTING_PIECE);
                 PlayerDataManager.Instance.DisablePlayerListUI();
+                player.ShoutOnGame();
+                DialogueManager.Instance.CheckDialogueEvent();
                 break;
 
 
@@ -240,7 +244,11 @@ public class GameManager : SingleTon<GameManager>
 
                 // 대화가 더이상 없다면 계속 진행
                 if (state == GameState.TURN_FINISHED)
+                {
+                    OnTurnFinished?.Invoke();
                     ChangeGameState(GameState.TURN_CHANGE);
+                }
+                    
                 break;
 
             case GameState.OPPONENT_TURN_START:
