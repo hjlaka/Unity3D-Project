@@ -69,7 +69,7 @@ public class AI : Player
 
     public override void AddPiece(Piece piece)
     {
-        pieceList.Add(piece);
+        base.AddPiece(piece);
         Debug.Log(piece + "기물을 AI에 추가했다.");
     }
 
@@ -106,7 +106,6 @@ public class AI : Player
         // 의지가 가장 높은 아이가 움직인다?
 
 
-
         // 기물 움직임
 
         Debug.Log("고려하는 기물 수: " + pieceList.Count);
@@ -125,6 +124,7 @@ public class AI : Player
             }
         }
 
+        
         Placement strategySelection = aiStrategy.GetBestInOwnWay();
 
         if (null != strategySelection)
@@ -143,6 +143,7 @@ public class AI : Player
             // 무승부 판정
         }
 
+        aiStrategy.ClearPossibility();
         turnGoing = null;
 
     }
@@ -172,7 +173,9 @@ public class AI : Player
             //yield return new WaitForSeconds(turnChangeTime);
         }
 
+
         Debug.Log("AI 턴 종료");
+        aiStrategy.ClearPossibility();
         turnGoing = null;
         
     }
