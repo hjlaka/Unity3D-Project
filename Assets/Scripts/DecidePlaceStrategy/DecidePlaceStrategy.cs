@@ -44,72 +44,23 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
     protected virtual ScoreNode CalculateScore(Piece piece, Place place)
     {
         float score;
-        float attackPoint = 0;
+        float attackPoint;
         float placePreferPoint;
         float defencePoint = 0;
         float assumePoint;
         float mindPoint;
         float extentPoint;
+        float heatPreferPoint;
+        int deltaHeat;
         //float futureOrientPoint;
 
         Piece targetPiece = place.Piece;
 
-        if (targetPiece != null)         // 공격 가능한 장소라면
-        {
-            // 기물의 점수를 확인한다.
-            // 기물에 대한 적의를 확인한다. 적개심만큼 곱한다.
+        attackPoint = CalculateAttackPoint(targetPiece);
+        attackPoint *= willingToAttack;
 
-            // 기물을 공격한 후에 대해 판단한다.
-            // 안전 점수는 언제 계산할까?
-            //attackPoint += targetPiece.PieceScore;
-
-            //공격 점수 = (기물 점수 / (1 + 기물 점수))
-            // 1/2, 3/4, 5/6, 9/10
-            // 왕의 경우는?
-            attackPoint = (float)targetPiece.PieceScore / (1 + targetPiece.PieceScore);
-
-            attackPoint *= willingToAttack;
-
-
-        }
-        Debug.Log("공격점수: " + attackPoint);
-        // 과열도 점수?
-        // 과열도가 높은 곳에 갈 것인가?
-        // 과열도가 낮은 곳에 갈 것인가?
-
-        //안정 우선:
-
-        // 상대팀 위협이 하나라도 있으면 우선도가 떨어지는 경우
-        // 상대팀 위협이 있어도, 중요도가 높다면(?), 팀을 믿고 이동하는 경우
-
-        // 먹을 수 있는 기물의 경우에는... 그 기물의 과열도를 하나 빼야 한다.
-        int deltaHeat = piece.returnHeat.ReturnTeamHeat(place) - piece.returnHeat.ReturnOpponentHeat(place) - 1;  // 자기 자신의 과열도 삐기
-        float heatPreferPoint = 0;
-        if (0 == deltaHeat)
-        {
-            heatPreferPoint = 3;
-        }
-        else if (deltaHeat == 1)
-        {
-            heatPreferPoint = 5;
-        }
-        else if (deltaHeat == -1)
-        {
-            heatPreferPoint = 1;
-        }
-        else if (deltaHeat > 1)
-        {
-            heatPreferPoint = 1;
-        }
-        else if (deltaHeat < -1)
-        {
-            heatPreferPoint = 0;
-        }
-
-        if(piece.returnHeat.ReturnOpponentHeat(place) > 0)
-        {
-            heatPreferPoint *= 0.5f;
-        }
+        deltaHeat = piece.returnHeat.ReturnTeamHeat(place) - piece.returnHeat.ReturnOpponentHeat(place) - 1;  // 자기 자신의 과열도 삐기
+        heatPreferPoint = CalculateHeatPreferPoint(piece, place, deltaHeat);
 
         //안정도 점수
         // 안정도 점수 = (과열도 선호 점수 / (1 + 과열도 선호 점수))
@@ -117,16 +68,10 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         float tempPieceScore = 1 - ((float)piece.PieceScore / (1 + piece.PieceScore));
         tempPieceScore *= 3;
         heatPreferPoint += tempPieceScore;
-        Debug.Log("기물 이동 보정 점수: " + tempPieceScore);
         placePreferPoint = heatPreferPoint / (1 + heatPreferPoint);
-        Debug.Log("위치 선호 점수: " + placePreferPoint);
 
-        extentPoint = Mathf.Abs(place.boardIndex.x - piece.place.boardIndex.x) + Mathf.Abs(place.boardIndex.y - piece.place.boardIndex.y);
-        extentPoint /= piece.PieceScore;
-        extentPoint = extentPoint / (1 + extentPoint);
-        Debug.Log("멀리 가기 점수: " + extentPoint);
+        extentPoint = CalculateExtentPoint(piece, place);
         extentPoint *= willingToExtend;
-
 
         // 이동해본다음에 계산해야한다.
         assumePoint = CalculateAssumeMoveScore(piece, place);
@@ -143,9 +88,6 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             Debug.Log(place.boardIndex + " == 공격 점수: " + attackPoint + " / 이동 점수: " + placePreferPoint + " /  가정 점수: " + assumePoint + 
                 " / 확장 점수: " + extentPoint + "/ 랜덤 점수: " + mindPoint);
 
-        
-
-
         ScoreNode scoreSet = new ScoreNode();
         scoreSet.AttackPoint = attackPoint;
         scoreSet.DefencdPoint = defencePoint;
@@ -155,7 +97,6 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         scoreSet.WillPoint = score;
 
         StoreToMap(place.boardIndex, scoreSet);
-
 
 
         return scoreSet;
@@ -270,4 +211,80 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
 
     }
 
+    private float CalculateAttackPoint(Piece targetPiece)
+    {
+        float attackPoint = 0;
+
+        if (targetPiece != null)         // 공격 가능한 장소라면
+        {
+            // 기물의 점수를 확인한다.
+            // 기물에 대한 적의를 확인한다. 적개심만큼 곱한다.
+
+            // 기물을 공격한 후에 대해 판단한다.
+            // 안전 점수는 언제 계산할까?
+            //attackPoint += targetPiece.PieceScore;
+
+            //공격 점수 = (기물 점수 / (1 + 기물 점수))
+            // 1/2, 3/4, 5/6, 9/10
+            // 왕의 경우는?
+            attackPoint = (float)targetPiece.PieceScore / (1 + targetPiece.PieceScore);
+
+        }
+        Debug.Log("공격점수: " + attackPoint);
+
+        return attackPoint;
+    }
+
+    private float CalculateHeatPreferPoint(Piece piece, Place place, int deltaHeat)
+    {
+        // 과열도 점수?
+        // 과열도가 높은 곳에 갈 것인가?
+        // 과열도가 낮은 곳에 갈 것인가?
+
+        //안정 우선:
+
+        // 상대팀 위협이 하나라도 있으면 우선도가 떨어지는 경우
+        // 상대팀 위협이 있어도, 중요도가 높다면(?), 팀을 믿고 이동하는 경우
+
+        // 먹을 수 있는 기물의 경우에는... 그 기물의 과열도를 하나 빼야 한다.
+        
+        float heatPreferPoint = 0;
+        if (0 == deltaHeat)
+        {
+            heatPreferPoint = 3;
+        }
+        else if (deltaHeat == 1)
+        {
+            heatPreferPoint = 5;
+        }
+        else if (deltaHeat == -1)
+        {
+            heatPreferPoint = 1;
+        }
+        else if (deltaHeat > 1)
+        {
+            heatPreferPoint = 1;
+        }
+        else if (deltaHeat < -1)
+        {
+            heatPreferPoint = 0;
+        }
+
+        if (piece.returnHeat.ReturnOpponentHeat(place) > 0)
+        {
+            heatPreferPoint *= 0.5f;
+        }
+
+        return heatPreferPoint;
+    }
+
+    private float CalculateExtentPoint(Piece piece, Place place)
+    {
+        float extentPoint = Mathf.Abs(place.boardIndex.x - piece.place.boardIndex.x) + Mathf.Abs(place.boardIndex.y - piece.place.boardIndex.y);
+        extentPoint /= piece.PieceScore;
+        extentPoint = extentPoint / (1 + extentPoint);
+        Debug.Log("멀리 가기 점수: " + extentPoint);
+
+        return extentPoint;
+    }
 }
