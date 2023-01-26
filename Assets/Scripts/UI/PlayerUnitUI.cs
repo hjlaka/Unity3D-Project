@@ -16,9 +16,8 @@ public class PlayerUnitUI : MonoBehaviour
     public void AddUI(Piece piece)
     {
         UnitButton instance = Instantiate(unitPrefab, contentTransform);
-        instance.name = piece.character.characterName;
+        instance.Piece = piece;
         //instance.characterData = character;
-        instance.GetComponentInChildren<TextMeshProUGUI>().text = piece.character.characterName;
     }
 
 

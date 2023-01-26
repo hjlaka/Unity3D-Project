@@ -160,6 +160,17 @@ public class Place : MonoBehaviour, ISubject
 
 
         // 게임 상태 조건
+        if(GameManager.Instance.state == GameManager.GameState.PREPARING_GAME_ON)
+        {
+            Debug.Log("배치 상태 위치 클릭 진입");
+            if(PlaceManager.Instance.SelectedPiece != null && IsMovableToCurPiece)
+            {
+                PlaceManager.Instance.MovePiece(PlaceManager.Instance.SelectedPiece, this);
+                PlaceManager.Instance.SelectedPieceInit();
+                return;
+            }
+            Debug.Log("선택된 기물 없음");
+        }
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
         {
             Debug.Log("위치 선택 가능 상태 아님");
@@ -180,7 +191,7 @@ public class Place : MonoBehaviour, ISubject
             return;
         }
 
-
+        
 
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
 

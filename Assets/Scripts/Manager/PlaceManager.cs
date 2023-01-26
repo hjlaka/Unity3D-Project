@@ -316,7 +316,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     {
         SelectedPiece = piece;
         SelectedPiece.ChangeColor(selectingColor);
-        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
+        if(GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
+            GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
 
 
         // ø¨√‚

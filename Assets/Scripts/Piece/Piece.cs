@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PlaceObserver))]
 [RequireComponent (typeof(UnitObserver))]
@@ -50,7 +51,8 @@ public class Piece : LifeUnit
     protected IPieceMovable movePattern;
     public IPieceMovable MovePattern { get { return movePattern; } private set { movePattern = value; } }
 
-    
+
+    public UnityAction OnPlaced;
 
 
     protected virtual void Awake()
@@ -204,6 +206,8 @@ public class Piece : LifeUnit
         place.BeFilled(this);
 
         Move();
+
+        OnPlaced?.Invoke();
 
         Debug.Log(this + "가 " + place.boardIndex + "로 이동했다.");
         if(oldPlace != null && oldPlace.board == place.board && place.board.FollowRule)
