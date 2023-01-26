@@ -56,26 +56,16 @@ public class UnitButton : MonoBehaviour
         if (GameManager.Instance.state != GameManager.GameState.PREPARING_GAME_ON) return;
 
         PlaceManager.Instance.SelectPiece(piece);
-        
-
-        //TODO: 기물 생성에서 기물 위치 변경으로 기능 변경 고려하기
-       /* Debug.Log("기물을 생성했습니다." + piece.character.characterName);
-        Piece instance = Instantiate(piece.character.piecePrefab);
-        instance.team = PlayerDataManager.Instance.PlayerTeam;
-        instance.character = piece.character;
-        instance.SetInPlace(creatingPlace);
-
-        changeLayer.ChangeLayerRecursively(instance.transform, pieceZone.gameObject.layer);
-
-        PlaceManager.Instance.SelectPiece(instance);
-
-        Debug.Log("전달한 것: " + instance);*/
 
     }
 
     public void FinishSetting()
     {
-        button.interactable = false;
-        piece.OnPlaced -= FinishSetting;
+        if(button != null)
+        {
+            button.interactable = false;
+            piece.OnPlaced -= FinishSetting;
+        }
+        
     }
 }
