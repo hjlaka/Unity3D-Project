@@ -60,7 +60,7 @@ public class GameSetter : MonoBehaviour
         Debug.Log("세팅 시작");
 
         //Board initBoard = GameObject.Find("InitialBoard").GetComponent<Board>();
-        Board initBoard = GameObject.Find("HandMadeBoard").GetComponent<Board>();
+        ListBoard initBoard = GameObject.Find("HandMadeBoard").GetComponent<ListBoard>();
 
         GameData setting = gameSettings[index];
         List<GameData.CallingPiece> callings = setting.players;
@@ -79,7 +79,7 @@ public class GameSetter : MonoBehaviour
             //int randY = Random.Range(0, 3);
 
             //Debug.Log("랜덤 위치: " + randX + ", " + randY);
-            Place targetPlace = initBoard.transform.GetChild(i).GetComponent<Place>();
+            Place targetPlace = initBoard.AutoAddPiece(instance);
             instance.place = targetPlace;
             instance.IsOnGame = true;
             //PlaceManager.Instance.MovePiece(instance, targetPlace);
