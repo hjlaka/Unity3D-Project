@@ -55,7 +55,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             scoreSet = null;
             return null;
         }
-            
+
         for (int i = 0; i < movablePlaces.Count; i++)
         {
             Place place = movablePlaces[i];
