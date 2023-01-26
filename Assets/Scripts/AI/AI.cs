@@ -38,7 +38,7 @@ public class AI : Player
     private float showSelectedTime;
 
     [SerializeField]
-    private IAIStrategy aiStrategy;
+    private AIStrategy aiStrategy;
 
 
 
@@ -49,6 +49,19 @@ public class AI : Player
     private void Awake()
     {
         pieceList = new List<Piece>();
+    }
+
+    public void SetStrategy(AIStrategy.AIStrategyType type)
+    {
+        switch (type)
+        {
+            case AIStrategy.AIStrategyType.AGGRESIVE:
+                aiStrategy = gameObject.AddComponent<AggresiveStrategy>();
+                break;
+            case AIStrategy.AIStrategyType.RANDOM:
+                aiStrategy = gameObject.AddComponent<RandomAIStrategy>();
+                break;
+        }
     }
 
     public override void AddPiece(Piece piece)

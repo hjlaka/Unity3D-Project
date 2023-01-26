@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomAIStrategy : MonoBehaviour, IAIStrategy
+public class RandomAIStrategy : AIStrategy
 {
 
     private List<Placement> possibilities;
-    public void AddPossibility(ScoreNode scoreSet, Piece piece, Place place)
+    public override void AddPossibility(ScoreNode scoreSet, Piece piece, Place place)
     {
         // piece¿Í place
         possibilities.Add(new Placement(piece, piece.place, place, place.Piece, null));
     }
 
-    public Placement GetBestInOwnWay()
+    public override Placement GetBestInOwnWay()
     {
         if (possibilities.Count <= 0) 
             return null;
