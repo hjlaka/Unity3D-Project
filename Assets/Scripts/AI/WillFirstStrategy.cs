@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AggresiveStrategy : AIStrategy
+public class WillFirstStrategy : AIStrategy
 {
-    private float attackBonous = 2f;
+    private float willBonous = 2f;
     Heap<Placement> possibilities;
 
     private void Awake()
@@ -16,11 +16,11 @@ public class AggresiveStrategy : AIStrategy
         // 스코어 노드를 받아서
 
         // 자체적으로 계산
-        scoreSet.AttackPoint *= attackBonous;
+        scoreSet.WillPoint *= willBonous;
         // 소티드 리스트에 넣는다.
         Placement placement = new Placement(piece, piece.place, place, place.Piece, null);
 
-        possibilities.Push(new Node<Placement>(scoreSet.AttackPoint, placement));
+        possibilities.Push(new Node<Placement>(scoreSet.WillPoint, placement));
     }
 
     public override Placement GetBestInOwnWay()

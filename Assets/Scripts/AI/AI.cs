@@ -61,6 +61,9 @@ public class AI : Player
             case AIStrategy.AIStrategyType.RANDOM:
                 aiStrategy = gameObject.AddComponent<RandomAIStrategy>();
                 break;
+            case AIStrategy.AIStrategyType.WILLFIRST:
+                aiStrategy = gameObject.AddComponent<WillFirstStrategy>();
+                break;
         }
     }
 
