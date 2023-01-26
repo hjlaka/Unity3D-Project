@@ -15,30 +15,25 @@ public class PieceCreateButton : MonoBehaviour
     [SerializeField]
     private AI aiManager;
 
-    
-    private Transform pieceZone;
-    private Place creatingPlace;
-    private ChangeLayerFunc changeLayer;
-    private void Awake()
-    {
-        pieceZone = GameObject.Find("PieceZone")?.transform;
-        creatingPlace = GameObject.Find("CreatingPlace").GetComponent<Place>();         // 형 변환이 아니라 컴포넌트 가져오기가 맞나?
-        changeLayer = GetComponent<ChangeLayerFunc>();
-    }
+    [SerializeField]
+    private ListBoard listBoard;
 
     public void CreatePiece()
     {
-        if (creatingPlace == null || creatingPlace.Piece != null) return;
-        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE) return;
+
+        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE &&
+            GameManager.Instance.state != GameManager.GameState.PREPARING_GAME_ON)
+        {
+            return;
+        }
 
         Debug.Log("기물을 생성했습니다." + piecePrefab.name);
-        Piece instance = Instantiate(piecePrefab, pieceZone);
+        Piece instance = Instantiate(piecePrefab);
+
         instance.team = team;
         instance.character = testCharacter;
 
-        changeLayer.ChangeLayerRecursively(instance.transform, pieceZone.gameObject.layer);
 
-        instance.SetInPlace(creatingPlace);
         Debug.Log("전달한 것: " + instance);
 
 
@@ -46,15 +41,16 @@ public class PieceCreateButton : MonoBehaviour
         {
             GameManager.Instance.OpponentPlayer.AddPiece(instance);
             // 테스트를 위해 생성된 기물의 조작은 플레이어가 함
+
             instance.Belong = GameManager.Instance.Player;
+            instance.transform.parent = GameManager.Instance.OpponentPlayer.transform;
         }
         else
         {
             PlayerDataManager.Instance.AddPlayerPiece(instance);
             instance.BelongTo(GameManager.Instance.Player);
+            instance.transform.parent = GameManager.Instance.Player.transform;
         }
-            
-        
     }
 
     

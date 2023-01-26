@@ -22,8 +22,6 @@ public class ScoreNode
     private float willPoint;
     public float WillPoint { get { return willPoint; } set { willPoint = value; } }
 
-
-
     public void Clear()
     {
         attackPoint = 0;

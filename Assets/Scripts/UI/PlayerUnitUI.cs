@@ -17,7 +17,6 @@ public class PlayerUnitUI : MonoBehaviour
     {
         UnitButton instance = Instantiate(unitPrefab, contentTransform);
         instance.Piece = piece;
-        //instance.characterData = character;
     }
 
 

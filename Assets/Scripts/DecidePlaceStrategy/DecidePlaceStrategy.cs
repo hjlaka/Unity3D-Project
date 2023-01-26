@@ -267,12 +267,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             // 기물에 대한 적의를 확인한다. 적개심만큼 곱한다.
 
             // 기물을 공격한 후에 대해 판단한다.
-            // 안전 점수는 언제 계산할까?
-            //attackPoint += targetPiece.PieceScore;
 
-            //공격 점수 = (기물 점수 / (1 + 기물 점수))
-            // 1/2, 3/4, 5/6, 9/10
-            // 왕의 경우는?
             attackPoint = (float)targetPiece.PieceScore / (1 + targetPiece.PieceScore);
 
         }

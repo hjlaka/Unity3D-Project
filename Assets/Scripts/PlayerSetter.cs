@@ -20,8 +20,6 @@ public class PlayerSetter : MonoBehaviour
     }
     public void MakeBoardSetable()
     {
-        // Place의 변수를 placeable로 바꾼다. (혹은 Movable)
-        // 보드를 가져온다.
 
         for(int i = placeableMin.x; i < placeableMax.x; i++)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Place : MonoBehaviour, ISubject
 {
@@ -18,6 +19,8 @@ public class Place : MonoBehaviour, ISubject
 
     private Color typeColor;
 
+    public UnityEvent OnValidClick;
+
 
     [Header("Running Game")]
 
@@ -25,13 +28,11 @@ public class Place : MonoBehaviour, ISubject
     private bool isMovableToCurPiece = false;
     [SerializeField]
     private bool isAttackableByCurPiece = false;
-
     public bool IsMovableToCurPiece
     {
         get { return isMovableToCurPiece; }
         set { isMovableToCurPiece = value; }
     }
-
     public bool IsAttackableByCurPiece
     {
         get { return isAttackableByCurPiece; }
@@ -44,7 +45,6 @@ public class Place : MonoBehaviour, ISubject
         get { return moveAction; }
         set { moveAction = value; }
     }
-
 
     [SerializeField]
     private List<PlaceObserver> influencingUnit;
@@ -68,8 +68,6 @@ public class Place : MonoBehaviour, ISubject
 
     [SerializeField]
     private int heatPoint;
-
-
 
     #region 프로퍼티
     public int HeatPointTopTeam
@@ -116,12 +114,7 @@ public class Place : MonoBehaviour, ISubject
 
     #endregion
 
-
-
     private Renderer render;
-
-
-
 
     private void Awake()
     {
@@ -155,9 +148,6 @@ public class Place : MonoBehaviour, ISubject
 
     private void OnMouseUpAsButton()
     {
-        //if (!GameManager.Instance.isPlayerTurn) { Debug.Log("플레이어 턴 아님"); return; }
-        //Debug.Log(string.Format("{0} 클릭", gameObject.name));
-
 
         // 게임 상태 조건
         if(GameManager.Instance.state == GameManager.GameState.PREPARING_GAME_ON)
@@ -167,6 +157,7 @@ public class Place : MonoBehaviour, ISubject
             {
                 PlaceManager.Instance.MovePiece(PlaceManager.Instance.SelectedPiece, this);
                 PlaceManager.Instance.SelectedPieceInit();
+                //OnValidClick?.Invoke();
                 return;
             }
             Debug.Log("선택된 기물 없음");
@@ -191,21 +182,12 @@ public class Place : MonoBehaviour, ISubject
             return;
         }
 
-        
-
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
+        //OnValidClick?.Invoke();
 
 
     }
 
-    /*    public void UpdateInfluencingPieces()
-        {
-            for(int i = 0; i < influencingPieces.Count; i++)
-            {
-                Piece piece = influencingPieces[i];
-                PlaceManager.Instance.ReCalculateInfluence(piece);
-            }
-        }*/
 
     public void ChangeColor(Color color)
     {

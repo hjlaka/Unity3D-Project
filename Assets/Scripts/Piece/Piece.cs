@@ -67,7 +67,8 @@ public class Piece : LifeUnit
         Debug.Log("서브젝트 할당: " + ChessSubject);
     }
 
-    private void Start()
+
+    public void SetOnGame()
     {
         if (IsFree)
             return;
@@ -162,36 +163,6 @@ public class Piece : LifeUnit
 
         decideDesireStrategy = character.DecidePlaceStrategy;
     }
-
-   /* public void EndDefence(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "를 더이상 보호하지 않는다.");
-    }
-
-    public void BeDefended(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "에게 보호 받는다");
-    }
-
-    public void EndDefended(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "로부터 더이상 보호받지 않는다.");
-    }
-
-    public void EndThreat(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "를 더이상 위협하지 않는다.");
-    }
-
-    public void BeThreatened(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "에게 위협 당한다");
-    }
-
-    public void EndThreatened(Piece piece)
-    {
-        Debug.Log(this + "가 " + piece + "로부터 더이상 위협받지 않는다.");
-    }*/
 
     public virtual Piece SetInPlace(Place place)
     {

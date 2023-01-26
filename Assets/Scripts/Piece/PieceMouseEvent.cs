@@ -17,13 +17,11 @@ public class PieceMouseEvent : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        //Debug.Log(string.Format("{0} 마우스 가리킴", gameObject.name));
         piece.ChangeColorTemp(mouseOver);
     }
 
     private void OnMouseExit()
     {
-        //Debug.Log(string.Format("{0} 밖으로 마우스 나감", gameObject.name));
         piece.ChangeColorTempBack();
     }
 
@@ -44,7 +42,6 @@ public class PieceMouseEvent : MonoBehaviour
                 Debug.Log("ai의 기물은 선택할 수 없음");
                 return;
             }
-            //Debug.Log(string.Format("{0} 클릭", gameObject.name));
             PlaceManager.Instance.SelectPiece(piece);
         }
 
@@ -72,10 +69,11 @@ public class PieceMouseEvent : MonoBehaviour
                 if (piece.place.IsAttackableByCurPiece)
                 {
                     //공격 
-                    //BeAttackedBy(PlaceManager.Instance.SelectedPiece);
                     // 선택된 기물을 움직임
                     // (움직임 함수 내부에서 공격 연산 수행)
                     ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, PlaceManager.Instance.SelectedPiece, piece));
+                    ChessEventManager.Instance.GetEvent();
+                    DialogueManager.Instance.CheckDialogueEvent();
                     PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);
 
                 }
