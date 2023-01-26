@@ -17,7 +17,7 @@ public class PoolManager : SingleTon<PoolManager>
 
     private void Awake()
     {
-        poolDic = new Dictionary<string, Stack<GameObject>();
+        poolDic = new Dictionary<string, Stack<GameObject>>();
     }
     private void Start()
     {

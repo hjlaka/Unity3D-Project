@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: "\uD3EC\uB3C4"
   piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
-  decidePlaceStrategyType: 0
+  decidePlaceStrategyType: 3
   threating: "\uAC01\uC624\uD574\uB77C"
   defending: "\uBC29\uC5B4\uD560\uAC8C"
   attacking: "\uD53C\uC29D"
