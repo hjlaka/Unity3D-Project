@@ -32,8 +32,6 @@ public class CameraController : SingleTon<CameraController>
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        //AddToTargetGroup(freeCamInitTrans);
-        //RemoveFromTargetGroup(freeCamInitTrans);
     }
 
     private void Update()

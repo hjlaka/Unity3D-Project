@@ -170,15 +170,15 @@ public class GameManager : SingleTon<GameManager>
                 PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
                 // 완료 버튼을 눌렀을 시, 다음으로 넘어간다. 무언가 입력을 대기 해야 한다.// 외부에서 바꿀 수밖에 없는가? 혹은 신호를 받는 게 나은가?
 
-
+                playerSetter.GetBoard();
+                playerSetter.MakeBoardSetable();
                 ChangeGameState(GameState.PREPARING_GAME_ON);
                 
                 break;
 
             case GameState.PREPARING_GAME_ON:
-                playerSetter.GetBoard();
-                playerSetter.MakeBoardSetable();
-                Debug.Log("준비 단계 진행");
+                
+
 
                 break;
 
@@ -200,8 +200,7 @@ public class GameManager : SingleTon<GameManager>
             case GameState.DOING_PLAYER_TURN_START:
                 ChangeGameState(GameState.DOING_PLAYER_TURN);
                 Debug.Log("플레이어턴");
-                ChessEventManager.Instance.GetEvent();
-                DialogueManager.Instance.CheckDialogueEvent();
+                
                 break;
                 
             case GameState.DOING_PLAYER_TURN:
@@ -326,17 +325,11 @@ public class GameManager : SingleTon<GameManager>
         switch (playerTeamDirection)
         {
             case TeamData.Direction.UpToDown:
-                //player.SetTeamTurn(TurnState.TOP_TURN);
-                //opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
-
                 topPlayer = player;
                 bottomPlayer = opponentPlayer;
                 break;
 
             case TeamData.Direction.DownToUp:
-                //player.SetTeamTurn(TurnState.BOTTOM_TURN);
-                //opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
-
                 topPlayer = opponentPlayer;
                 bottomPlayer = player;
                 break;

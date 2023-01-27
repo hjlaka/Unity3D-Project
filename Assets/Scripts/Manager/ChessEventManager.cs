@@ -22,7 +22,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         // 주체가 되는 기물
         Node<ChessEvent> node = new Node<ChessEvent>(importance, chessEvent);
         eventList.Push(node);
-        Debug.Log("----------------- 이벤트 추가 ------------------- : " + eventList.Count);
+        Debug.Log("----------------- 이벤트 추가 ------------------- : " + eventList.Count + chessEvent.Subject + chessEvent.Target);
 
         eventList.PrintHeap();
 
@@ -44,13 +44,17 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 bool relationExist = relationDictionary.ContainsKey(key);
                 if (relationExist)
                 {
-                    if (chessEvent.GetType() == relationDictionary[key].GetType())
+                    if (chessEvent.Type == relationDictionary[key].Type)
                     {
                         Debug.Log("이미 있는 이벤트--------------------------------" + chessEvent.Type);
                     }
                     else
                     {
                         Debug.Log("이미 있는 이벤트와 다름");
+                        relationDictionary[key] = chessEvent;
+                        float importance = subject.PieceScore + target.PieceScore + target.place.HeatPoint + chessEvent.GetEventTypeScore();
+                        AddEvent(importance, chessEvent);
+
                     }
                 }
                 else
@@ -86,8 +90,10 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         }
         else
         {
+            
             Piece subject = chessEvent.Subject;
             talk = GetDialogue(subject.character, chessEvent.Type);
+            Debug.Log(string.Format("{0} : {1}", subject, talk));
             DialogueManager.DialogueUnit dialogue = new DialogueManager.DialogueUnit(subject, talk);
             // 캐릭터 대사 가져오기 
 
@@ -97,6 +103,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
             {
                 subject = chessEvent.Target;
                 talk = GetResponseDialogue(subject.character, chessEvent.Type);
+                Debug.Log(string.Format("{0} : {1}", subject, talk));
                 DialogueManager.DialogueUnit dialogue2 = new DialogueManager.DialogueUnit(subject, talk);
                 DialogueManager.Instance.AddDialogue(dialogue2);
                 // 캐릭터 반응 가져오기

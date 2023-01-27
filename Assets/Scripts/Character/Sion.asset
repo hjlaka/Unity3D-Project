@@ -22,4 +22,6 @@ MonoBehaviour:
   beThreated: "\uB098\uB97C \uACF5\uACA9\uD558\uB824\uACE0?"
   beDefended: "\uACC4\uC18D \uBC29\uC5B4\uD574\uC918!"
   beAttacked: "\uBB50\uC57C!"
+  onGame: "\uB3CC\uACA9"
+  onGame2: 
   normalTalks: []

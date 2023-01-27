@@ -7,7 +7,8 @@ public class PlayerDataManager : SingleTon<PlayerDataManager>
     [SerializeField]
     private List<Piece> playerPieces = new List<Piece>();
 
-    public List<Piece> unitList;
+    public List<Piece> unitList;    // 게임에 참여할 수 있는 유닛
+
 
     [SerializeField]
     private PlayerUnitUI ui;

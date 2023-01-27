@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 269bc0947b1b53f42ab008add36b7e90, type: 3}
-  m_Name: Samuel
+  m_Name: Test 1
   m_EditorClassIdentifier: 
-  characterName: "\uC0AC\uBB34\uC5D8"
+  characterName: "\uD14C\uC2A4\uD2B8"
   piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
   decidePlaceStrategyType: 0
-  threating: "\uBAA9\uD45C \uD3EC\uCC29"
-  defending: "\uBAA9\uD45C \uBCF4\uD638"
-  attacking: "\uACF5\uACA9 \uAC1C\uC2DC"
-  called: "\uC654\uB2E4"
-  beThreated: "\uC548 \uADF8\uB7EC\uB294 \uAC8C \uC88B\uC744\uAC78..."
-  beDefended: ...!
-  beAttacked: "\uD06C\uC73D"
-  onGame: "\uBD99\uC5B4\uBCF4\uC790"
+  threating: "\uC704\uD611"
+  defending: "\uBC29\uC5B4"
+  attacking: "\uACF5\uACA9"
+  called: "\uB3C4\uCC29"
+  beThreated: '!'
+  beDefended: "\uACE0\uB9C8\uC6CC"
+  beAttacked: '!!!'
+  onGame: "\uC2DC\uC791"
   onGame2: 
   normalTalks: []

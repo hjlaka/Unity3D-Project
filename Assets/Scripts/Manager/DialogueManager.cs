@@ -6,9 +6,6 @@ using UnityEngine;
 public class DialogueManager : SingleTon<DialogueManager>
 {
 
-/*    [SerializeField]
-    private bool dialogueOn;*/
-
     [SerializeField]
     private  DialogueUI dialogueUI;
 
@@ -65,6 +62,7 @@ public class DialogueManager : SingleTon<DialogueManager>
     {
         if (IsDialogueExist())
         {
+            Debug.Log("대화 개수: " + dialogueQueue.Count);
             GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
             StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
@@ -95,6 +93,7 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     public void NextDialogueShow()
     {
+        Debug.Log("다음 대화로 넘어가려 합니다");
         if (!IsDialogueExist())
         {
             EndConversation();
