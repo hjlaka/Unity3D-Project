@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreparingGame : GameStateMachine
+public class StatePreparingGame : StateBehaviour<GameManager>
 {
     public override void StateEnter()
     {
-        manager.gameSetter.SetBottomTeam(0);
+        machine.gameSetter.SetBottomTeam(0);
         PlayerDataManager.Instance.EnablePlayerListUI();
-        manager.playerSetter.GetBoard();
-        manager.playerSetter.MakeBoardSetable();
+        machine.playerSetter.GetBoard();
+        machine.playerSetter.MakeBoardSetable();
     }
 
     public override void StateExit()
     {
-        manager.playerSetter.MakeBoardSetableNot();
+        machine.playerSetter.MakeBoardSetableNot();
         PlayerDataManager.Instance.DisablePlayerListUI();
     }
 

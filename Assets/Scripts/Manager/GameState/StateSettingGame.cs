@@ -4,12 +4,14 @@ using UnityEngine;
 
 namespace GameState
 {
-    public class SettingGame : GameStateMachine
+    public class StateSettingGame : StateBehaviour<GameManager>
     {
         public override void StateEnter()
         {
             DialogueManager.Instance.CheckDialogueEvent();
-            manager.gameSetter.SetTopTeam(0);
+            machine.gameSetter.SetTopTeam(0);
+
+            StartCoroutine(Waiting());
         }
 
         public override void StateExit()
@@ -20,6 +22,15 @@ namespace GameState
         public override void StateUpdate()
         {
             throw new System.NotImplementedException();
+        }
+
+        private IEnumerator Waiting()
+        {
+            while(GameManager.Instance.state == GameManager.GameState.IN_CONVERSATION)
+            {
+                yield return null;
+            }
+            machine.SetNextState(GameManager.GameState.PREPARING_GAME);
         }
     }
 }
