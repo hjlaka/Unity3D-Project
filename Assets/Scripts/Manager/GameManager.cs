@@ -20,6 +20,7 @@ public class GameManager : SingleTon<GameManager>
         SELECTING_PLACE, 
         DOING_PLAYER_TURN_START,
         DOING_PLAYER_TURN,
+        ACTION,
         TURN_FINISHED,
         TURN_CHANGE, 
         IN_CONVERSATION,
@@ -127,7 +128,17 @@ public class GameManager : SingleTon<GameManager>
             if(turnRemainUI != null)
                 turnRemainUI.text = trunRemain.ToString();
         }
-    }    
+    }
+
+
+
+    // 사용 예정 변수
+    public bool playerValidToSelectPiece { get; set; }
+    public bool playerValidToSelectPlace { get; set; }
+
+
+
+
 
 
     [Header("DebugMode")]
@@ -155,7 +166,7 @@ public class GameManager : SingleTon<GameManager>
 
         curState = null;
         curStateType = GameState.NONE;
-        nextStateType = GameState.START_GAME;
+        nextStateType = GameState.OUT_OF_GAME;
     }
 
     private void Start()
@@ -171,118 +182,8 @@ public class GameManager : SingleTon<GameManager>
     {
         //머신
         ChangeGameStateMachine();
-
-        //기존 상태 패턴
-        //GameStateUpdate();
     }
 
-    public void GameStateUpdate()
-    {
-        switch(state)
-        {
-            case GameState.SELECTING_AI:
-                break;
-            case GameState.START_GAME:
-                OnTest?.Invoke();
-                ApplyPlayerType();
-                ApplyOpponentType();
-                ApplyBothPlayerDirection();
-                curPlayer = bottomPlayer;
-                
-                ChangeGameState(GameState.SETTING_GAME);
-                break; 
-
-
-
-
-            case GameState.SELECTING_PIECE:
-                break;
-
-            case GameState.SELECTING_PLACE:
-                break;
-
-            case GameState.DOING_PLAYER_TURN_START:
-                ChangeGameState(GameState.DOING_PLAYER_TURN);
-                Debug.Log("플레이어턴");
-                
-                break;
-                
-            case GameState.DOING_PLAYER_TURN:
-                
-                break;
-
-            case GameState.TURN_CHANGE:
-                ChangeTurn();
-                break;
-
-            case GameState.IN_CONVERSATION:
-                // 시작 부분에서
-                // ui 보여주기
-                // 대사 세팅하기
-
-                // 업데이트 부분에서
-                // 클릭 받아오기?
-
-                // 종료 부분에서
-                // 돌아가기
-                break;
-
-            case GameState.TURN_FINISHED:
-                // 이벤트 종료 신호를 받아옴
-                Debug.Log("게임 종료 검사");
-                if (IsEnded())
-                {
-                    Debug.Log("게임 종료 인식");
-                    ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.GAME_END, null, null));
-                    ChangeGameState(GameState.GAME_END);
-                }   
-                // 이벤트 실행
-                // 체스 이벤트
-                ChessEventManager.Instance.GetEvent();
-
-                // 대화 이벤트
-                DialogueManager.Instance.CheckDialogueEvent();
-
-                
-
-                // 대화가 더이상 없다면 계속 진행
-                if (state == GameState.TURN_FINISHED)
-                {
-                    OnTurnFinished?.Invoke();
-                    ChangeGameState(GameState.TURN_CHANGE);
-                }
-                    
-                break;
-
-            case GameState.OPPONENT_TURN_START:
-                ChangeGameState(GameState.OPPONENT_TURN);
-                Debug.Log("상대턴");
-                ChessEventManager.Instance.GetEvent();
-                DialogueManager.Instance.CheckDialogueEvent();
-                break;
-
-            case GameState.OPPONENT_TURN:
-                break;
-
-            case GameState.RETURN:
-                // 되돌리기 작업 종료 후 돌아왔을 때 아래 실행
-                ChangeGameState(GameState.TURN_CHANGE);
-                break;
-
-            case GameState.GAME_END:
-                topPlayer.GoToHome();
-                bottomPlayer.GoToHome();
-                ChangeGameState(GameState.OUT_OF_GAME);
-                break;
-
-            case GameState.OUT_OF_GAME:
-                break;
-
-            default: 
-                state = GameState.TURN_CHANGE; 
-                break;
-        }
-    }
     private void ApplyPlayerType()
     {
         switch (playerType)
@@ -342,12 +243,12 @@ public class GameManager : SingleTon<GameManager>
         bottomPlayer.homeLocation = bottomHome;
     }
 
-    public void ChangeGameState(GameState nextState)
+/*    public void ChangeGameState(GameState nextState)
     {
-        Debug.Log("게임 씬 변경: " + nextState);
+        Debug.Log(string.Format("게임 상태 변경: {0} 에서 {1}로.", state, nextState));
         beforeState = state;
         state = nextState;
-    }
+    }*/
 
     public void GoBackGameState()
     {
@@ -355,7 +256,7 @@ public class GameManager : SingleTon<GameManager>
         state = beforeState;
     }
 
-    private void ChangeTurn()
+    public void ChangeTurn()
     {
         //AI와 플레이어 턴은 한번씩만 진행되는가?
 
@@ -368,7 +269,7 @@ public class GameManager : SingleTon<GameManager>
                 ((AI)opponentPlayer).DoTurn();
                 
             }
-            ChangeGameState(GameState.SELECTING_PIECE);
+            //ChangeGameState(GameState.SELECTING_PIECE);
             // 여기서 시작? - 상태 기계 만들기?
         }
         else if (turnState == TurnState.TOP_TURN)
@@ -379,13 +280,13 @@ public class GameManager : SingleTon<GameManager>
             {
                 ((AI)player).DoTurn();
             }
-            ChangeGameState(GameState.SELECTING_PIECE);
+            //ChangeGameState(GameState.SELECTING_PIECE);
 
         }
         else if (turnState == TurnState.RETURN)
         {
             turnState = TurnState.BOTTOM_TURN;
-            ChangeGameState(GameState.SELECTING_PIECE);
+            //ChangeGameState(GameState.SELECTING_PIECE);
         }
     }
 
@@ -421,7 +322,7 @@ public class GameManager : SingleTon<GameManager>
 
         // --------- 디버그 -----------
         debugLog1.Clear();
-        debugLog1.Append("게임 상태 변경: ");
+        debugLog1.Append("게임 상태 변경 감지: ");
         debugLog1.Append(nextStateType.ToString());
         Debug.Log(debugLog1);
         // ----------------------------
@@ -433,10 +334,11 @@ public class GameManager : SingleTon<GameManager>
             curState = nextState;
             curStateType = nextStateType;
             curState?.StateEnter();
+            Debug.Log("게임 상태 변경");
         }
         else
         {
-            Debug.Log("해당 상태를 찾을 수 없음");
+            Debug.Log("해당 상태 클래스 없음");
         }
 
     }
