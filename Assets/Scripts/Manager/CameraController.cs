@@ -36,11 +36,11 @@ public class CameraController : SingleTon<CameraController>
         //RemoveFromTargetGroup(freeCamInitTrans);
     }
 
-    private void Update()
+    /*private void Update()
     {
         Move();   
         Zoom();
-    }
+    }*/
 
     private void Move()
     {
