@@ -41,7 +41,6 @@ public class MarkableBoard : Board, IMarkable
         for (int i = 0; i < movablePlaces.Count; i++)
         {
             ChangePlaceColor(movablePlaces[i].boardIndex, PlaceType.MOVABLE);
-            movablePlaces[i].IsMovableToCurPiece = true;
         }
     }
 
@@ -89,7 +88,6 @@ public class MarkableBoard : Board, IMarkable
         for (int i = 0; i < movableList.Count; i++)
         {
             movableList[i].ChangeColor();
-            movableList[i].IsMovableToCurPiece = false;
         }
     }
     public void ShowInfluenceEnd(Piece endedPiece)
