@@ -95,6 +95,11 @@ public class Piece : LifeUnit
         belong.AddPiece(this);
     }
 
+    public bool IsSameTeam(Piece other)
+    {
+        return this.team.TeamId == other.team.TeamId;   //Belong으로 판단할 수도 있다.
+    }
+
     public virtual void SetFree(bool value)
     {
         IsFree = value;

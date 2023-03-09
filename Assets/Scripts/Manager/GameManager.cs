@@ -31,19 +31,23 @@ public class GameManager : SingleTon<GameManager>
         ON_TURN
     }
 
-    [SerializeField]
+
+    // =========================== StateMachine ================================
     public StateBehaviour<GameManager> curState { get; private set; }
     [SerializeField]
     private GameState curStateType;
     private GameState nextStateType;
-
-    private Dictionary<GameState, StateBehaviour<GameManager>> stateDic;
+    public GameState CurStateType { get { return curStateType; } private set { curStateType = value; } }
 
     public StateBehaviour<GameManager> stateStart { get; private set; }
     public StateBehaviour<GameManager> stateOnTurn { get; private set; }
     public StateBehaviour<GameManager> statePreparing { get; private set; }
     public StateBehaviour<GameManager> stateSetting { get; private set; }
     public StateBehaviour<GameManager> stateFinishTurn { get; private set; }
+
+    private Dictionary<GameState, StateBehaviour<GameManager>> stateDic;
+
+    // ==========================================================================
 
 
     public enum TurnState
@@ -298,7 +302,6 @@ public class GameManager : SingleTon<GameManager>
                 player = player2Player.GetComponent<Player>();
                 break;
         }
-
     }
     private void ApplyOpponentType()
     {
@@ -417,6 +420,7 @@ public class GameManager : SingleTon<GameManager>
             return;
 
         // --------- 디버그 -----------
+        debugLog1.Clear();
         debugLog1.Append("게임 상태 변경: ");
         debugLog1.Append(nextStateType.ToString());
         Debug.Log(debugLog1);

@@ -33,37 +33,40 @@ public class PieceMouseEvent : MonoBehaviour
         //      1. 기물 취소
         //      2. 기물 변경
         //      3. 기물 공격
-        if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
+
+        // 조건 체크
+        if (GameManager.Instance.state != GameManager.GameState.ON_TURN)
         {
-            if (GameManager.Instance.curPlayer != piece.Belong)
-            {
-                Debug.Log("기물 주인 턴이 아님. 턴: " + GameManager.Instance.curPlayer + "/ 기물 주인: " + piece.Belong);
-                return;
-            }
-            if (piece.Belong is AI)
-            {
-                Debug.Log("ai의 기물은 선택할 수 없음");
-                return;
-            }
-            PlaceManager.Instance.SelectPiece(piece);
+            Debug.Log("턴 단계가 아님");
+            return;
         }
 
-        else if (GameManager.Instance.state == GameManager.GameState.SELECTING_PLACE)
+        if (GameManager.Instance.curPlayer is AI)
         {
+            Debug.Log("AI의 차례");
+            return;
+        }  
+        
+        if (PlaceManager.Instance.SelectedPiece == null)    // 선택된 기물이 있는지 확인? 혹은 상태 확인?
+        {
+            Debug.Log("기물 선택함");
+            SelectPiece(piece);
+        }
+        else
+        {
+            //선택된 기물이 있는 상태에서 다시 클릭
             // 자신이라면
             if (PlaceManager.Instance.SelectedPiece == piece)
             {
-                Debug.Log("자신 클릭");
-                PlaceManager.Instance.CancleSelectPiece();
+                CancelSelect();
             }
-                
 
             // 같은 팀 기물이라면
-            else if (piece.team.TeamId == PlaceManager.Instance.SelectedPiece.team.TeamId)
+            else if (piece.IsSameTeam(PlaceManager.Instance.SelectedPiece)) 
             {
                 Debug.Log("같은 팀 클릭");
-                PlaceManager.Instance.CancleSelectPiece();
-                PlaceManager.Instance.SelectPiece(piece);
+                CancelSelect();
+                SelectPiece(piece);
             }
             // 다른 팀 기물이라면
             else
@@ -74,14 +77,34 @@ public class PieceMouseEvent : MonoBehaviour
                     //공격 
                     // 선택된 기물을 움직임
                     // (움직임 함수 내부에서 공격 연산 수행)
-                    ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, PlaceManager.Instance.SelectedPiece, piece));
-                    ChessEventManager.Instance.GetEvent();
-                    DialogueManager.Instance.CheckDialogueEvent();
-                    PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);
 
+                    Attack();
                 }
             }
-
         }
+    }
+
+    private void SelectPiece(Piece piece)
+    {
+        if (piece.Belong != GameManager.Instance.curPlayer)
+        {
+            Debug.Log("기물 주인 턴이 아님. 턴: " + GameManager.Instance.curPlayer + "/ 기물 주인: " + piece.Belong);
+            return;
+        }
+        PlaceManager.Instance.SelectPiece(piece);
+    }
+
+    private void CancelSelect()
+    {
+        Debug.Log("자신 클릭");
+        PlaceManager.Instance.CancleSelectPiece();
+    }
+
+    private void Attack()
+    {
+        ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, PlaceManager.Instance.SelectedPiece, piece));
+        ChessEventManager.Instance.GetEvent();
+        DialogueManager.Instance.CheckDialogueEvent();
+        PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);
     }
 }
