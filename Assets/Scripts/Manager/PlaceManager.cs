@@ -9,10 +9,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     [SerializeField]
     private Piece selectedPiece;
 
-
     [SerializeField]
     private PlacementRememberer placementRememberer;
-
 
     public UnityEvent OnSelectPiece;
     public UnityEvent OnNonSelectPiece;
@@ -32,7 +30,10 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         }
     }
 
-    public UnityEvent OnExitSelect;
+    public UnityEvent OnLeaveSelect;
+    public UnityEvent OnEnterSelect;
+    public UnityEvent OnEndMove;
+    public UnityEvent OnStartMove;
 
     public Place selectedPlace;
     public Place expelZone;
@@ -69,32 +70,32 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
     public void ApplyInfluence(Piece piece)
     {
-        Place newPlace = piece.place;
+        Place curPlace = piece.place;
         // 새로운 자리 과열도 추가
 
         Debug.Log("지금 자리 과열도 추가");
         if (piece.team.direction == TeamData.Direction.DownToUp)
-            newPlace.HeatPointBottomTeam++;
+            curPlace.HeatPointBottomTeam++;
         else
-            newPlace.HeatPointTopTeam++;
+            curPlace.HeatPointTopTeam++;
 
         // 계산 완료된 영향권의 과열도 추가
         for (int i = 0; i < piece.Recognized.influenceable.Count; i++)
         {
-            Place curPlace = piece.Recognized.influenceable[i];
+            Place iterPlace = piece.Recognized.influenceable[i];
             if (piece.team.direction == TeamData.Direction.DownToUp)
-                curPlace.HeatPointBottomTeam++;
+                iterPlace.HeatPointBottomTeam++;
             else
-                curPlace.HeatPointTopTeam++;
+                iterPlace.HeatPointTopTeam++;
 
-            curPlace.registerObserver(piece.PlaceObserver);
+            iterPlace.registerObserver(piece.PlaceObserver);
         }
 
         for(int i = 0; i < piece.Recognized.special.Count; i++)
         {
-            Place curPlace = piece.Recognized.special[i];
+            Place iterPlace = piece.Recognized.special[i];
 
-            curPlace.registerObserver(piece.PlaceObserver);
+            iterPlace.registerObserver(piece.PlaceObserver);
         }
     }
 

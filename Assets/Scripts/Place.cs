@@ -7,17 +7,11 @@ public class Place : MonoBehaviour, ISubject
 {
     public enum PlaceType { A, B, V };
     private Piece piece;
-    public Piece Piece
-    {
-        get { return piece; }
-        set { piece = value; }
-    }
+
     public Board board;
     public Vector2Int boardIndex;
     public PlaceType type;     // 스크립터블 오브젝트
-
     private Color typeColor;
-
 
     [Header("Running Game")]
 
@@ -25,7 +19,19 @@ public class Place : MonoBehaviour, ISubject
     private bool isMovableToCurPiece = false;
     [SerializeField]
     private bool isAttackableByCurPiece = false;
+    private SpecialMove moveAction;
 
+    [SerializeField]
+    private List<PlaceObserver> influencingUnit;
+
+    [SerializeField]
+    private PlaceEffect effect;
+
+    public Piece Piece
+    {
+        get { return piece; }
+        set { piece = value; }
+    }
     public bool IsMovableToCurPiece
     {
         get { return isMovableToCurPiece; }
@@ -38,19 +44,11 @@ public class Place : MonoBehaviour, ISubject
         set { isAttackableByCurPiece = value; }
     }
 
-    private SpecialMove moveAction;
     public SpecialMove MoveAction
     {
         get { return moveAction; }
         set { moveAction = value; }
     }
-
-
-    [SerializeField]
-    private List<PlaceObserver> influencingUnit;
-
-    [SerializeField]
-    private PlaceEffect effect;
 
     [Header("UI Setting")]
 
@@ -60,12 +58,10 @@ public class Place : MonoBehaviour, ISubject
     private TextMeshProUGUI TotalHeatUI;
     [SerializeField]
     private TextMeshProUGUI bottomTeamHeatUI;
-
     [SerializeField]
     private int heatPointTopTeam;
     [SerializeField]
     private int heatPointBottomTeam;
-
     [SerializeField]
     private int heatPoint;
 
@@ -121,8 +117,6 @@ public class Place : MonoBehaviour, ISubject
     private Renderer render;
 
 
-
-
     private void Awake()
     {
         render = GetComponentInChildren<Renderer>();
@@ -155,12 +149,11 @@ public class Place : MonoBehaviour, ISubject
 
     private void OnMouseUpAsButton()
     {
-        //if (!GameManager.Instance.isPlayerTurn) { Debug.Log("플레이어 턴 아님"); return; }
-        //Debug.Log(string.Format("{0} 클릭", gameObject.name));
 
 
         // 게임 상태 조건
-        if(GameManager.Instance.state == GameManager.GameState.PREPARING_GAME_ON)
+        //if(GameManager.Instance.state == GameManager.GameState.PREPARING_GAME_ON)
+        if(GameManager.Instance.curState is StatePreparingGame)
         {
             Debug.Log("배치 상태 위치 클릭 진입");
             if(PlaceManager.Instance.SelectedPiece != null && IsMovableToCurPiece)
@@ -171,7 +164,8 @@ public class Place : MonoBehaviour, ISubject
             }
             Debug.Log("선택된 기물 없음");
         }
-        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
+        //if (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
+        if (GameManager.Instance.curState is not StateOnTurn)
         {
             Debug.Log("위치 선택 가능 상태 아님");
             return;
@@ -198,14 +192,6 @@ public class Place : MonoBehaviour, ISubject
 
     }
 
-    /*    public void UpdateInfluencingPieces()
-        {
-            for(int i = 0; i < influencingPieces.Count; i++)
-            {
-                Piece piece = influencingPieces[i];
-                PlaceManager.Instance.ReCalculateInfluence(piece);
-            }
-        }*/
 
     public void ChangeColor(Color color)
     {
@@ -253,7 +239,6 @@ public class Place : MonoBehaviour, ISubject
         for (int i = 0; i < copyList.Count; i++)
         {
             copyList[i].StateUpdate(this);
-            //Debug.Log("업데이트 호출: " + copyList[i]);
         }
 
         return this;

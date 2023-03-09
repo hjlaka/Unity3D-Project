@@ -1,5 +1,7 @@
+using GameState;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,12 +11,11 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent OnTest;
     public enum GameState 
     { 
+        NONE,
         START_GAME,
         SELECTING_AI,
         SETTING_GAME,
         PREPARING_GAME,
-        PREPARING_GAME_ON,
-        PREPARING_GAME_END,
         SELECTING_PIECE, 
         SELECTING_PLACE, 
         DOING_PLAYER_TURN_START,
@@ -26,10 +27,23 @@ public class GameManager : SingleTon<GameManager>
         OPPONENT_TURN,
         RETURN,
         GAME_END,
-        OUT_OF_GAME
+        OUT_OF_GAME,
+        ON_TURN
     }
 
-    GameStateMachine gameState;
+    [SerializeField]
+    public StateBehaviour<GameManager> curState { get; private set; }
+    [SerializeField]
+    private GameState curStateType;
+    private GameState nextStateType;
+
+    private Dictionary<GameState, StateBehaviour<GameManager>> stateDic;
+
+    public StateBehaviour<GameManager> stateStart { get; private set; }
+    public StateBehaviour<GameManager> stateOnTurn { get; private set; }
+    public StateBehaviour<GameManager> statePreparing { get; private set; }
+    public StateBehaviour<GameManager> stateSetting { get; private set; }
+    public StateBehaviour<GameManager> stateFinishTurn { get; private set; }
 
 
     public enum TurnState
@@ -113,6 +127,31 @@ public class GameManager : SingleTon<GameManager>
     [Header("DebugMode")]
     public bool scoreDebugMode;
 
+
+    private readonly StringBuilder debugLog1 = new StringBuilder();
+
+    private void Awake()
+    {
+        stateDic = new Dictionary<GameState, StateBehaviour<GameManager>>();
+
+        stateStart = GetComponent<StateGameStart>();
+        stateSetting = GetComponent<StateSettingGame>();
+        statePreparing = GetComponent<StatePreparingGame>();
+        stateOnTurn = GetComponent<StateOnTurn>();
+        stateFinishTurn = GetComponent<StateTurnFinished>();
+
+        stateDic.Add(GameState.START_GAME, stateStart);
+        stateDic.Add(GameState.SETTING_GAME, stateSetting);
+        stateDic.Add(GameState.PREPARING_GAME, statePreparing);
+        stateDic.Add(GameState.ON_TURN, stateOnTurn);
+        stateDic.Add(GameState.TURN_FINISHED, stateFinishTurn);
+
+
+        curState = null;
+        curStateType = GameState.NONE;
+        nextStateType = GameState.START_GAME;
+    }
+
     private void Start()
     {
         TurnRemain = 10;
@@ -124,7 +163,11 @@ public class GameManager : SingleTon<GameManager>
 
     private void Update()
     {
-        GameStateUpdate();
+        //머신
+        ChangeGameStateMachine();
+
+        //기존 상태 패턴
+        //GameStateUpdate();
     }
 
     public void GameStateUpdate()
@@ -143,48 +186,7 @@ public class GameManager : SingleTon<GameManager>
                 ChangeGameState(GameState.SETTING_GAME);
                 break; 
 
-            case GameState.SETTING_GAME:
-                // 대화가 있다면 대화 상태 진입
-                DialogueManager.Instance.CheckDialogueEvent();
 
-                // 대화가 더이상 없다면 계속 진행
-                if (state != GameState.SETTING_GAME) break;
-                    
-                gameSetter.SetTopTeam(0);
-                //gameSetter.SetSettingEvent(0);
-                
-
-                ChangeGameState(GameState.PREPARING_GAME);
-                break;
-            
-            case GameState.PREPARING_GAME:
-                DialogueManager.Instance.CheckDialogueEvent();
-
-                // 대화가 더이상 없다면 계속 진행
-                if (state != GameState.PREPARING_GAME) break;
-
-                gameSetter.SetBottomTeam(0);
-
-                PlayerDataManager.Instance.EnablePlayerListUI(); // 한번 하고 넘어가야 한다.
-                // 완료 버튼을 눌렀을 시, 다음으로 넘어간다. 무언가 입력을 대기 해야 한다.// 외부에서 바꿀 수밖에 없는가? 혹은 신호를 받는 게 나은가?
-
-
-                ChangeGameState(GameState.PREPARING_GAME_ON);
-                
-                break;
-
-            case GameState.PREPARING_GAME_ON:
-                playerSetter.GetBoard();
-                playerSetter.MakeBoardSetable();
-                Debug.Log("준비 단계 진행");
-
-                break;
-
-            case GameState.PREPARING_GAME_END:
-                playerSetter.MakeBoardSetableNot();
-                ChangeGameState(GameState.SELECTING_PIECE);
-                PlayerDataManager.Instance.DisablePlayerListUI();
-                break;
 
 
             case GameState.SELECTING_PIECE:
@@ -405,11 +407,35 @@ public class GameManager : SingleTon<GameManager>
 
     }
 
-    private void ChangeGameStateMachine(GameStateMachine nextGameState)
+    public void SetNextState(GameState stateType)
     {
-        gameState.StateExit();
-        gameState = nextGameState;
-        gameState.StateEnter();
+        nextStateType = stateType;
+
+    }
+    public void ChangeGameStateMachine()
+    {
+        if (nextStateType == curStateType)
+            return;
+
+        // --------- 디버그 -----------
+        debugLog1.Append("게임 상태 변경: ");
+        debugLog1.Append(nextStateType.ToString());
+        Debug.Log(debugLog1);
+        // ----------------------------
+
+        StateBehaviour<GameManager> nextState;
+        if (stateDic.TryGetValue(nextStateType, out nextState))
+        {
+            curState?.StateExit();
+            curState = nextState;
+            curStateType = nextStateType;
+            curState?.StateEnter();
+        }
+        else
+        {
+            Debug.Log("해당 상태를 찾을 수 없음");
+        }
+
     }
 
     private void GetGameStateInstance(GameState gameState)

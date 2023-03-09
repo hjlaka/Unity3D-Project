@@ -9,7 +9,8 @@ public class GameStateChangeButton : MonoBehaviour
 
     public void ChangeGameState()
     {
-        GameManager.Instance.ChangeGameState(targetState);
+        //GameManager.Instance.ChangeGameState(targetState);
+        GameManager.Instance.SetNextState(targetState);
     }
 
     public void GoBackGameState()

@@ -53,7 +53,14 @@ public class UnitButton : MonoBehaviour
     }
     public void PlacePiece()
     {
-        if (GameManager.Instance.state != GameManager.GameState.PREPARING_GAME_ON) return;
+        //if (GameManager.Instance.curState != GameManager.GameState.PREPARING_GAME)
+        if (GameManager.Instance.curState is not StatePreparingGame)
+        {
+            Debug.Log("준비 상태가 아니다");
+            return;
+        }
+            
+
 
         PlaceManager.Instance.SelectPiece(piece);
 

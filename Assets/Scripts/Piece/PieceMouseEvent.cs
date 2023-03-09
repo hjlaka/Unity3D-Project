@@ -27,11 +27,14 @@ public class PieceMouseEvent : MonoBehaviour
         piece.ChangeColorTempBack();
     }
 
-
-    
     private void OnMouseUpAsButton()
     {
 
+        // 기물 선택 단계에서 기물 선택
+        // 기물 선택 후
+        //      1. 기물 취소
+        //      2. 기물 변경
+        //      3. 기물 공격
         if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
         {
             if (GameManager.Instance.curPlayer != piece.Belong)
