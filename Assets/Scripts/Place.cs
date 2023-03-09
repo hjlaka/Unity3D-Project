@@ -145,48 +145,47 @@ public class Place : MonoBehaviour, ISubject
 
     private void OnMouseUpAsButton()
     {
-        //Debug.Log(string.Format("{0} 클릭", gameObject.name));
+        if(GameManager.Instance.curPlayer is AI)
+        {
+            Debug.Log("AI의 차례임");
+            return;
+        }
+
+        if(PlaceManager.Instance.SelectedPiece == null)
+        {
+            Debug.Log("선택된 기물 없음");
+            return;
+        }
 
 
-        // 게임 상태 조건
-        //if(GameManager.Instance.state == GameManager.GameState.PREPARING_GAME_ON)
         if(GameManager.Instance.curState is StatePreparingGame)
         {
             Debug.Log("배치 상태 위치 클릭 진입");
-            if(PlaceManager.Instance.SelectedPiece != null && IsMovableToCurPiece)
+            if(IsMovableToCurPiece)
             {
                 PlaceManager.Instance.MovePiece(PlaceManager.Instance.SelectedPiece, this);
                 PlaceManager.Instance.SelectedPieceInit();
-                //OnValidClick?.Invoke();
                 return;
             }
-            Debug.Log("선택된 기물 없음");
         }
-        //if (GameManager.Instance.state != GameManager.GameState.SELECTING_PLACE)
-        if (GameManager.Instance.curState is not StateOnTurn)
+        else if(GameManager.Instance.curState is StateOnTurn)
         {
-            Debug.Log("위치 선택 가능 상태 아님");
-            return;
+            StateOnTurn stateOnTurn = GameManager.Instance.curState as StateOnTurn;
+            if(!GameManager.Instance.playerValidToSelectPlace)
+            //if (stateOnTurn.DecideFinished)
+            {
+                Debug.Log("이미 움직임 결정됨");
+                return;
+            }
+            if (piece != null)
+            {
+                // 삭제 예정
+                Debug.Log("자리에 기물이 있음 (공격을 원할시 기물을 눌러야 함)");
+                return;
+            }
+
+            PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
         }
-
-
-        // 기물이 선택된 상태에서 클릭시
-        if (null == PlaceManager.Instance.SelectedPiece)
-        {
-            Debug.Log("선택된 기물이 없음");
-            return;
-        }
-
-        if (piece != null)
-        {
-            Debug.Log("자리에 기물이 있음 (공격을 원할시 기물을 눌러야 함)");
-            return;
-        }
-
-        PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
-        //OnValidClick?.Invoke();
-
-
     }
 
 

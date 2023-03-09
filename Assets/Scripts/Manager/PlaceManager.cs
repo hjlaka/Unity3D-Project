@@ -46,8 +46,11 @@ public class PlaceManager : SingleTon<PlaceManager>
     {
         SelectedPiece = piece;
         SelectedPiece.ChangeColor(selectingColor);
-        if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
-            GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
+/*        if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
+            GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);*/
+
+        // 움직일 수 있는 범위 등록
+        piece.place?.board?.ApplyMovable(piece, true);
 
         // 연출
         OnSelectPiece?.Invoke(SelectedPiece);
@@ -60,13 +63,16 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (null == selectedPiece) return;
         // 선택된 기물을 이동하지 않고 바로 취소하는 경우
 
+        // 움직일 수 있는 범위 등록 해제
+        selectedPiece.place?.board?.ApplyMovable(selectedPiece, false);
+
         //연출
         IMarkable markable = selectedPiece.place.board as IMarkable;
         if (markable != null)
             markable.PreShowEnd(selectedPiece);
 
         SelectedPieceInit();
-        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
+        //GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
     }
 
     public void SelectedPieceInit()
@@ -86,19 +92,31 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void ShowOnBoard(Piece piece)
     {
         // 어떤 보드에서 연출이 되어야 할지 찾는 과정
-        IMarkable markable = piece.place.board as IMarkable;
+        IMarkable markable = piece.place?.board as IMarkable;
         if (markable != null)
             markable.PreShow(piece);
     }
 
     private bool IsPlaceable(Place place, Piece piece)
     {
-        if (place.board == null) 
+        if (place.board == null)
+        {
+            Debug.Log("보드가 아닌 위치");
             return true;
-        if (place.board != piece.place.board) 
+        }
+
+        if (place.board != piece.place.board)
+        {
+            Debug.Log("보드가 이전 보드와 다른 위치");
             return true;
-        if (!place.board.FollowRule) 
+        }
+        
+        if (!place.board.FollowRule)
+        {
+            Debug.Log("규칙을 따르지 않는 보드");
             return true;
+        }
+        
 
         return place.IsMovableToCurPiece;
     }
@@ -107,7 +125,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     public void MoveProcess(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
-        IMarkable oldBoard = oldPlace.board as IMarkable;
+        IMarkable oldBoard = oldPlace?.board as IMarkable;
         IMarkable newBoard = place.board as IMarkable;
         Placement subsequent = null;
 
@@ -119,15 +137,12 @@ public class PlaceManager : SingleTon<PlaceManager>
             return;
         }
 
-        if(GameManager.Instance.turnState == GameManager.TurnState.BOTTOM_TURN)
-        {
-            GameManager.Instance.ChangeGameState(GameManager.GameState.DOING_PLAYER_TURN_START);
-        }
-        else if(GameManager.Instance.turnState == GameManager.TurnState.TOP_TURN)
-        {
-            GameManager.Instance.ChangeGameState(GameManager.GameState.OPPONENT_TURN_START);
-        }
-                
+        // 움직임 실행 결정
+        /*StateOnTurn turn = GameManager.Instance.curState as StateOnTurn;
+        if(turn != null) 
+            turn.DecideFinished = true;*/
+        GameManager.Instance.playerValidToSelectPlace = false;
+
         // 연출 - 리스트 의존적.
         if (oldBoard != null)
             oldBoard.PreShowEnd(piece);
@@ -220,7 +235,8 @@ public class PlaceManager : SingleTon<PlaceManager>
             }
         }
 
-        GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
+        //GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
+        GameManager.Instance.SetNextState(GameManager.GameState.TURN_FINISHED);
 
         // 카메라 연출
         OnLeaveSelect?.Invoke();
