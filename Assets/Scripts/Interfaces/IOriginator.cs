@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IOriginator
+public interface IOriginator<T> where T : IMemento
 {
-    IMemento SaveMemento(IMemento memento);
+    T SaveMemento(T memento);
 
     void ApplyMemento();
 }

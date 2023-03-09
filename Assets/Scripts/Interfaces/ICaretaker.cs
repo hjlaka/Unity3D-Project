@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICareTaker
+public interface ICareTaker<T> where T : IMemento
 {
-    public void Add(IMemento memento);
+    public void Add(T memento);
 
-    public IMemento Get();
+    public T Get();
 }

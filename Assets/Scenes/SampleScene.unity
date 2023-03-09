@@ -275,6 +275,7 @@ MonoBehaviour:
   team: {fileID: 11400000, guid: 4da831a05a6774f419a040d06db90c54, type: 2}
   testCharacter: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
   aiManager: {fileID: 1473466502}
+  listBoard: {fileID: 0}
 --- !u!114 &2727095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1167,6 +1168,7 @@ MonoBehaviour:
   team: {fileID: 11400000, guid: 68781b80634d1584198878bd5363e703, type: 2}
   testCharacter: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
   aiManager: {fileID: 1473466502}
+  listBoard: {fileID: 0}
 --- !u!114 &132231383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2448,7 +2450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 408766598}
-  - component: {fileID: 408766597}
+  - component: {fileID: 408766599}
   m_Layer: 0
   m_Name: PlacementRememberer
   m_TagString: Untagged
@@ -2456,18 +2458,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &408766597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408766596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c71806de46eb643844e09e90be3b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &408766598
 Transform:
   m_ObjectHideFlags: 0
@@ -2483,6 +2473,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &408766599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408766596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbf0423e70e72c248a1bc4508aca17f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placementCareTaker: {fileID: 0}
 --- !u!1 &448728616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,6 +3765,37 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &687883407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 687883408}
+  m_Layer: 0
+  m_Name: PlacementCareTaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &687883408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687883407}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.256699, y: -5.497549, z: 3.9473686}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 24
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &691199794
 GameObject:
   m_ObjectHideFlags: 0
@@ -4967,9 +5001,9 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60.000004
+  field of view: 40
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4992,8 +5026,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.5153372, y: 0, z: 0, w: 0.8569875}
-  m_LocalPosition: {x: 14, y: 25, z: -5.6}
+  m_LocalRotation: {x: 0.10871661, y: -0.8185345, z: 0.16497257, w: 0.5394127}
+  m_LocalPosition: {x: 14.428771, y: 10.000001, z: 7.058865}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5186,6 +5220,7 @@ MonoBehaviour:
   team: {fileID: 11400000, guid: 4da831a05a6774f419a040d06db90c54, type: 2}
   testCharacter: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
   aiManager: {fileID: 1473466502}
+  listBoard: {fileID: 0}
 --- !u!114 &980135486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5889,6 +5924,7 @@ MonoBehaviour:
   team: {fileID: 11400000, guid: 68781b80634d1584198878bd5363e703, type: 2}
   testCharacter: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
   aiManager: {fileID: 1473466502}
+  listBoard: {fileID: 0}
 --- !u!114 &1122342431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6745,7 +6781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedPiece: {fileID: 0}
-  placementRememberer: {fileID: 408766597}
+  placeRememberer: {fileID: 0}
   OnSelectPiece:
     m_PersistentCalls:
       m_Calls: []
@@ -6834,6 +6870,9 @@ MonoBehaviour:
   aiManager: {fileID: 1473466502}
   playerSetter: {fileID: 566595960}
   turnRemainUI: {fileID: 1393403956}
+  OnTurnFinished:
+    m_PersistentCalls:
+      m_Calls: []
   playerTeamDirection: 0
   playerType: 0
   opponentType: 2
@@ -8820,7 +8859,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900151038}
-  m_LocalRotation: {x: 0.24921595, y: -0.37554088, z: 0.10558476, w: 0.88640416}
+  m_LocalRotation: {x: 0.24921595, y: -0.3755409, z: 0.10558477, w: 0.88640416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9700,6 +9739,7 @@ MonoBehaviour:
   team: {fileID: 11400000, guid: 4da831a05a6774f419a040d06db90c54, type: 2}
   testCharacter: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
   aiManager: {fileID: 1473466502}
+  listBoard: {fileID: 0}
 --- !u!114 &2101696072
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlaceManager : SingleTon<PlaceManager>, IOriginator
+public class PlaceManager : SingleTon<PlaceManager>
 {
     [SerializeField]
     private Piece selectedPiece;
 
     [SerializeField]
-    private PlacementRememberer placementRememberer;
+    private PlacementRememberer placeRememberer;
 
     public UnityEvent OnSelectPiece;
     public UnityEvent OnNonSelectPiece;
@@ -20,10 +20,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
-        set 
-        { 
-            selectedPiece = value;           
-        }
+        set { selectedPiece = value; }
     }
 
     public UnityEvent OnLeaveSelect;
@@ -206,7 +203,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         {
             Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece, subsequent);
             // 메멘토를 여기서 생성해야 할까?
-            SaveMemento(newPlacement);
+            placeRememberer.SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
         }
     }
@@ -338,80 +335,5 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         SelectedPiece = null;
         
-    }
-
-    public IMemento SaveMemento(IMemento memento)
-    {
-        placementRememberer.Add(memento);
-        return memento;
-    }
-
-    public void ApplyMemento()
-    {
-        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
-        {
-            Debug.Log("기물 선택 단계가 아님");
-            return;
-        }
-
-        GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
-
-        // 기본적으로 두번 복기한다.
-
-        for (int i = 0; i < 2; i++)
-        {
-            Placement placement = placementRememberer.Get() as Placement;
-            if (placement == null) return;
-            Debug.Log("복구 대상: " + placement.Piece);
-
-            // 연달은 수 먼저 복구
-            // TODO: 오류의 여지가 없다면 후에 재귀문으로 변경 / 혹은 배열 처리로 변경
-            if (placement.Subsequent != null)
-            {
-                Placement subsequent = placement.Subsequent;
-                Piece subsequentPiece = subsequent.Piece;
-                Place subsequentPosition = subsequent.PrevPosition;
-
-                MovePiece(subsequentPiece, subsequentPosition);
-
-                Piece subsequentCaptured = subsequent.CapturedPiece;
-                if (subsequentCaptured != null)
-                {
-                    MovePiece(subsequentCaptured, subsequent.NextPosition);
-                    subsequentCaptured.IsFree = false;
-                }
-            }
-
-            Piece returnPiece = placement.Piece;
-            Place returnPosition = placement.PrevPosition;
-          
-            // 연출 없이 움직임만 복구
-            // 복기한 움직임은 메멘토에 저장하지 않는다.
-            MovePiece(returnPiece, returnPosition);
-
-            Piece capturedPiece = placement.CapturedPiece;
-            
-            if(capturedPiece != null)
-            {
-                Place capturedPlace = placement.NextPosition;
-                // 기물 복구
-                Debug.Log("기물: " + capturedPiece + " 위치 : " + capturedPlace);
-                MovePiece(capturedPiece, capturedPlace);
-
-                capturedPiece.IsFree = false;
-
-                // 임시 이벤트 추가 처리
-                //ChessEvent reviveEvent = new ChessEvent(ChessEvent.EventType.RETURN, capturedPiece, null);
-                //ChessEventManager.Instance.AddEvent(reviveEvent);
-            }
-
-            // 임시 이벤트 추가 처리
-            //ChessEvent returnEvent = new ChessEvent(ChessEvent.EventType.RETURN, returnPiece, null);
-            //ChessEventManager.Instance.AddEvent(returnEvent);
-
-        }
-        GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
-        // 이벤트 확인 동작 게임 매니저에서 처리
-
     }
 }
