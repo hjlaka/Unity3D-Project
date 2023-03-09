@@ -2441,51 +2441,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 919708164806309586, guid: fa06245eca445a144ae257d457686941, type: 3}
   m_PrefabInstance: {fileID: 407002999}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &408766596
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 408766598}
-  - component: {fileID: 408766599}
-  m_Layer: 0
-  m_Name: PlacementRememberer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &408766598
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408766596}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.165068, y: -1157.8561, z: 1227.4518}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &408766599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408766596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbf0423e70e72c248a1bc4508aca17f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placementCareTaker: {fileID: 687883409}
 --- !u!1 &448728616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3765,50 +3720,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &687883407
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 687883408}
-  - component: {fileID: 687883409}
-  m_Layer: 0
-  m_Name: PlacementCareTaker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &687883408
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687883407}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.256699, y: -5.497549, z: 3.9473686}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 24
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &687883409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687883407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c71806de46eb643844e09e90be3b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &691199794
 GameObject:
   m_ObjectHideFlags: 0
@@ -4146,6 +4057,8 @@ GameObject:
   m_Component:
   - component: {fileID: 727316627}
   - component: {fileID: 727316628}
+  - component: {fileID: 727316630}
+  - component: {fileID: 727316629}
   m_Layer: 0
   m_Name: PlaceManagers
   m_TagString: Untagged
@@ -4180,6 +4093,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3f67945253563347b6ff85c2a8f66b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &727316629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727316626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c71806de46eb643844e09e90be3b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &727316630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727316626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbf0423e70e72c248a1bc4508aca17f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placementCareTaker: {fileID: 727316629}
 --- !u!1 &727834278
 GameObject:
   m_ObjectHideFlags: 0
@@ -8896,7 +8834,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900151038}
-  m_LocalRotation: {x: 0.24921595, y: -0.3755409, z: 0.10558477, w: 0.88640416}
+  m_LocalRotation: {x: 0.24921595, y: -0.37554088, z: 0.10558476, w: 0.88640416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9967,7 +9905,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 408766599}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlacementRememberer, Assembly-CSharp
         m_MethodName: ApplyMemento
         m_Mode: 1

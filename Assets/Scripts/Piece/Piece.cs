@@ -81,8 +81,8 @@ public class Piece : LifeUnit
             place.BeFilled(this);
             Move();
 
-            PlaceManager.Instance.CalculateInfluence(this);
-            PlaceManager.Instance.ApplyInfluence(this);
+            PlaceManager.Instance.influenceCalculator.CalculateInfluence(this);
+            PlaceManager.Instance.influenceCalculator.ApplyInfluence(this);
 
             place.notifyObserver();
         }

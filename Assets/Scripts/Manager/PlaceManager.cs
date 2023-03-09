@@ -10,9 +10,6 @@ public class PlaceManager : SingleTon<PlaceManager>
     private Piece selectedPiece;
     public Piece SelectedPiece { get { return selectedPiece; } set { selectedPiece = value; } }
 
-    [SerializeField]
-    private PlacementRememberer placeRememberer;
-
     // ========== Event ==============
     public UnityEvent<Piece> OnSelectPiece;
     public UnityEvent OnLeaveSelect;
@@ -35,12 +32,14 @@ public class PlaceManager : SingleTon<PlaceManager>
     private Color attackable;
 
     //============ Facade =============
-    private InfluenceCalculator influenceCalculator;
+    public InfluenceCalculator influenceCalculator { get; private set; }
+    private PlacementRememberer placementRememberer;
     //=================================
 
     private void Awake()
     {
         influenceCalculator = GetComponentInChildren<InfluenceCalculator>();
+        placementRememberer = GetComponentInChildren<PlacementRememberer>();
     }
 
     public void SelectPiece(Piece piece)
@@ -164,7 +163,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         {
             Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece, subsequent);
             // 메멘토를 여기서 생성해야 할까?
-            placeRememberer.SaveMemento(newPlacement);
+            placementRememberer.SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
         }
     }

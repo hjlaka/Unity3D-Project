@@ -12,6 +12,6 @@ public class PlaceObserver : MonoBehaviour, IObserver
     }
     public void StateUpdate(ISubject subject)
     {
-        PlaceManager.Instance.ReCalculateInfluence(piece);
+        PlaceManager.Instance.influenceCalculator.ReCalculateInfluence(piece);
     }
 }
