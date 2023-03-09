@@ -47,40 +47,42 @@ public class PieceMouseEvent : MonoBehaviour
             return;
         }  
         
-        if (PlaceManager.Instance.SelectedPiece == null)    // 선택된 기물이 있는지 확인? 혹은 상태 확인?
+        switch(GameManager.Instance.CurStateType)
         {
-            Debug.Log("기물 선택함");
-            SelectPiece(piece);
-        }
-        else
-        {
-            //선택된 기물이 있는 상태에서 다시 클릭
-            // 자신이라면
-            if (PlaceManager.Instance.SelectedPiece == piece)
-            {
-                CancelSelect();
-            }
-
-            // 같은 팀 기물이라면
-            else if (piece.IsSameTeam(PlaceManager.Instance.SelectedPiece)) 
-            {
-                Debug.Log("같은 팀 클릭");
-                CancelSelect();
+            case GameManager.GameState.SELECTING_PIECE:
+                Debug.Log("기물 선택함");
                 SelectPiece(piece);
-            }
-            // 다른 팀 기물이라면
-            else
-            {
-                // 공격할 수 있다면
-                if (piece.place.IsAttackableByCurPiece)
+                break;
+            case GameManager.GameState.SELECTING_PLACE:
+                // 자신이라면
+                if (PlaceManager.Instance.SelectedPiece == piece)
                 {
-                    //공격 
-                    // 선택된 기물을 움직임
-                    // (움직임 함수 내부에서 공격 연산 수행)
-
-                    Attack();
+                    CancelSelect();
                 }
-            }
+
+                // 같은 팀 기물이라면
+                else if (piece.IsSameTeam(PlaceManager.Instance.SelectedPiece))
+                {
+                    Debug.Log("같은 팀 클릭");
+                    CancelSelect();
+                    SelectPiece(piece);
+                }
+                // 다른 팀 기물이라면
+                else
+                {
+                    // 공격할 수 있다면
+                    if (piece.place.IsAttackableByCurPiece)
+                    {
+                        //공격 
+                        // 선택된 기물을 움직임
+                        // (움직임 함수 내부에서 공격 연산 수행)
+
+                        Attack();
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
