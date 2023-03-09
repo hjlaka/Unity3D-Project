@@ -42,6 +42,9 @@ public class CharacterData : ScriptableObject
     public string beDefended;
     public string beAttacked;
 
+    public string onGame;
+    public string onGame2;
+
 
     public List<string> normalTalks;
 

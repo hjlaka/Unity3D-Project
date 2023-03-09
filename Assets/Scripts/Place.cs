@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Place : MonoBehaviour, ISubject
 {
@@ -12,6 +13,7 @@ public class Place : MonoBehaviour, ISubject
     public Vector2Int boardIndex;
     public PlaceType type;     // 스크립터블 오브젝트
     private Color typeColor;
+
 
     [Header("Running Game")]
 
@@ -37,7 +39,6 @@ public class Place : MonoBehaviour, ISubject
         get { return isMovableToCurPiece; }
         set { isMovableToCurPiece = value; }
     }
-
     public bool IsAttackableByCurPiece
     {
         get { return isAttackableByCurPiece; }
@@ -64,8 +65,6 @@ public class Place : MonoBehaviour, ISubject
     private int heatPointBottomTeam;
     [SerializeField]
     private int heatPoint;
-
-
 
     #region 프로퍼티
     public int HeatPointTopTeam
@@ -112,10 +111,7 @@ public class Place : MonoBehaviour, ISubject
 
     #endregion
 
-
-
     private Renderer render;
-
 
     private void Awake()
     {
@@ -149,6 +145,7 @@ public class Place : MonoBehaviour, ISubject
 
     private void OnMouseUpAsButton()
     {
+        //Debug.Log(string.Format("{0} 클릭", gameObject.name));
 
 
         // 게임 상태 조건
@@ -160,6 +157,7 @@ public class Place : MonoBehaviour, ISubject
             {
                 PlaceManager.Instance.MovePiece(PlaceManager.Instance.SelectedPiece, this);
                 PlaceManager.Instance.SelectedPieceInit();
+                //OnValidClick?.Invoke();
                 return;
             }
             Debug.Log("선택된 기물 없음");
@@ -185,9 +183,8 @@ public class Place : MonoBehaviour, ISubject
             return;
         }
 
-        
-
         PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
+        //OnValidClick?.Invoke();
 
 
     }

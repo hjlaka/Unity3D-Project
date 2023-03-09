@@ -25,8 +25,6 @@ public class PlaceGrid : MonoBehaviour
 
     private Place[,] places;
 
-    //private Dictionary<Vector2Int, Place> board = new Dictionary<Vector2Int, Place>();
-
     private void Awake()
     {
         places = new Place[gridSize.x, gridSize.y];

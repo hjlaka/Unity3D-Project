@@ -17,10 +17,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public UnityEvent OnFinishMove;
     public UnityEvent OnAttack;
 
-
-
-    private Coroutine waitToInit;
-    private Coroutine showEnd;
     public Piece SelectedPiece
     {
         get { return selectedPiece; }
@@ -48,9 +44,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     [SerializeField]
     private Color attackable;
 
-    
 
-    
     public void CalculateInfluence(Piece piece)
     {
         Place newPlace = piece.place;
@@ -73,7 +67,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         Place curPlace = piece.place;
         // 새로운 자리 과열도 추가
 
-        Debug.Log("지금 자리 과열도 추가");
         if (piece.team.direction == TeamData.Direction.DownToUp)
             curPlace.HeatPointBottomTeam++;
         else
@@ -144,8 +137,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             curPlace.removeObserver(leftPiece.PlaceObserver);
         }
     }
-
-
     private bool IsPlaceable(Place place, Piece piece)
     {
         if (place.board == null) return true;
@@ -153,7 +144,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         if (!place.board.FollowRule) return true;
 
         return place.IsMovableToCurPiece;
-
     }
 
 
@@ -180,9 +170,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         {
             GameManager.Instance.ChangeGameState(GameManager.GameState.OPPONENT_TURN_START);
         }
-            
-
-        
+                
         // 연출 - 리스트 의존적.
         if (oldBoard != null)
             oldBoard.PreShowEnd(piece);
@@ -195,7 +183,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
         {
             subsequent = oldPlace.MoveAction.DoAction();
         }
-
 
         // 연출 - 리스트 의존적 - 리스트를 받아올 수 있으면 좋을 것이다.
         if (newBoard != null)
@@ -222,8 +209,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
             SaveMemento(newPlacement);
             Debug.Log("메멘토를 저장했다");
         }
-            
-
     }
 
     public Piece MovePiece(Piece piece, Place place)
@@ -285,7 +270,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     }
 
 
-    
     public void InitInfluence(Piece piece)
     {
         WithDrawInfluence(piece);
@@ -300,8 +284,7 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
 
         CameraController.Instance.AddToTargetGroup(piece.transform);
         OnAttack?.Invoke();
-        // 공격자 이벤트 등록?
-        // 피공격자 이벤트 등록?
+        CameraController.Instance.RemoveFromTargetGroup(piece.transform);
     }
 
     public void ExpelPiece(Piece piece)
@@ -334,7 +317,6 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void CancleSelectPiece()
     {
         if (null == selectedPiece) return;
-
         // 선택된 기물을 바로 취소하는 경우
 
         //연출
@@ -349,6 +331,9 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
     public void SelectedPieceInit()
     {
         Debug.Log("기물 선택 해제");
+        if (selectedPiece == null) 
+            return;
+
         SelectedPiece.ChangeColor();
 
         SelectedPiece = null;
@@ -411,9 +396,8 @@ public class PlaceManager : SingleTon<PlaceManager>, IOriginator
                 Place capturedPlace = placement.NextPosition;
                 // 기물 복구
                 Debug.Log("기물: " + capturedPiece + " 위치 : " + capturedPlace);
-                // MovePiece 함수를 쓰기 위해서는 예외처리가 더 필요하다.
                 MovePiece(capturedPiece, capturedPlace);
-                //capturedPlace.notifyObserver();
+
                 capturedPiece.IsFree = false;
 
                 // 임시 이벤트 추가 처리

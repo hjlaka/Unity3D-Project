@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
     public virtual void AddPiece(Piece piece)
     {
-
+        pieceList.Add(piece);
     }
 
     public virtual void DoTurn()
@@ -33,6 +33,15 @@ public class Player : MonoBehaviour
             if (pieceList[i].IsFree) continue;
             pieceList[i].IsFree = true;
         }
+    }
+
+    public void ShoutOnGame()
+    {
+        if(pieceList.Count <= 0) return;
+
+        Piece shoutingPiece = pieceList[Random.Range(0, pieceList.Count)];
+        DialogueManager.DialogueUnit shouting = new DialogueManager.DialogueUnit(shoutingPiece, shoutingPiece.character.onGame);
+        DialogueManager.Instance.AddDialogue(shouting);
     }
 
 }

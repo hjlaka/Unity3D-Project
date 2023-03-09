@@ -34,10 +34,6 @@ public class UnitButton : MonoBehaviour
 
     // 드래그 앤 드랍?
 
-    private Place creatingPlace;
-    private Transform pieceZone;
-    private ChangeLayerFunc changeLayer;
-
     private Button button;
 
     [SerializeField]
@@ -45,9 +41,6 @@ public class UnitButton : MonoBehaviour
 
     private void Awake()
     {
-        pieceZone = GameObject.Find("PieceZone").transform;
-        creatingPlace = GameObject.Find("CreatingPlace").GetComponent<Place>();         // 형 변환이 아니라 컴포넌트 가져오기가 맞나?
-        changeLayer = GetComponent<ChangeLayerFunc>();
         button = GetComponent<Button>();
        
     }

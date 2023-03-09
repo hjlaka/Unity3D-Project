@@ -75,6 +75,8 @@ public class GameManager : SingleTon<GameManager>
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
 
+    public UnityEvent OnTurnFinished;
+
     [Header("GameSetting")]
     [SerializeField]
     public TeamData.Direction playerTeamDirection;
@@ -198,8 +200,7 @@ public class GameManager : SingleTon<GameManager>
             case GameState.DOING_PLAYER_TURN_START:
                 ChangeGameState(GameState.DOING_PLAYER_TURN);
                 Debug.Log("플레이어턴");
-                ChessEventManager.Instance.GetEvent();
-                DialogueManager.Instance.CheckDialogueEvent();
+                
                 break;
                 
             case GameState.DOING_PLAYER_TURN:
@@ -242,7 +243,11 @@ public class GameManager : SingleTon<GameManager>
 
                 // 대화가 더이상 없다면 계속 진행
                 if (state == GameState.TURN_FINISHED)
+                {
+                    OnTurnFinished?.Invoke();
                     ChangeGameState(GameState.TURN_CHANGE);
+                }
+                    
                 break;
 
             case GameState.OPPONENT_TURN_START:
@@ -320,17 +325,11 @@ public class GameManager : SingleTon<GameManager>
         switch (playerTeamDirection)
         {
             case TeamData.Direction.UpToDown:
-                //player.SetTeamTurn(TurnState.TOP_TURN);
-                //opponentPlayer.SetTeamTurn(TurnState.BOTTOM_TURN);
-
                 topPlayer = player;
                 bottomPlayer = opponentPlayer;
                 break;
 
             case TeamData.Direction.DownToUp:
-                //player.SetTeamTurn(TurnState.BOTTOM_TURN);
-                //opponentPlayer.SetTeamTurn(TurnState.TOP_TURN);
-
                 topPlayer = opponentPlayer;
                 bottomPlayer = player;
                 break;

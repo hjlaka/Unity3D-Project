@@ -75,7 +75,6 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         }
         else
         {
-
             RecognizeMovableVoidPlace(curLocation, targetPlace);
 
             return false;
@@ -98,6 +97,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
 
         if (targetPiece != null)
         {
+            recognizedLists.AddSpecial(targetPlace);
             return true;
         }
         else
@@ -141,11 +141,6 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
 
             // 방어할 수 있는 자리는 이동할 수 없지만 영향권 내의 자리이다.
             recognizedLists.AddInfluenceable(targetPlace);
-
-            /*if(recognizedLists is DecidedStateLists)
-            {
-                targetPlace.InfluencingPieces.Add(targetPiece);
-            }*/
 
             IChessEventable chessEventable = recognizedLists as IChessEventable;
             chessEventable?.Defend(controlled, targetPiece);

@@ -61,12 +61,15 @@ public class AI : Player
             case AIStrategy.AIStrategyType.RANDOM:
                 aiStrategy = gameObject.AddComponent<RandomAIStrategy>();
                 break;
+            case AIStrategy.AIStrategyType.WILLFIRST:
+                aiStrategy = gameObject.AddComponent<WillFirstStrategy>();
+                break;
         }
     }
 
     public override void AddPiece(Piece piece)
     {
-        pieceList.Add(piece);
+        base.AddPiece(piece);
         Debug.Log(piece + "기물을 AI에 추가했다.");
     }
 
@@ -103,12 +106,7 @@ public class AI : Player
         // 의지가 가장 높은 아이가 움직인다?
 
 
-
         // 기물 움직임
-
-        float maxWill = 0f;
-        Piece maxWillingPiece = null;
-        Place maxWillingPlace = null;
 
         Debug.Log("고려하는 기물 수: " + pieceList.Count);
         for(int i = 0; i < pieceList.Count; i++)
@@ -118,30 +116,26 @@ public class AI : Player
             float will = 0f;
             ScoreNode scoreSet;
             Placement placement = piece.DesireToPlace(ref will, out scoreSet);
-            Place targetPlace = placement.NextPosition;
-
-            //aiStrategy.AddPossibility(scoreSet, piece, targetPlace);
-
-            Debug.Log(string.Format("{0}의 의지 {1}", pieceList[i], will));
-
-            if(maxWill <= will)
+            
+            if (placement != null)
             {
-                maxWill = will;
-                maxWillingPiece = pieceList[i];
-                maxWillingPlace = targetPlace;
+                Debug.Log(string.Format("기물 {0} 자리 {1}, 자리 전 {2} 자리 후 {3}", piece, placement, placement.PrevPosition, placement.NextPosition));
+                aiStrategy.AddPossibility(scoreSet, piece, placement.NextPosition);
             }
         }
 
-        Debug.Log(string.Format("{0}의 의지 {1}", maxWillingPiece, maxWill));
+        
+        Placement strategySelection = aiStrategy.GetBestInOwnWay();
 
-        if (null != maxWillingPiece)
+        if (null != strategySelection)
         {
-            PlaceManager.Instance.SelectPiece(maxWillingPiece);
-            Debug.Log(maxWillingPiece + "턴 시작. 의지는 " + maxWill);
+            Piece bestPiece = strategySelection.Piece;
+            PlaceManager.Instance.SelectPiece(bestPiece);
+            Debug.Log(bestPiece + "턴 시작.");
 
             yield return new WaitForSeconds(showSelectedTime);
 
-            maxWillingPiece.PlaceToDesire(maxWillingPlace);
+            bestPiece.PlaceToDesire(strategySelection.NextPosition);
         }
         else
         {
@@ -149,6 +143,7 @@ public class AI : Player
             // 무승부 판정
         }
 
+        aiStrategy.ClearPossibility();
         turnGoing = null;
 
     }
@@ -166,22 +161,21 @@ public class AI : Player
             PlaceManager.Instance.SelectPiece(pieceList[i]);
             Debug.Log(pieceList[i] + "턴 시작");
 
-            yield return new WaitForSeconds(showSelectedTime);
+            yield return new WaitForSeconds(0f);
 
             float will = 0f;
             ScoreNode scoreSet;
             Placement placement = pieceList[i].DesireToPlace(ref will, out scoreSet);
             Place targetPlace = placement.NextPosition;
             pieceList[i].PlaceToDesire(targetPlace);
+            PlaceManager.Instance.SelectedPieceInit();
 
             //yield return new WaitForSeconds(turnChangeTime);
-            while (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
-            {
-                yield return null;
-            }
         }
 
+
         Debug.Log("AI 턴 종료");
+        aiStrategy.ClearPossibility();
         turnGoing = null;
         
     }

@@ -11,12 +11,10 @@ public class MarkableBoard : Board, IMarkable
     public void PreShow(Piece selecetedPiece)
     {
         ShowMovable(selecetedPiece);
-        //ShowInfluence(seleceted);
         ShowThreatAndDefence(selecetedPiece);
     }
     public void PreShowEnd(Piece endedPiece)
     {
-        //ShowInfluence(endedPiece);
         ShowMovableEnd(endedPiece);
         ShowThreatAndDefenceEnd(endedPiece);
     }
