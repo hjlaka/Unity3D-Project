@@ -2485,7 +2485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf0423e70e72c248a1bc4508aca17f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementCareTaker: {fileID: 0}
+  placementCareTaker: {fileID: 687883409}
 --- !u!1 &448728616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3774,6 +3774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 687883408}
+  - component: {fileID: 687883409}
   m_Layer: 0
   m_Name: PlacementCareTaker
   m_TagString: Untagged
@@ -3796,6 +3797,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &687883409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687883407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c71806de46eb643844e09e90be3b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &691199794
 GameObject:
   m_ObjectHideFlags: 0
@@ -4123,6 +4136,50 @@ Transform:
   m_Father: {fileID: 354512275}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &727316626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 727316627}
+  - component: {fileID: 727316628}
+  m_Layer: 0
+  m_Name: PlaceManagers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &727316627
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727316626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1371377818}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &727316628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727316626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f67945253563347b6ff85c2a8f66b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &727834278
 GameObject:
   m_ObjectHideFlags: 0
@@ -6785,22 +6842,13 @@ MonoBehaviour:
   OnSelectPiece:
     m_PersistentCalls:
       m_Calls: []
-  OnNonSelectPiece:
+  OnLeaveSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1371377825}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
-        m_MethodName: SetCamToTopDownView
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnFinishMove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartMove:
     m_PersistentCalls:
       m_Calls: []
   OnAttack:
@@ -6818,18 +6866,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnLeaveSelect:
-    m_PersistentCalls:
-      m_Calls: []
-  OnEnterSelect:
-    m_PersistentCalls:
-      m_Calls: []
-  OnEndMove:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStartMove:
-    m_PersistentCalls:
-      m_Calls: []
   selectedPlace: {fileID: 0}
   expelZone: {fileID: 0}
   selectingColor: {r: 0, g: 0.7722802, b: 1, a: 0}
@@ -6846,7 +6882,8 @@ Transform:
   m_LocalPosition: {x: -0.94064957, y: 0.6833045, z: 1.1932666}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 727316627}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9930,8 +9967,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1371377817}
-        m_TargetAssemblyTypeName: PlaceManager, Assembly-CSharp
+      - m_Target: {fileID: 408766599}
+        m_TargetAssemblyTypeName: PlacementRememberer, Assembly-CSharp
         m_MethodName: ApplyMemento
         m_Mode: 1
         m_Arguments:

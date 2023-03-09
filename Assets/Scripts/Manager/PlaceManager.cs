@@ -8,25 +8,18 @@ public class PlaceManager : SingleTon<PlaceManager>
 {
     [SerializeField]
     private Piece selectedPiece;
+    public Piece SelectedPiece { get { return selectedPiece; } set { selectedPiece = value; } }
 
     [SerializeField]
     private PlacementRememberer placeRememberer;
 
-    public UnityEvent OnSelectPiece;
-    public UnityEvent OnNonSelectPiece;
-    public UnityEvent OnFinishMove;
-    public UnityEvent OnAttack;
-
-    public Piece SelectedPiece
-    {
-        get { return selectedPiece; }
-        set { selectedPiece = value; }
-    }
-
+    // ========== Event ==============
+    public UnityEvent<Piece> OnSelectPiece;
     public UnityEvent OnLeaveSelect;
-    public UnityEvent OnEnterSelect;
-    public UnityEvent OnEndMove;
+    public UnityEvent OnFinishMove;
     public UnityEvent OnStartMove;
+    public UnityEvent OnAttack;
+    //================================
 
     public Place selectedPlace;
     public Place expelZone;
@@ -41,104 +34,72 @@ public class PlaceManager : SingleTon<PlaceManager>
     [SerializeField]
     private Color attackable;
 
+    //============ Facade =============
+    private InfluenceCalculator influenceCalculator;
+    //=================================
 
-    public void CalculateInfluence(Piece piece)
+    private void Awake()
     {
-        Place newPlace = piece.place;
-        Board curBoard = newPlace.board;
+        influenceCalculator = GetComponentInChildren<InfluenceCalculator>();
+    }
 
-        // 기물이 있는 곳이 보드가 아니라면 종료
-        if (null == curBoard)
+    public void SelectPiece(Piece piece)
+    {
+        SelectedPiece = piece;
+        SelectedPiece.ChangeColor(selectingColor);
+        if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
+            GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
+
+        // 연출
+        OnSelectPiece?.Invoke(SelectedPiece);
+        OnLeaveSelect.AddListener(SelectedPiece.ChangeColor);
+        //TODO: 이동 가능 상태 변수와 연출을 하나로 묶어도 좋을듯
+    }
+
+    public void CancleSelectPiece()
+    {
+        if (null == selectedPiece) return;
+        // 선택된 기물을 이동하지 않고 바로 취소하는 경우
+
+        //연출
+        IMarkable markable = selectedPiece.place.board as IMarkable;
+        if (markable != null)
+            markable.PreShowEnd(selectedPiece);
+
+        SelectedPieceInit();
+        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
+    }
+
+    public void SelectedPieceInit()
+    {
+        Debug.Log("기물 선택 해제");
+        //선택된 기물이 
+
+        if (selectedPiece == null)
             return;
 
-        // 규칙을 따르지 않는 보드라면 종료
-        if (!curBoard.FollowRule)
-            return;
+        OnLeaveSelect?.Invoke();
+        SelectedPiece.ChangeColor();
 
-        piece.RecognizeRange(piece.place.boardIndex);
-
+        SelectedPiece = null;
     }
 
-    public void ApplyInfluence(Piece piece)
+    public void ShowOnBoard(Piece piece)
     {
-        Place curPlace = piece.place;
-        // 새로운 자리 과열도 추가
-
-        if (piece.team.direction == TeamData.Direction.DownToUp)
-            curPlace.HeatPointBottomTeam++;
-        else
-            curPlace.HeatPointTopTeam++;
-
-        // 계산 완료된 영향권의 과열도 추가
-        for (int i = 0; i < piece.Recognized.influenceable.Count; i++)
-        {
-            Place iterPlace = piece.Recognized.influenceable[i];
-            if (piece.team.direction == TeamData.Direction.DownToUp)
-                iterPlace.HeatPointBottomTeam++;
-            else
-                iterPlace.HeatPointTopTeam++;
-
-            iterPlace.registerObserver(piece.PlaceObserver);
-        }
-
-        for(int i = 0; i < piece.Recognized.special.Count; i++)
-        {
-            Place iterPlace = piece.Recognized.special[i];
-
-            iterPlace.registerObserver(piece.PlaceObserver);
-        }
+        // 어떤 보드에서 연출이 되어야 할지 찾는 과정
+        IMarkable markable = piece.place.board as IMarkable;
+        if (markable != null)
+            markable.PreShow(piece);
     }
 
-    public void ReCalculateInfluence(Piece piece)
-    {
-        Debug.Log(piece + "영향 재계산");
-        InitInfluence(piece);
-        CalculateInfluence(piece);
-        ApplyInfluence(piece);
-    }
-
-
-    public void WithDrawInfluence(Piece leftPiece)
-    {
-        Place leftPlace = leftPiece.place;
-
-        if (leftPlace == null) return;
-
-        if (leftPiece.team.direction == TeamData.Direction.DownToUp)
-        {
-            leftPlace.HeatPointBottomTeam--;
-        }
-        else
-        {
-            leftPlace.HeatPointTopTeam--;
-        }
-
-        List<Place> influencable = leftPiece.Recognized.influenceable;
-        for (int i = 0; i < influencable.Count; i++)
-        {
-            if (leftPiece.team.direction == TeamData.Direction.DownToUp)
-            {
-                influencable[i].HeatPointBottomTeam--;
-            }
-            else
-            {
-                influencable[i].HeatPointTopTeam--;
-            }
-            influencable[i].removeObserver(leftPiece.PlaceObserver);
-        }
-
-        for (int i = 0; i < leftPiece.Recognized.special.Count; i++)
-        {
-            Place curPlace = leftPiece.Recognized.special[i];
-
-            curPlace.removeObserver(leftPiece.PlaceObserver);
-        }
-    }
     private bool IsPlaceable(Place place, Piece piece)
     {
-        if (place.board == null) return true;
-        if (place.board != piece.place.board) return true;
-        if (!place.board.FollowRule) return true;
+        if (place.board == null) 
+            return true;
+        if (place.board != piece.place.board) 
+            return true;
+        if (!place.board.FollowRule) 
+            return true;
 
         return place.IsMovableToCurPiece;
     }
@@ -172,7 +133,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         if (oldBoard != null)
             oldBoard.PreShowEnd(piece);
 
-
+        // 기물 이동
         Piece attackedPiece = MovePiece(piece, place);
 
         
@@ -215,7 +176,7 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         Place oldPlace = piece.place;
         if(oldPlace != null)
-            InitInfluence(piece);
+            influenceCalculator.InitInfluence(piece);
 
         // 연산
         Piece attackedPiece = piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
@@ -225,8 +186,8 @@ public class PlaceManager : SingleTon<PlaceManager>
             Attack(piece, attackedPiece);
         }
 
-        CalculateInfluence(piece);
-        ApplyInfluence(piece);
+        influenceCalculator.CalculateInfluence(piece);
+        influenceCalculator.ApplyInfluence(piece);
 
         // 기물을 옮겼을 때, 변화된 자리들 알림 발송
         oldPlace?.notifyObserver();
@@ -263,16 +224,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
 
         // 카메라 연출
-        OnNonSelectPiece?.Invoke();
-    }
-
-
-    public void InitInfluence(Piece piece)
-    {
-        WithDrawInfluence(piece);
-
-        piece.Recognized.ClearAllRecognized();
-
+        OnLeaveSelect?.Invoke();
     }
 
     public void Attack(Piece piece, Piece target)
@@ -286,54 +238,10 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void ExpelPiece(Piece piece)
     {
-        InitInfluence(piece);
+        influenceCalculator.InitInfluence(piece);
         piece.place = null;
         piece.transform.Translate(new Vector3(0, 0, 0));
         //MovePiece(piece, expelZone);
         piece.IsFree = true;
-    }
-
-    public void SelectPiece(Piece piece)
-    {
-        SelectedPiece = piece;
-        SelectedPiece.ChangeColor(selectingColor);
-        if(GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
-            GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PLACE);
-
-
-        // 연출
-        IMarkable markable = piece.place.board as IMarkable;
-        if (markable != null)
-            markable.PreShow(piece);
-        //TODO: 이동 가능 상태 변수와 연출을 하나로 묶어도 좋을듯
-
-        OnSelectPiece?.Invoke();
-
-    }
-
-    public void CancleSelectPiece()
-    {
-        if (null == selectedPiece) return;
-        // 선택된 기물을 바로 취소하는 경우
-
-        //연출
-        IMarkable markable = selectedPiece.place.board as IMarkable;
-        if (markable != null)
-            markable.PreShowEnd(selectedPiece);
-
-        SelectedPieceInit();
-        GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
-    }
-
-    public void SelectedPieceInit()
-    {
-        Debug.Log("기물 선택 해제");
-        if (selectedPiece == null) 
-            return;
-
-        SelectedPiece.ChangeColor();
-
-        SelectedPiece = null;
-        
     }
 }
