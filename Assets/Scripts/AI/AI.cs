@@ -40,6 +40,9 @@ public class AI : Player
     [SerializeField]
     private AIStrategy aiStrategy;
 
+    [SerializeField]
+    private AIStrategy.AIStrategyType debugType;
+
 
 
 
@@ -49,6 +52,11 @@ public class AI : Player
     private void Awake()
     {
         pieceList = new List<Piece>();
+    }
+
+    private void Start()
+    {
+        SetStrategy(debugType);
     }
 
     public void SetStrategy(AIStrategy.AIStrategyType type)
@@ -63,6 +71,8 @@ public class AI : Player
                 break;
             case AIStrategy.AIStrategyType.WILLFIRST:
                 aiStrategy = gameObject.AddComponent<WillFirstStrategy>();
+                break;
+            default:
                 break;
         }
     }
