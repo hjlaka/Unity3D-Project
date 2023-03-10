@@ -61,6 +61,7 @@ public class GameManager : SingleTon<GameManager>
     public StateBehaviour<GameManager> statePreparing { get; private set; }
     public StateBehaviour<GameManager> stateSetting { get; private set; }
     public StateBehaviour<GameManager> stateFinishTurn { get; private set; }
+    public StateBehaviour<GameManager> stateGameEnd { get; private set; }
 
     private Dictionary<GameState, StateBehaviour<GameManager>> stateDic;
 
@@ -156,6 +157,7 @@ public class GameManager : SingleTon<GameManager>
         statePreparing = GetComponentInChildren<StatePreparingGame>();
         stateOnTurn = GetComponentInChildren<StateOnTurn>();
         stateFinishTurn = GetComponentInChildren<StateTurnFinished>();
+        stateGameEnd = GetComponentInChildren<StateGameEnd>();
 
         stateDic.Add(GameState.ON_PEACE, statePeace);
         stateDic.Add(GameState.START_GAME, stateStart);
@@ -163,7 +165,7 @@ public class GameManager : SingleTon<GameManager>
         stateDic.Add(GameState.PREPARING_GAME, statePreparing);
         stateDic.Add(GameState.ON_TURN, stateOnTurn);
         stateDic.Add(GameState.TURN_FINISHED, stateFinishTurn);
-
+        stateDic.Add(GameState.GAME_END, stateGameEnd);
 
         curState = null;
         curStateType = GameState.NONE;
@@ -177,7 +179,6 @@ public class GameManager : SingleTon<GameManager>
         state = GameState.ON_PEACE;
         turnState = TurnState.BOTTOM_TURN;
         OnOutOfGame?.Invoke();
-
     }
 
     private void Update()
@@ -203,33 +204,27 @@ public class GameManager : SingleTon<GameManager>
     {
         //AI와 플레이어 턴은 한번씩만 진행되는가?
 
-        if (turnState == TurnState.BOTTOM_TURN)
+        switch(turnState)
         {
-            turnState = TurnState.TOP_TURN;
-            curPlayer = topPlayer;
-            if(curPlayer is AI)
-            {
-                ((AI)opponentPlayer).DoTurn();
-                
-            }
-            //ChangeGameState(GameState.SELECTING_PIECE);
-            // 여기서 시작? - 상태 기계 만들기?
-        }
-        else if (turnState == TurnState.TOP_TURN)
-        {
-            turnState = TurnState.BOTTOM_TURN;
-            curPlayer = bottomPlayer;
-            if (curPlayer is AI)
-            {
-                ((AI)player).DoTurn();
-            }
-            //ChangeGameState(GameState.SELECTING_PIECE);
-
-        }
-        else if (turnState == TurnState.RETURN)
-        {
-            turnState = TurnState.BOTTOM_TURN;
-            //ChangeGameState(GameState.SELECTING_PIECE);
+            case TurnState.BOTTOM_TURN:
+                turnState = TurnState.TOP_TURN;
+                curPlayer = topPlayer;
+                if (curPlayer is AI)
+                {
+                    ((AI)opponentPlayer).DoTurn();
+                }
+                break;
+            case TurnState.TOP_TURN:
+                turnState = TurnState.BOTTOM_TURN;
+                curPlayer = bottomPlayer;
+                if (curPlayer is AI)
+                {
+                    ((AI)player).DoTurn();
+                }
+                break;
+            case TurnState.RETURN:
+                turnState = TurnState.BOTTOM_TURN;
+                break;
         }
     }
 
