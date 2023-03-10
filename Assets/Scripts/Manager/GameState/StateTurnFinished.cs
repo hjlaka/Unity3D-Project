@@ -42,9 +42,7 @@ public class StateTurnFinished : StateBehaviour<GameManager>
             ChessEventManager.Instance.GetEvent();
 
             // 대화 이벤트
-            DialogueManager.Instance.CheckDialogueEvent();
-
-            StartCoroutine(Waiting());
+            DialogueManager.Instance.CheckDialogueEvent(NextStep);
         }
     }
 
@@ -60,14 +58,8 @@ public class StateTurnFinished : StateBehaviour<GameManager>
     }
 
     // 임시 추가
-    private IEnumerator Waiting()
+    private void NextStep()
     {
-        while (DialogueManager.Instance.inConversation)
-        {
-            yield return null;
-        }
         machine.SetNextState(GameManager.GameState.ON_TURN);
     }
-
-
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DialogueManager : SingleTon<DialogueManager>
 {
@@ -27,6 +29,7 @@ public class DialogueManager : SingleTon<DialogueManager>
 
     private List<Unit> participations;
 
+    public UnityEvent OnDialogueEnd;
 
     public class DialogueUnit
     {
@@ -60,18 +63,32 @@ public class DialogueManager : SingleTon<DialogueManager>
         participations = new List<Unit>();
     }
 
-    public void CheckDialogueEvent()
+    public void CheckDialogueEvent(UnityAction call = null)
     {
+        if (call != null)
+        {
+            OnDialogueEnd.AddListener(call);
+        }
+
         if (IsDialogueExist())
         {
+
             Debug.Log("대화 개수: " + dialogueQueue.Count);
             //GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
             inConversation = true;
+
             StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
+
+            
         }
         else
+        {
             Debug.Log("대화 없음");
+            OnDialogueEnd?.Invoke();
+            OnDialogueEnd.RemoveAllListeners();
+        }
+            
     }
 
     private void SetDialogueText()
@@ -147,6 +164,10 @@ public class DialogueManager : SingleTon<DialogueManager>
         DisableDialogueUI();
         DeleteParticipations();
         //GameManager.Instance.GoBackGameState();
+
+        OnDialogueEnd?.Invoke();
+        OnDialogueEnd.RemoveAllListeners();
+
         inConversation = false;
         CameraController.Instance.SetCamToTopDownView();
     }

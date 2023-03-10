@@ -21,10 +21,8 @@ public class StateSettingGame : StateBehaviour<GameManager>
     }
     public override void StateEnter()
     {
-        DialogueManager.Instance.CheckDialogueEvent();
+        DialogueManager.Instance.CheckDialogueEvent(NextStep);
         machine.gameSetter.SetTopTeam(0);
-
-        StartCoroutine(Waiting());
     }
 
     public override void StateExit()
@@ -37,12 +35,8 @@ public class StateSettingGame : StateBehaviour<GameManager>
         throw new System.NotImplementedException();
     }
 
-    private IEnumerator Waiting()
+    private void NextStep()
     {
-        while(DialogueManager.Instance.inConversation)
-        {
-            yield return null;
-        }
         machine.SetNextState(GameManager.GameState.PREPARING_GAME);
     }
 }

@@ -89,6 +89,21 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = null;
     }
 
+    public void GetWill(Piece subject, ITargetable target)
+    {
+        // 턴 이벤트 생성
+
+        ITargetable.Type turnType = target.React();
+
+        switch(turnType)
+        {
+            case ITargetable.Type.Peace:
+                break;
+            case ITargetable.Type.Attack:
+                break;
+        }
+    }
+
     public void ShowOnBoard(Piece piece)
     {
         // 어떤 보드에서 연출이 되어야 할지 찾는 과정
@@ -122,6 +137,21 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
 
 
+    // 어댑터? 중간자 역할? 필요할까? (내부에서는 이 어댑터를 써야 할까?)
+    public void CalculateInfluence(Piece piece)
+    {
+        influenceCalculator.CalculateInfluence(piece);
+    }
+    public void ApplyInfluence(Piece piece)
+    {
+        influenceCalculator.ApplyInfluence(piece);
+    }
+    public void ReCalculateInfluence(Piece piece)
+    {
+        influenceCalculator.ReCalculateInfluence(piece);
+    }
+
+
     public void MoveProcess(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
@@ -137,10 +167,6 @@ public class PlaceManager : SingleTon<PlaceManager>
             return;
         }
 
-        // 움직임 실행 결정
-        /*StateOnTurn turn = GameManager.Instance.curState as StateOnTurn;
-        if(turn != null) 
-            turn.DecideFinished = true;*/
         GameManager.Instance.playerValidToSelectPlace = false;
 
         // 연출 - 리스트 의존적.
@@ -167,10 +193,10 @@ public class PlaceManager : SingleTon<PlaceManager>
         OnFinishMove?.Invoke();
 
         // 이벤트
-        DialogueManager.Instance.CheckDialogueEvent();
+        DialogueManager.Instance.CheckDialogueEvent(EndTurn);
 
         // 이벤트 종료 확인 후 턴 종료
-        StartCoroutine(EndTurn(piece, true));
+
 
 
         // 메멘토 등록
@@ -210,32 +236,27 @@ public class PlaceManager : SingleTon<PlaceManager>
         return attackedPiece;
     }
 
-    private IEnumerator EndTurn(Piece endedPiece, bool endMark)
+    private void EndTurn()
     {
+        StartCoroutine(EndTurnCoroutine());
+    }
+    private IEnumerator EndTurnCoroutine()
+    {
+        Piece endedPiece = selectedPiece;
         // 기본 대기 시간
         yield return new WaitForSeconds(1.5f);
 
-        while (DialogueManager.Instance.inConversation)
-        {
-            yield return null;
-
-            // 차례가 끝났다는 신호가 들어오길 기다린다.
-        }
         Debug.Log("턴을 끝낼 때가 되었군요");
 
         SelectedPieceInit();
 
-        if(endMark)
+        IMarkable markable = endedPiece.place.board as IMarkable;
+        if (markable != null)
         {
-            IMarkable markable = endedPiece.place.board as IMarkable;
-            if (markable != null)
-            {
-                markable.PostShowEnd(endedPiece);
-                Debug.Log("표시 종료");
-            }
+            markable.PostShowEnd(endedPiece);
+            Debug.Log("표시 종료");
         }
 
-        //GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
         GameManager.Instance.SetNextState(GameManager.GameState.TURN_FINISHED);
 
         // 카메라 연출
