@@ -41,6 +41,8 @@ public class AudioManager : SingleTon<AudioManager>
         {
             sfxDictionary.Add(sfx[i].name, sfx[i].clip);
         }
+
+        sfxPlayer = GetComponentsInChildren<AudioSource>();
     }
 
     private void CreatePool()
