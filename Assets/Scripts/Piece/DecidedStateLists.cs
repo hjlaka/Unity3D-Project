@@ -45,7 +45,7 @@ public class DecidedStateLists : StateLists, IChessEventable
 
         Place targetPlace = target.place;
         int deltaTopBottomHeat = targetPlace.HeatPointTopTeam - targetPlace.HeatPointBottomTeam;
-        Debug.Log(string.Format("위팀 과열도 {0} - 아래팀 과열도 {1} = {2}", targetPlace.HeatPointTopTeam, targetPlace.HeatPointBottomTeam, deltaTopBottomHeat));
+        //Debug.Log(string.Format("위팀 과열도 {0} - 아래팀 과열도 {1} = {2}", targetPlace.HeatPointTopTeam, targetPlace.HeatPointBottomTeam, deltaTopBottomHeat));
         
         // 예외처리
         if (target.team.direction == TeamData.Direction.UpToDown)

@@ -215,7 +215,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 기본 대기 시간
         yield return new WaitForSeconds(1.5f);
 
-        while (GameManager.Instance.state == GameManager.GameState.IN_CONVERSATION)
+        while (DialogueManager.Instance.inConversation)
         {
             yield return null;
 

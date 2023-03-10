@@ -9,7 +9,7 @@ public class StateOnTurn : StateBehaviour<GameManager>
     {
         switch (machine.NextStateType)
         {
-            case GameManager.GameState.SETTING_GAME:
+            case GameManager.GameState.TURN_FINISHED:
                 break;
             default:
                 return null;

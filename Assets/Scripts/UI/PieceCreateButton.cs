@@ -21,12 +21,6 @@ public class PieceCreateButton : MonoBehaviour
     public void CreatePiece()
     {
 
-        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE &&
-            GameManager.Instance.state != GameManager.GameState.PREPARING_GAME_ON)
-        {
-            return;
-        }
-
         Debug.Log("기물을 생성했습니다." + piecePrefab.name);
         Piece instance = Instantiate(piecePrefab);
 

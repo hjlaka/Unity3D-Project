@@ -50,7 +50,7 @@ public class StateTurnFinished : StateBehaviour<GameManager>
 
     public override void StateExit()
     {
-        machine.OnTurnFinished?.Invoke();
+        //OnFinishTurn?.
         machine.ChangeTurn();
     }
 

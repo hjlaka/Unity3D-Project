@@ -18,7 +18,7 @@ public class UnitButton : MonoBehaviour
             piece = value;
             if(piece != null)
             {
-                Debug.Log("들어온 기물: " + piece);
+                //Debug.Log("들어온 기물: " + piece);
                 this.name = piece.character.characterName;
                 textComp.text = value.character.characterName;
                 piece.OnPlaced += FinishSetting;

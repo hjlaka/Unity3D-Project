@@ -64,7 +64,7 @@ public class Piece : LifeUnit
         PlaceObserver = GetComponent<PlaceObserver>();
         UnitObserver = GetComponent<UnitObserver>();
         ChessSubject = GetComponent<Subject>();
-        Debug.Log("서브젝트 할당: " + ChessSubject);
+        //Debug.Log("서브젝트 할당: " + ChessSubject);
     }
 
 
@@ -89,7 +89,7 @@ public class Piece : LifeUnit
     }
     public void BelongTo(Player player)
     {
-        Debug.Log("받아온 플레이어: " + player);
+        //Debug.Log("받아온 플레이어: " + player);
         this.belong = player;
         targetLocation = belong.homeLocation.position;
         belong.AddPiece(this);

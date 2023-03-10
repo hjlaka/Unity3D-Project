@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlacementCareTaker))]
 public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
 {
-    [SerializeField]
     private PlacementCareTaker placementCareTaker;
 
+    private void Awake()
+    {
+        placementCareTaker = GetComponent<PlacementCareTaker>();
+    }
     public Placement SaveMemento(Placement memento)
     {
         placementCareTaker.Add(memento);
@@ -15,6 +19,8 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
 
     public void ApplyMemento()
     {
+
+        //TODO: 조건 수정
         if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
         {
             Debug.Log("기물 선택 단계가 아님");
@@ -62,14 +68,14 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
             {
                 Place capturedPlace = placement.NextPosition;
                 // 기물 복구
-                Debug.Log("기물: " + capturedPiece + " 위치 : " + capturedPlace);
+                Debug.Log(string.Format("기물: {0} 위치: {1}", capturedPiece, capturedPlace));
                 PlaceManager.Instance.MovePiece(capturedPiece, capturedPlace);
 
                 capturedPiece.IsFree = false;
 
             }
         }
-        GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
+        //GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
         // 이벤트 확인 동작 게임 매니저에서 처리
     }
 }

@@ -35,7 +35,7 @@ public class PieceMouseEvent : MonoBehaviour
         //      3. 기물 공격
 
         // 조건 체크
-        if (GameManager.Instance.state != GameManager.GameState.ON_TURN)
+        if (GameManager.Instance.CurStateType != GameManager.GameState.ON_TURN)
         {
             Debug.Log("턴 단계가 아님");
             return;

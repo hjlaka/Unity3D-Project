@@ -80,7 +80,7 @@ public class AI : Player
     public override void AddPiece(Piece piece)
     {
         base.AddPiece(piece);
-        Debug.Log(piece + "기물을 AI에 추가했다.");
+        //Debug.Log(piece + "기물을 AI에 추가했다.");
     }
 
     public override void DoTurn()

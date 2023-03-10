@@ -81,7 +81,7 @@ public class GameSetter : MonoBehaviour
 
     private Piece CreatePiece(GameData.CallingPiece calling, Player teamPlayer)
     {
-        Debug.Log("배치중인 기물: " + calling.piecePrefab);
+        //Debug.Log("배치중인 기물: " + calling.piecePrefab);
 
         Piece instance = Instantiate(calling.piecePrefab);
         instance.name = calling.piecePrefab.name;

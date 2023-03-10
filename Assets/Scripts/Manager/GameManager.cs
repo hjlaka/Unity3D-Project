@@ -31,8 +31,23 @@ public class GameManager : SingleTon<GameManager>
         ON_TURN
     }
 
+    public enum TurnState
+    {
+        BOTTOM_TURN,
+        TOP_TURN,
+        RETURN
+    }
+
+    public enum PlayerType
+    {
+        PLAYER,
+        PLAYER2,
+        AI
+    }
+
 
     // =========================== StateMachine ================================
+
     public StateBehaviour<GameManager> curState { get; private set; }
     [SerializeField]
     private GameState curStateType;
@@ -52,22 +67,6 @@ public class GameManager : SingleTon<GameManager>
     // ==========================================================================
 
 
-    public enum TurnState
-    {
-        BOTTOM_TURN,
-        TOP_TURN,
-        RETURN
-    }
-
-    public enum PlayerType
-    {
-        PLAYER,
-        PLAYER2,
-        AI
-    }
-
-
-
     [Header("EngineSetting")]
     [SerializeField]
     public GameSetter gameSetter;
@@ -80,8 +79,6 @@ public class GameManager : SingleTon<GameManager>
 
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
-
-    public UnityEvent OnTurnFinished;
 
     [Header("GameSetting")]
     [SerializeField]
@@ -116,8 +113,6 @@ public class GameManager : SingleTon<GameManager>
 
     public Player curPlayer;
 
-    public UnityEvent OnOutOfGame;
-
     [SerializeField]
     private int trunRemain;
     public int TurnRemain
@@ -145,6 +140,8 @@ public class GameManager : SingleTon<GameManager>
 
     [Header("DebugMode")]
     public bool scoreDebugMode;
+
+    public UnityEvent OnOutOfGame;
 
 
     private readonly StringBuilder debugLog1 = new StringBuilder();
