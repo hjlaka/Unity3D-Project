@@ -22,6 +22,7 @@ public class PieceMouseEvent : MonoBehaviour
 
     private void OnMouseExit()
     {
+        Debug.Log("마우스 뗌");
         piece.ChangeColorTempBack();
     }
 
@@ -75,8 +76,7 @@ public class PieceMouseEvent : MonoBehaviour
                 if (piece.place.IsAttackableByCurPiece)
                 {
                     //공격 
-                    // 선택된 기물을 움직임
-                    // (움직임 함수 내부에서 공격 연산 수행)
+                    // 매니저에게 공격을 할 예정임을 알려줌.
 
                     Attack();
                 }

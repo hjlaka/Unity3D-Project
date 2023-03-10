@@ -51,6 +51,7 @@ public class GameManager : SingleTon<GameManager>
     public StateBehaviour<GameManager> curState { get; private set; }
     [SerializeField]
     private GameState curStateType;
+    [SerializeField]
     private GameState nextStateType;
     public GameState CurStateType { get { return curStateType; } private set { curStateType = value; } }
     public GameState NextStateType { get { return nextStateType; } private set { nextStateType = value; } }
@@ -128,15 +129,9 @@ public class GameManager : SingleTon<GameManager>
     }
 
 
-
     // 사용 예정 변수
     public bool playerValidToSelectPiece { get; set; }
     public bool playerValidToSelectPlace { get; set; }
-
-
-
-
-
 
 
     [Header("DebugMode")]
@@ -187,13 +182,6 @@ public class GameManager : SingleTon<GameManager>
         curState?.Handle();
     }
 
-/*    public void ChangeGameState(GameState nextState)
-    {
-        Debug.Log(string.Format("게임 상태 변경: {0} 에서 {1}로.", state, nextState));
-        beforeState = state;
-        state = nextState;
-    }*/
-
     public void GoBackGameState()
     {
         Debug.Log("게임 씬 이전으로 변경: " + beforeState);
@@ -241,11 +229,6 @@ public class GameManager : SingleTon<GameManager>
             return true;
         else
             return false;
-    }
-
-    public void GameEnd()
-    {
-
     }
 
     public void SetNextState(GameState stateType)
