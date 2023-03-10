@@ -2,36 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameState
+
+public class StateSettingGame : StateBehaviour<GameManager>
 {
-    public class StateSettingGame : StateBehaviour<GameManager>
+    //TODO: ¼öÁ¤
+    public override StateBehaviour<GameManager> Handle()
     {
-        public override void StateEnter()
+        switch (machine.NextStateType)
         {
-            DialogueManager.Instance.CheckDialogueEvent();
-            machine.gameSetter.SetTopTeam(0);
-
-            StartCoroutine(Waiting());
+            case GameManager.GameState.PREPARING_GAME:
+                break;
+            default:
+                return null;
         }
 
-        public override void StateExit()
-        {
-            //ChangeGameState(GameState.PREPARING_GAME);
-        }
+        machine.ChangeGameStateMachine();
+        return null;
+    }
+    public override void StateEnter()
+    {
+        DialogueManager.Instance.CheckDialogueEvent();
+        machine.gameSetter.SetTopTeam(0);
 
-        public override void StateUpdate()
-        {
-            throw new System.NotImplementedException();
-        }
+        StartCoroutine(Waiting());
+    }
 
-        private IEnumerator Waiting()
+    public override void StateExit()
+    {
+        //ChangeGameState(GameState.PREPARING_GAME);
+    }
+
+    public override void StateUpdate()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private IEnumerator Waiting()
+    {
+        while(DialogueManager.Instance.inConversation)
         {
-            while(GameManager.Instance.state == GameManager.GameState.IN_CONVERSATION)
-            {
-                yield return null;
-            }
-            machine.SetNextState(GameManager.GameState.PREPARING_GAME);
+            yield return null;
         }
+        machine.SetNextState(GameManager.GameState.PREPARING_GAME);
     }
 }
+
 

@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class StatePreparingGame : StateBehaviour<GameManager>
 {
+    //TODO: ¼öÁ¤
+    public override StateBehaviour<GameManager> Handle()
+    {
+        switch (machine.NextStateType)
+        {
+            case GameManager.GameState.ON_TURN:
+                break;
+            default:
+                return null;
+        }
+
+        machine.ChangeGameStateMachine();
+        return null;
+    }
     public override void StateEnter()
     {
         machine.gameSetter.SetBottomTeam(0);

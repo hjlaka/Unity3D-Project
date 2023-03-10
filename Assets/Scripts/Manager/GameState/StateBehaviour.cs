@@ -9,8 +9,10 @@ public abstract class StateBehaviour<T> : MonoBehaviour
     private void Awake()
     {
         // 임시 추가. 일일이 할당하는 방법도 있음.
-        machine = GetComponent<T>();
+        machine = GetComponentInParent<T>();
     }
+
+    public abstract StateBehaviour<T> Handle();
 
     public abstract void StateEnter();
 
@@ -18,6 +20,9 @@ public abstract class StateBehaviour<T> : MonoBehaviour
     public abstract void StateExit();
 
 
-    public abstract void StateUpdate();
+    public virtual void StateUpdate() 
+    { 
+        // Do Nothing
+    }
 
 }

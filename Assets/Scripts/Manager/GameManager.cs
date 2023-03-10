@@ -1,4 +1,3 @@
-using GameState;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -28,7 +27,7 @@ public class GameManager : SingleTon<GameManager>
         OPPONENT_TURN,
         RETURN,
         GAME_END,
-        OUT_OF_GAME,
+        ON_PEACE,
         ON_TURN
     }
 
@@ -39,7 +38,9 @@ public class GameManager : SingleTon<GameManager>
     private GameState curStateType;
     private GameState nextStateType;
     public GameState CurStateType { get { return curStateType; } private set { curStateType = value; } }
+    public GameState NextStateType { get { return nextStateType; } private set { nextStateType = value; } }
 
+    public StateBehaviour<GameManager> statePeace { get; private set; }
     public StateBehaviour<GameManager> stateStart { get; private set; }
     public StateBehaviour<GameManager> stateOnTurn { get; private set; }
     public StateBehaviour<GameManager> statePreparing { get; private set; }
@@ -141,6 +142,7 @@ public class GameManager : SingleTon<GameManager>
 
 
 
+
     [Header("DebugMode")]
     public bool scoreDebugMode;
 
@@ -151,12 +153,14 @@ public class GameManager : SingleTon<GameManager>
     {
         stateDic = new Dictionary<GameState, StateBehaviour<GameManager>>();
 
-        stateStart = GetComponent<StateGameStart>();
-        stateSetting = GetComponent<StateSettingGame>();
-        statePreparing = GetComponent<StatePreparingGame>();
-        stateOnTurn = GetComponent<StateOnTurn>();
-        stateFinishTurn = GetComponent<StateTurnFinished>();
+        statePeace = GetComponentInChildren<StatePeace>();
+        stateStart = GetComponentInChildren<StateGameStart>();
+        stateSetting = GetComponentInChildren<StateSettingGame>();
+        statePreparing = GetComponentInChildren<StatePreparingGame>();
+        stateOnTurn = GetComponentInChildren<StateOnTurn>();
+        stateFinishTurn = GetComponentInChildren<StateTurnFinished>();
 
+        stateDic.Add(GameState.ON_PEACE, statePeace);
         stateDic.Add(GameState.START_GAME, stateStart);
         stateDic.Add(GameState.SETTING_GAME, stateSetting);
         stateDic.Add(GameState.PREPARING_GAME, statePreparing);
@@ -166,13 +170,14 @@ public class GameManager : SingleTon<GameManager>
 
         curState = null;
         curStateType = GameState.NONE;
-        nextStateType = GameState.OUT_OF_GAME;
+        nextStateType = GameState.ON_PEACE;
+        ChangeGameStateMachine();
     }
 
     private void Start()
     {
         TurnRemain = 10;
-        state = GameState.OUT_OF_GAME;
+        state = GameState.ON_PEACE;
         turnState = TurnState.BOTTOM_TURN;
         OnOutOfGame?.Invoke();
 
@@ -181,66 +186,7 @@ public class GameManager : SingleTon<GameManager>
     private void Update()
     {
         //머신
-        ChangeGameStateMachine();
-    }
-
-    private void ApplyPlayerType()
-    {
-        switch (playerType)
-        {
-            case PlayerType.AI:
-                GameObject playerObj = player.gameObject;
-                Destroy(player);
-                playerObj.AddComponent<AI>();
-                player = playerObj.GetComponent<AI>();
-                break;
-            case PlayerType.PLAYER:
-                player = Player;
-                break;
-            case PlayerType.PLAYER2:
-                GameObject player2Player = new GameObject();
-                player2Player.AddComponent<Player>();
-                player = player2Player.GetComponent<Player>();
-                break;
-        }
-    }
-    private void ApplyOpponentType()
-    {
-        switch (opponentType)
-        {
-            case PlayerType.AI:
-                opponentPlayer = aiManager;
-                break;
-            case PlayerType.PLAYER:
-                opponentPlayer = Player;
-                break;
-            case PlayerType.PLAYER2:
-                GameObject player2Opponent = new GameObject();
-                player2Opponent.AddComponent<Player>();
-                opponentPlayer = player2Opponent.GetComponent<Player>();
-                break;
-        }
-
-    }
-
-    private void ApplyBothPlayerDirection()
-    {
-        // 상대편이 결정된 다음에 동작할 것.
-        switch (playerTeamDirection)
-        {
-            case TeamData.Direction.UpToDown:
-                topPlayer = player;
-                bottomPlayer = opponentPlayer;
-                break;
-
-            case TeamData.Direction.DownToUp:
-                topPlayer = opponentPlayer;
-                bottomPlayer = player;
-                break;
-        }
-
-        topPlayer.homeLocation = topHome;
-        bottomPlayer.homeLocation = bottomHome;
+        curState?.Handle();
     }
 
 /*    public void ChangeGameState(GameState nextState)
@@ -313,6 +259,7 @@ public class GameManager : SingleTon<GameManager>
     public void SetNextState(GameState stateType)
     {
         nextStateType = stateType;
+        Debug.Log("게임 상태 변경 예약");
 
     }
     public void ChangeGameStateMachine()
