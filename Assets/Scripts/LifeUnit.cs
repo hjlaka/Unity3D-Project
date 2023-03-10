@@ -15,12 +15,12 @@ public class LifeUnit : Unit
     public bool IsFree
     {
         get { return isFree; }
-        set 
-        { 
+        set
+        {
             isFree = value;
             IsOnGame = !isFree;
 
-            if(isFree)
+            if (isFree)
             { Debug.Log("자유의 몸이 되었다! "); }
         }
     }
@@ -31,7 +31,7 @@ public class LifeUnit : Unit
 
     protected virtual void Update()
     {
-        if(isFree)
+        if (isFree)
         {
             MoveToTarget(targetLocation);
         }
@@ -41,6 +41,14 @@ public class LifeUnit : Unit
         transform.Translate(moveSpeed * Time.deltaTime * directionVec, Space.World);
 
         OnWalk?.Invoke();
+    }
+    protected virtual void Jump(Vector3 directionVec) 
+    {
+        // 제자리에서 점프했다가 목표 지점으로 하강.
+    }
+    protected virtual void Dash()
+    {
+        // 대쉬 애니메이션
     }
 
     private void MoveToTarget(Vector3 targetLocation)
