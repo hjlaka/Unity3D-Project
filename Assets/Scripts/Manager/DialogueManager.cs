@@ -12,6 +12,8 @@ public class DialogueManager : SingleTon<DialogueManager>
     [SerializeField]
     private float delay;
 
+    public bool inConversation { get; private set; }
+
 
     [SerializeField]
     private TextMeshProUGUI dialogueName;
@@ -63,7 +65,8 @@ public class DialogueManager : SingleTon<DialogueManager>
         if (IsDialogueExist())
         {
             Debug.Log("대화 개수: " + dialogueQueue.Count);
-            GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
+            //GameManager.Instance.ChangeGameState(GameManager.GameState.IN_CONVERSATION);
+            inConversation = true;
             StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
         }
@@ -143,7 +146,8 @@ public class DialogueManager : SingleTon<DialogueManager>
         Debug.Log("대화 끝났어요");
         DisableDialogueUI();
         DeleteParticipations();
-        GameManager.Instance.GoBackGameState();
+        //GameManager.Instance.GoBackGameState();
+        inConversation = false;
         CameraController.Instance.SetCamToTopDownView();
     }
 
