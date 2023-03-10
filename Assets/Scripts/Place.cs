@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Place : MonoBehaviour, ISubject
+public class Place : MonoBehaviour, ISubject, ITargetable
 {
     public enum PlaceType { A, B, V };
     private Piece piece;
@@ -188,7 +188,34 @@ public class Place : MonoBehaviour, ISubject
         }
     }
 
-
+    public void AddInfluence(TeamData.Direction type)
+    {
+        switch (type)
+        {
+            case TeamData.Direction.UpToDown:
+                HeatPointTopTeam++;
+                break;
+            case TeamData.Direction.DownToUp:
+                HeatPointBottomTeam++;
+                break;
+            default:
+                break;
+        }
+    }
+    public void SubInfluence(TeamData.Direction type)
+    {
+        switch (type)
+        {
+            case TeamData.Direction.UpToDown:
+                HeatPointTopTeam--;
+                break;
+            case TeamData.Direction.DownToUp:
+                HeatPointBottomTeam--;
+                break;
+            default:
+                break;
+        }
+    }
     public void ChangeColor(Color color)
     {
         render.material.color = color;
@@ -238,5 +265,14 @@ public class Place : MonoBehaviour, ISubject
         }
 
         return this;
+    }
+
+    public ITargetable.Type React()
+    {
+        // 예외처리: 위에 기물이 있는 경우
+        if (piece != null)
+            return ITargetable.Type.Attack;
+        else
+            return ITargetable.Type.Peace;
     }
 }

@@ -160,7 +160,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         Placement subsequent = null;
 
 
-        // 움직일 수 있는 곳인지 확인
+        // 유효성 검사 --------------------------------------
         if (!IsPlaceable(place, piece))
         {
             Debug.Log("움직일 수 없는 곳");

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(PlaceObserver))]
 [RequireComponent (typeof(UnitObserver))]
 [RequireComponent(typeof(Subject))]
-public class Piece : LifeUnit
+public class Piece : LifeUnit, ITargetable
 {
     [Header("InGame")]
     public Place place;
@@ -44,7 +44,9 @@ public class Piece : LifeUnit
     public CharacterData character;
 
     private Renderer render;
+
     private Color curNormal;
+    public Color CurNormal { get { return curNormal; }  private set { curNormal = value;  Debug.Log("색 변경"); } }
 
     private IDecidePlaceStrategy decideDesireStrategy;
 
@@ -151,8 +153,11 @@ public class Piece : LifeUnit
 
     private void ApplyTeamInfo()
     {
-        curNormal = team.normal;
-        render.material.color = curNormal;
+        if (null == team)
+            return;
+
+        CurNormal = team.normal;
+        render.material.color = CurNormal;
 
         if (team.direction == TeamData.Direction.UpToDown)
         {
@@ -226,15 +231,15 @@ public class Piece : LifeUnit
     }
     public void ChangeColor()
     {
-        //Debug.Log("팀 색상으로 변경");
-        curNormal = team.normal;
-        render.material.color = curNormal;
+        Debug.Log("팀 색상으로 변경");
+        CurNormal = team.normal;
+        render.material.color = CurNormal;
     }
     public void ChangeColor(Color color)
     {
-        //Debug.Log(color + " 색상으로 변경");
-        curNormal = color;
-        render.material.color = curNormal;
+        Debug.Log(color + " 색상으로 변경");
+        CurNormal = color;
+        render.material.color = CurNormal;
 
     }
     public void ChangeColorTemp(Color color)
@@ -244,13 +249,18 @@ public class Piece : LifeUnit
     }
     public void ChangeColorTempBack()
     {
-        render.material.color = curNormal;
+        render.material.color = CurNormal;
 
     }
 
     public override string GetName()
     {
         return character.name;
+    }
+
+    public ITargetable.Type React()
+    {
+        return ITargetable.Type.Attack;
     }
 }
 
