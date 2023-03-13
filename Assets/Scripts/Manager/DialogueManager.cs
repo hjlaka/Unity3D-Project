@@ -63,6 +63,12 @@ public class DialogueManager : SingleTon<DialogueManager>
         participations = new List<Unit>();
     }
 
+    private void OnDestroy()
+    {
+        //dialogueQueue.Clear();
+        OnDialogueEnd.RemoveAllListeners();
+    }
+
     public void CheckDialogueEvent(UnityAction call = null)
     {
         if (call != null)
@@ -79,16 +85,13 @@ public class DialogueManager : SingleTon<DialogueManager>
 
             StartCoroutine(ShowDialogueUIWithDelay());
             SetDialogueText();
-
-            
         }
         else
         {
             Debug.Log("대화 없음");
             OnDialogueEnd?.Invoke();
             OnDialogueEnd.RemoveAllListeners();
-        }
-            
+        }    
     }
 
     private void SetDialogueText()

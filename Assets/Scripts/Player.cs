@@ -7,12 +7,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     protected List<Piece> pieceList;
-
     [SerializeField]
     protected Unit coreUnit;
-
     public Transform homeLocation;
-
     public Unit CoreUnit { get { return coreUnit; } set { coreUnit = value; } }
 
 
@@ -42,6 +39,26 @@ public class Player : MonoBehaviour
         Piece shoutingPiece = pieceList[Random.Range(0, pieceList.Count)];
         DialogueManager.DialogueUnit shouting = new DialogueManager.DialogueUnit(shoutingPiece, shoutingPiece.character.onGame);
         DialogueManager.Instance.AddDialogue(shouting);
+    }
+
+    public bool CheckCoreOnGame()
+    {
+        return coreUnit.IsOnGame;
+    }
+
+    public bool CheckActionable()
+    {
+        for(int i = 0; i <= pieceList.Count; i++)
+        {
+            if (pieceList[i].Recognized.movable.Count > 0)
+                return true;
+        }
+        return false;
+    }
+
+    public void GiveUp()
+    {
+
     }
 
 }

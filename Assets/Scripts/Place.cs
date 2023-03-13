@@ -184,7 +184,9 @@ public class Place : MonoBehaviour, ISubject, ITargetable
                 return;
             }
 
-            PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
+            //PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, this);
+            //AudioManager.Instance.PlaySFX("ValidCommand");
+            PlaceManager.Instance.GetWill(PlaceManager.Instance.SelectedPiece, this);
         }
     }
 
@@ -274,5 +276,10 @@ public class Place : MonoBehaviour, ISubject, ITargetable
             return ITargetable.Type.Attack;
         else
             return ITargetable.Type.Peace;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 }

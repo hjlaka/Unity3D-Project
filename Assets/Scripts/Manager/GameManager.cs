@@ -66,6 +66,8 @@ public class GameManager : SingleTon<GameManager>
 
     private Dictionary<GameState, StateBehaviour<GameManager>> stateDic;
 
+    //public UnityAction<GameState> OnGameStateChanged; 
+
     // ==========================================================================
 
 
@@ -162,10 +164,10 @@ public class GameManager : SingleTon<GameManager>
         stateDic.Add(GameState.TURN_FINISHED, stateFinishTurn);
         stateDic.Add(GameState.GAME_END, stateGameEnd);
 
-        curState = null;
+        curState = statePeace;
         curStateType = GameState.NONE;
         nextStateType = GameState.ON_PEACE;
-        ChangeGameStateMachine();
+        UpdateGameStateMachine();
     }
 
     private void Start()
@@ -221,8 +223,21 @@ public class GameManager : SingleTon<GameManager>
         turnState = turn;
     }
 
+
+    private void JudgeGame()
+    {
+        // 현재 플레이어가 포기 신호를 보내면 게임 종료.
+
+        // 상대편 왕이 없거나 체크메이트 상태면 게임 종료.
+
+        // 상대편 이동할 기물이 없으면 무승부.
+    }
+
     private bool IsEnded()
     {
+
+
+
         if (player.CoreUnit != null && !player.CoreUnit.IsOnGame)
             return true;
         else if (opponentPlayer.CoreUnit != null && !opponentPlayer.CoreUnit.IsOnGame)
@@ -237,7 +252,7 @@ public class GameManager : SingleTon<GameManager>
         Debug.Log("게임 상태 변경 예약");
 
     }
-    public void ChangeGameStateMachine()
+    public void UpdateGameStateMachine()
     {
         if (nextStateType == curStateType)
             return;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heap<T> : MonoBehaviour
+public class Heap<T>
 {
 
     private List<Node<T>> heapList;

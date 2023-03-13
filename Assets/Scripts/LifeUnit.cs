@@ -51,7 +51,7 @@ public class LifeUnit : Unit
         // 대쉬 애니메이션
     }
 
-    private void MoveToTarget(Vector3 targetLocation)
+    public void MoveToTarget(Vector3 targetLocation)
     {
 
         if ((targetLocation - transform.position).sqrMagnitude > 2f)

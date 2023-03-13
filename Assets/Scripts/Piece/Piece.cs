@@ -262,5 +262,10 @@ public class Piece : LifeUnit, ITargetable
     {
         return ITargetable.Type.Attack;
     }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
 }
 
