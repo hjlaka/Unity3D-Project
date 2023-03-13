@@ -36,10 +36,13 @@ public class PlaceManager : SingleTon<PlaceManager>
     private PlacementRememberer placementRememberer;
     //=================================
 
+    private TurnEvent turnEvent;
+
     private void Awake()
     {
         influenceCalculator = GetComponentInChildren<InfluenceCalculator>();
         placementRememberer = GetComponentInChildren<PlacementRememberer>();
+        turnEvent = GetComponentInChildren<TurnEvent>();
     }
 
     public void SelectPiece(Piece piece)
@@ -98,8 +101,10 @@ public class PlaceManager : SingleTon<PlaceManager>
         switch(turnType)
         {
             case ITargetable.Type.Peace:
+                turnEvent.DoTurn();
                 break;
             case ITargetable.Type.Attack:
+                turnEvent.DoTurn();
                 break;
         }
     }

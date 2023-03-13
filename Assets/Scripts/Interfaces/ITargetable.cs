@@ -6,4 +6,5 @@ public interface ITargetable
 {
     enum Type { Peace, Attack /*, Gain*/}
     Type React();
+    Vector3 GetPosition();
 }
