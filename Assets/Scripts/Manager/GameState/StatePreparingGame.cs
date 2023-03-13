@@ -15,7 +15,7 @@ public class StatePreparingGame : StateBehaviour<GameManager>
                 return null;
         }
 
-        machine.ChangeGameStateMachine();
+        machine.UpdateGameStateMachine();
         return null;
     }
     public override void StateEnter()
@@ -30,10 +30,5 @@ public class StatePreparingGame : StateBehaviour<GameManager>
     {
         machine.playerSetter.MakeBoardSetableNot();
         PlayerDataManager.Instance.DisablePlayerListUI();
-    }
-
-    public override void StateUpdate()
-    {
-        throw new System.NotImplementedException();
     }
 }

@@ -15,7 +15,7 @@ public class StateOnTurn : StateBehaviour<GameManager>
                 return null;
         }
 
-        machine.ChangeGameStateMachine();
+        machine.UpdateGameStateMachine();
         return null;
     }
     public override void StateEnter()

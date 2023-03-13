@@ -14,7 +14,7 @@ public class StateGameEnd : StateBehaviour<GameManager>
                 return null;
         }
 
-        machine.ChangeGameStateMachine();
+        machine.UpdateGameStateMachine();
         return null;
     }
 

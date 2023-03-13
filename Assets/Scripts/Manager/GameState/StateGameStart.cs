@@ -17,7 +17,7 @@ public class StateGameStart : StateBehaviour<GameManager>
                 return null;
         }
 
-        machine.ChangeGameStateMachine();
+        machine.UpdateGameStateMachine();
         return null;
     }
     public override void StateEnter()
@@ -36,11 +36,6 @@ public class StateGameStart : StateBehaviour<GameManager>
            
     public override void StateExit()
     {
-    }
-
-    public override void StateUpdate()
-    {
-
     }
 
     private void ApplyPlayerType()

@@ -16,7 +16,7 @@ public class StateSettingGame : StateBehaviour<GameManager>
                 return null;
         }
 
-        machine.ChangeGameStateMachine();
+        machine.UpdateGameStateMachine();
         return null;
     }
     public override void StateEnter()
@@ -28,11 +28,6 @@ public class StateSettingGame : StateBehaviour<GameManager>
     public override void StateExit()
     {
         //ChangeGameState(GameState.PREPARING_GAME);
-    }
-
-    public override void StateUpdate()
-    {
-        throw new System.NotImplementedException();
     }
 
     private void NextStep()

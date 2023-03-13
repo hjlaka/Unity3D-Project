@@ -15,11 +15,14 @@ public class StateTurnFinished : StateBehaviour<GameManager>
                 return null;
         }
 
-        machine.ChangeGameStateMachine();
+        machine.UpdateGameStateMachine();
         return null;
     }
     public override void StateEnter()
     {
+
+
+
         /*if (machine.IsEnded())
         {
             Debug.Log("게임 종료 인식");
@@ -50,11 +53,6 @@ public class StateTurnFinished : StateBehaviour<GameManager>
     {
         //OnFinishTurn?.
         machine.ChangeTurn();
-    }
-
-    public override void StateUpdate()
-    {
-        
     }
 
     // 임시 추가
