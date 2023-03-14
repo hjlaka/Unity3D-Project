@@ -30,8 +30,10 @@ public class TurnEventAttack : TurnEvent
 
         // 선언
         // 대사 선정? (PreTurn 단계에서 미리 선정?)
-        DialogueManager.Instance.AddDialogue(new DialogueManager.DialogueUnit(subject, "공격하겠다"));
-        DialogueManager.Instance.AddDialogue(new DialogueManager.DialogueUnit(target, "나를!?"));
+        //DialogueManager.Instance.AddDialogue(new DialogueManager.DialogueUnit(subject, "공격하겠다"));
+        //DialogueManager.Instance.AddDialogue(new DialogueManager.DialogueUnit(target, "나를!?"));
+        ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, subject, target));
+        ChessEventManager.Instance.GetEvent();
         DialogueManager.Instance.CheckDialogueEvent(NextStep);
 
         yield return null;   

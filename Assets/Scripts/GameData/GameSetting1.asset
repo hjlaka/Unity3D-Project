@@ -70,3 +70,8 @@ MonoBehaviour:
     character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
     location: {x: 2, y: 0}
     calledDialogue: []
+  - isCoreUnit: 0
+    piecePrefab: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
+    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    location: {x: 3, y: 0}
+    calledDialogue: []

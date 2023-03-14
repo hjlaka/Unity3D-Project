@@ -57,7 +57,7 @@ public class Piece : LifeUnit, ITargetable
     public UnityAction OnPlaced;
 
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
         base.Awake();
         render = GetComponentInChildren<Renderer>();
@@ -124,16 +124,18 @@ public class Piece : LifeUnit, ITargetable
             if(targetPlace.Piece != null)
             {
                 Debug.Log("공격하자!");
-                //AttackTo(targetPlace);
-                ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, this, targetPlace.Piece));
-                ChessEventManager.Instance.GetEvent();
-                DialogueManager.Instance.CheckDialogueEvent();
-                PlaceManager.Instance.MoveProcess(this, targetPlace);
+                /* //AttackTo(targetPlace);
+                 ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, this, targetPlace.Piece));
+                 ChessEventManager.Instance.GetEvent();
+                 DialogueManager.Instance.CheckDialogueEvent();
+                 PlaceManager.Instance.MoveProcess(this, targetPlace);*/
+                PlaceManager.Instance.GetWill(this, targetPlace.Piece);
             }
             else
             {
                 Debug.Log("이동하자!");
-                PlaceManager.Instance.MoveProcess(this, targetPlace);
+                //PlaceManager.Instance.MoveProcess(this, targetPlace);
+                PlaceManager.Instance.GetWill(this, targetPlace);
             }   
         }
         else

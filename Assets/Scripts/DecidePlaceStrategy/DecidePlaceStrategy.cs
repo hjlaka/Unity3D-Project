@@ -60,7 +60,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         {
             Place place = movablePlaces[i];
             ScoreNode tempScoreSet = CalculateScore(piece, place);
-            Debug.Log("의지 점수: " + tempScoreSet.WillPoint);
+            if (GameManager.Instance.scoreDebugMode) Debug.Log("의지 점수: " + tempScoreSet.WillPoint);
             float score = tempScoreSet.WillPoint;
 
             // 저장해 둔 점수 중 가장 높은 점수 가져오기? (왕 보호에 대한 것 외에는 차선을 가져올 수도 있도록?)
@@ -81,7 +81,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         will = maxScore / GetTotalWeight();
         scoreSet = highScoreSet;
 
-        Debug.Log(string.Format("가장 의지가 높은 자리 {0} 의지 점수 {1}", highScorePlace, will));
+        if(GameManager.Instance.scoreDebugMode) Debug.Log(string.Format("가장 의지가 높은 자리 {0} 의지 점수 {1}", highScorePlace, will));
         Placement placement = new Placement(piece, piece.place, highScorePlace, highScorePlace?.Piece, null);
 
         return placement;
@@ -123,7 +123,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         assumePoint = CalculateAssumeMoveScore(piece, place);
         assumePoint *= futureOriented;
         //assumePoint = 0;
-        Debug.Log("가정 점수: " + assumePoint);
+        if (GameManager.Instance.scoreDebugMode) Debug.Log("가정 점수: " + assumePoint);
 
         mindPoint = Random.Range(0, 3);
         mindPoint = mindPoint / (1 + mindPoint);
@@ -201,7 +201,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         extendablePoint = (float)movableCount / (piece.PieceScore * piece.PieceScore);
 
         extendablePoint *= willingToExtend;
-        Debug.Log("확장 점수: " + extendablePoint);
+        if (GameManager.Instance.scoreDebugMode) Debug.Log("확장 점수: " + extendablePoint);
 
         if (piece.returnHeat.ReturnOpponentHeat(place) > 0)
         {
@@ -271,7 +271,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
             attackPoint = (float)targetPiece.PieceScore / (1 + targetPiece.PieceScore);
 
         }
-        Debug.Log("공격점수: " + attackPoint);
+        if (GameManager.Instance.scoreDebugMode) Debug.Log("공격점수: " + attackPoint);
 
         return attackPoint;
     }
@@ -324,7 +324,8 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         float extentPoint = Mathf.Abs(place.boardIndex.x - piece.place.boardIndex.x) + Mathf.Abs(place.boardIndex.y - piece.place.boardIndex.y);
         extentPoint /= piece.PieceScore;
         extentPoint = extentPoint / (1 + extentPoint);
-        Debug.Log("멀리 가기 점수: " + extentPoint);
+        if (GameManager.Instance.scoreDebugMode)
+            Debug.Log("멀리 가기 점수: " + extentPoint);
 
         return extentPoint;
     }

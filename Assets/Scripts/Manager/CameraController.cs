@@ -68,6 +68,7 @@ public class CameraController : SingleTon<CameraController>
 
     public void SetFreeCam()
     {
+        //Debug.Log("ÇÁ¸®Ä· ¿ì¼±");
         ChangeFreeCamPriority(40);
     }
 
