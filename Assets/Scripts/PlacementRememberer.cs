@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
 {
     private PlacementCareTaker placementCareTaker;
+    private GameManager.TurnState originalTurn;
 
     private void Awake()
     {
@@ -21,12 +22,19 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
     {
 
         //TODO: 조건 수정
-        if (GameManager.Instance.state != GameManager.GameState.SELECTING_PIECE)
+        if (GameManager.Instance.curState is not StateOnTurn)
         {
             Debug.Log("기물 선택 단계가 아님");
             return;
         }
 
+        if (!GameManager.Instance.playerValidToSelectPlace)
+        {
+            Debug.Log("기물 이동이 결정된 상태에서 메멘토 불가능");
+            return;
+        }
+
+        originalTurn = GameManager.Instance.turnState;
         GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
 
         // 기본적으로 두번 복기한다.
@@ -75,6 +83,8 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
 
             }
         }
+
+        GameManager.Instance.ChangeTurn(originalTurn);
         //GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
         // 이벤트 확인 동작 게임 매니저에서 처리
     }
