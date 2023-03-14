@@ -8,13 +8,13 @@ public class PlaceManager : SingleTon<PlaceManager>
 {
     [SerializeField]
     private Piece selectedPiece;
-    public Piece SelectedPiece { get { return selectedPiece; } set { selectedPiece = value; } }
+    public Piece SelectedPiece { get { return selectedPiece; } set { selectedPiece = value; /* 값 검증 추가?*/ } }
 
     // ========== Event ==============
     public UnityEvent<Piece> OnSelectPiece;
     public UnityEvent OnLeaveSelect;
-    public UnityEvent OnFinishMove;
-    public UnityEvent OnStartMove;
+    public UnityEvent OnFinishAction;
+    public UnityEvent<Piece> OnStartAction;
     public UnityEvent OnAttack;
     //================================
 
@@ -36,13 +36,18 @@ public class PlaceManager : SingleTon<PlaceManager>
     private PlacementRememberer placementRememberer;
     //=================================
 
-    private TurnEvent turnEvent;
+    //========== Turn Event ===========
+    private TurnEvent turnEventPeace;
+    private TurnEvent turnEventAttack;
+    //=================================
 
     private void Awake()
     {
         influenceCalculator = GetComponentInChildren<InfluenceCalculator>();
         placementRememberer = GetComponentInChildren<PlacementRememberer>();
-        turnEvent = GetComponentInChildren<TurnEvent>();
+
+        turnEventPeace = GetComponentInChildren<TurnEventPeace>();
+        turnEventAttack = GetComponentInChildren<TurnEventAttack>();
     }
 
     public void SelectPiece(Piece piece)
@@ -94,28 +99,36 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void GetWill(Piece subject, ITargetable target)
     {
+        Debug.Log("의지 수신");
+        // 유효성 검사
+        if(!GameManager.Instance.playerValidToSelectPlace)
+        {
+            Debug.Log("유효하지 않은 선택");
+            return;
+        }
+        GameManager.Instance.playerValidToSelectPlace = false;
+        OnStartAction?.Invoke(selectedPiece);
+
         // 턴 이벤트 생성
 
         ITargetable.Type turnType = target.React();
 
+        
+
         switch(turnType)
         {
             case ITargetable.Type.Peace:
-                turnEvent.DoTurn();
+                turnEventPeace.SetTurnEvent(subject, target);
+                turnEventPeace.DoTurn();
                 break;
             case ITargetable.Type.Attack:
-                turnEvent.DoTurn();
+                turnEventAttack.SetTurnEvent(subject, target);
+                turnEventAttack.DoTurn();
                 break;
         }
     }
 
-    public void ShowOnBoard(Piece piece)
-    {
-        // 어떤 보드에서 연출이 되어야 할지 찾는 과정
-        IMarkable markable = piece.place?.board as IMarkable;
-        if (markable != null)
-            markable.PreShow(piece);
-    }
+
 
     private bool IsPlaceable(Place place, Piece piece)
     {
@@ -195,7 +208,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         
 
         // 연출
-        OnFinishMove?.Invoke();
+        OnFinishAction?.Invoke();
 
         // 이벤트
         DialogueManager.Instance.CheckDialogueEvent(EndTurn);
@@ -207,11 +220,16 @@ public class PlaceManager : SingleTon<PlaceManager>
         // 메멘토 등록
         if(oldBoard != null && oldBoard == newBoard)
         {
-            Placement newPlacement = new Placement(piece, oldPlace, place, attackedPiece, subsequent);
-            // 메멘토를 여기서 생성해야 할까?
-            placementRememberer.SaveMemento(newPlacement);
-            Debug.Log("메멘토를 저장했다");
+            SaveMemento(piece, oldPlace, place, attackedPiece, subsequent);
         }
+    }
+
+    public void SaveMemento(Piece piece, Place prevPlace, Place nextPlace, Piece attackedPiece, Placement subsequent)
+    {
+        Placement newPlacement = new Placement(piece, prevPlace, nextPlace, attackedPiece, subsequent);
+        // 메멘토를 여기서 생성해야 할까?
+        placementRememberer.SaveMemento(newPlacement);
+        Debug.Log("메멘토를 저장했다");
     }
 
     public Piece MovePiece(Piece piece, Place place)
@@ -241,7 +259,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         return attackedPiece;
     }
 
-    private void EndTurn()
+    public void EndTurn()
     {
         StartCoroutine(EndTurnCoroutine());
     }
@@ -255,13 +273,13 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         SelectedPieceInit();
 
-        IMarkable markable = endedPiece.place.board as IMarkable;
+        /*IMarkable markable = endedPiece.place.board as IMarkable;
         if (markable != null)
         {
             markable.PostShowEnd(endedPiece);
             Debug.Log("표시 종료");
         }
-
+*/
         GameManager.Instance.SetNextState(GameManager.GameState.TURN_FINISHED);
 
         // 카메라 연출
@@ -273,7 +291,7 @@ public class PlaceManager : SingleTon<PlaceManager>
         ExpelPiece(target);
 
         CameraController.Instance.AddToTargetGroup(piece.transform);
-        OnAttack?.Invoke();
+        //OnAttack?.Invoke();
         CameraController.Instance.RemoveFromTargetGroup(piece.transform);
     }
 

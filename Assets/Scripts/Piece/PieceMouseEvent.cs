@@ -102,9 +102,11 @@ public class PieceMouseEvent : MonoBehaviour
 
     private void Attack()
     {
-        ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, PlaceManager.Instance.SelectedPiece, piece));
+        Debug.Log("АјАн");
+        /*ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.ATTACK, PlaceManager.Instance.SelectedPiece, piece));
         ChessEventManager.Instance.GetEvent();
         DialogueManager.Instance.CheckDialogueEvent();
-        PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);
+        PlaceManager.Instance.MoveProcess(PlaceManager.Instance.SelectedPiece, piece.place);*/
+        PlaceManager.Instance.GetWill(PlaceManager.Instance.SelectedPiece, piece);
     }
 }

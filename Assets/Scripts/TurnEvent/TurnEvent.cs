@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class TurnEvent : MonoBehaviour
+public abstract class TurnEvent : MonoBehaviour
 {
     public enum Step
     {
@@ -20,42 +19,34 @@ public class TurnEvent : MonoBehaviour
     private Step step;
     private Coroutine curStepCoroutine;
 
-    private Piece subject;
-    private ITargetable target;
+    //=============================
+    protected Piece subject;
+    protected ITargetable targetable;
+    //========= Record ============
+    protected Place prevPlace;
+    //=============================
 
-    public void SetTurnEvent(Piece subject, ITargetable target)
+    
+
+    public void SetTurnEvent(Piece subject, ITargetable targetable)
     {
         this.subject = subject;
-        this.target = target;
+        this.targetable = targetable;
     }
     public void DoTurn()
     {
         PreTurn();
-        StepTurn(Step.Declare);
+        RunStepCoroutine(Step.Declare);
     }
 
-    private void PreTurn()
+    protected virtual void PreTurn()
     {
+        prevPlace = subject.place;
         //준비
         //턴 상황 계산.
     }
 
-    private IEnumerator TurnCoroutine()
-    {
-        // 전체 코루틴이 돌고
-        // 그 안에서 개별 상황 코루틴이 돌도록 만든다.
-        yield return null;
-
-        
-
-        for(Step curStep = Step.Declare; curStep < Step.Size; curStep++)
-        {
-
-        }
-
-    }
-
-    private void StepTurn(Step nextStep)
+    private void RunStepCoroutine(Step nextStep)
     {
         step = nextStep;
 
@@ -63,7 +54,7 @@ public class TurnEvent : MonoBehaviour
         {
             case Step.Declare:
 
-                StartCoroutine(HandleDeclare());
+                curStepCoroutine = StartCoroutine(HandleDeclare());
                 Debug.Log("선언");
                 //한명만? 아니면 연관된 아이들 모두가 다?
                 break;
@@ -97,72 +88,54 @@ public class TurnEvent : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleDeclare()
+    protected virtual IEnumerator HandleDeclare()
     {
-        Debug.Log("선언");
-
-        // 대상에게 선전포고
-        // 관계 변수 함께 고려하여 대사 선정?
-
-        yield return new WaitForSeconds(3f);
-
-        NextStep();
-    }
-    private IEnumerator HandleReactToDeclare()
-    {
-        Debug.Log("선언에 반응");
-
-        // 선전포고에 반응. (앞 순서에서 연쇄적으로 일어나게 할 수도 있다)
-
-
-        yield return new WaitForSeconds(3f);
+        // 다름.
+        yield return null;
         NextStep();
     }
 
-    private IEnumerator HandleMove()
+    protected virtual IEnumerator HandleReactToDeclare()
     {
-        Debug.Log("움직임");
-        // 목적지 설정
+        // 다름.
+        yield return null;
+        NextStep();
+    }
+
+    protected virtual IEnumerator HandleMove()
+    {
+        // 공통. 움직임
+        yield return null;
+        NextStep();
+    }
+
+    protected virtual IEnumerator HandleEngage()
+    {
+        // 다름. 엮임
+
+        yield return null;
+        NextStep();
+    }
+
+    protected virtual IEnumerator HandleResult()
+    {
+        // 영향력 재계산 등
+        yield return null;
+        NextStep();
+    }
+
+    protected virtual IEnumerator HandleRecord()
+    {
+        PlaceManager.Instance.SaveMemento(subject, prevPlace, subject.place, targetable as Piece, null);
+        PlaceManager.Instance.EndTurn();
+        // 공통. 메멘토 기록
+        yield return null;
         
-        subject.MoveToTarget(target.GetPosition());
-
-        //while()
-        //{
-        //    yield return null;
-        //}
-        // 움직임
-
-        // 지정한 위치까지 움직임
-
-        // 
-
-
-        yield return new WaitForSeconds(3f);
-        NextStep();
-    }
-    private IEnumerator HandleEngage()
-    {
-        Debug.Log("엮임");
-        yield return new WaitForSeconds(3f);
-        NextStep();
-    }
-    private IEnumerator HandleResult()
-    {
-        Debug.Log("결과");
-        yield return new WaitForSeconds(3f);
-        NextStep();
-    }
-    private IEnumerator HandleRecord()
-    {
-        Debug.Log("기록");
-        yield return new WaitForSeconds(3f);
-        // 배치 매니저 호출 혹은 직접 턴 종료 선언
-        GameManager.Instance.SetNextState(GameManager.GameState.TURN_FINISHED);
     }
 
-    private void NextStep()
+    protected virtual void NextStep()
     {
         step++;
-        StepTurn(step);
+        RunStepCoroutine(step);
     }
 }
