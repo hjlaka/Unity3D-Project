@@ -1560,7 +1560,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1371377818}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &200657453
 MonoBehaviour:
@@ -1590,6 +1590,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   step: 0
   target: {fileID: 0}
+  OnTargetAttack:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1371377825}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: SetFreeCam
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTargetAttackEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1371377825}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: SetCamToTopDownView
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &209790912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7114,8 +7144,8 @@ MonoBehaviour:
   OnSelectPiece:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1371377817}
-        m_TargetAssemblyTypeName: PlaceManager, Assembly-CSharp
+      - m_Target: {fileID: 1371377827}
+        m_TargetAssemblyTypeName: DisplayManager, Assembly-CSharp
         m_MethodName: ShowOnBoard
         m_Mode: 0
         m_Arguments:
@@ -7129,12 +7159,24 @@ MonoBehaviour:
   OnLeaveSelect:
     m_PersistentCalls:
       m_Calls: []
-  OnFinishMove:
+  OnFinishAction:
     m_PersistentCalls:
       m_Calls: []
-  OnStartMove:
+  OnStartAction:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1371377827}
+        m_TargetAssemblyTypeName: DisplayManager, Assembly-CSharp
+        m_MethodName: FadeOnBoard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnAttack:
     m_PersistentCalls:
       m_Calls:
@@ -7169,8 +7211,8 @@ Transform:
   m_Children:
   - {fileID: 727316627}
   - {fileID: 1274663016}
-  - {fileID: 1411689256}
   - {fileID: 200657452}
+  - {fileID: 1411689256}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7242,7 +7284,19 @@ MonoBehaviour:
   dialogueText: {fileID: 1724696605}
   OnDialogueEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1371377825}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: SetCamToTopDownView
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1371377821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7339,7 +7393,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
   - name: OKSound
     clip: {fileID: 8300000, guid: 72127805eb2bc4e7fbf2e02eca266cfa, type: 3}
-  sfxsTransform: {fileID: 0}
+  sfxsTransform: {fileID: 543021585}
   bgmPlayer: {fileID: 2057092560}
   sfxPlayer:
   - {fileID: 0}
@@ -7532,7 +7586,7 @@ Transform:
   - {fileID: 2057092561}
   - {fileID: 543021585}
   m_Father: {fileID: 1371377818}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1437203114 stripped
 Transform:
@@ -9799,7 +9853,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
