@@ -17,6 +17,8 @@ public class AudioManager : SingleTon<AudioManager>
     private SoundClip[] bgm;
     [SerializeField]
     private SoundClip[] sfx;
+    [SerializeField]
+    private Transform sfxsTransform;
 
     private Dictionary<string, AudioClip> bgmDictionary;
     private Dictionary<string, AudioClip> sfxDictionary;
@@ -25,6 +27,7 @@ public class AudioManager : SingleTon<AudioManager>
     private AudioSource bgmPlayer;
     [SerializeField]
     private AudioSource[] sfxPlayer;
+
 
 
     private void Awake()
@@ -42,12 +45,12 @@ public class AudioManager : SingleTon<AudioManager>
             sfxDictionary.Add(sfx[i].name, sfx[i].clip);
         }
 
-        sfxPlayer = GetComponentsInChildren<AudioSource>();
+        CreatePool();
     }
 
     private void CreatePool()
     {
-        // 인스펙터에서 직접 할당
+        sfxPlayer = sfxsTransform.GetComponentsInChildren<AudioSource>();
     }
 
     public void PlayeBGM(string bgmName)
@@ -85,6 +88,7 @@ public class AudioManager : SingleTon<AudioManager>
         {
             idlePlayer.clip = sfxClip;
             idlePlayer.Play();
+            Debug.Log(string.Format("SFX 플레이: {0}", idlePlayer));
         }
     }
 
@@ -97,6 +101,7 @@ public class AudioManager : SingleTon<AudioManager>
             if (sfxPlayer[i].isPlaying)
                 continue;
 
+            Debug.Log(string.Format("빈 SFX 플레이어 발견: {0}번째 플레이어", i));
             return sfxPlayer[i];
         }
 
