@@ -74,6 +74,7 @@ public class DialogueManager : SingleTon<DialogueManager>
         if (call != null)
         {
             OnDialogueEnd.AddListener(call);
+            Debug.Log(string.Format("대화 종료 이벤트 등록: {0}", call));
         }
 
         if (IsDialogueExist())
@@ -168,11 +169,12 @@ public class DialogueManager : SingleTon<DialogueManager>
         DeleteParticipations();
         //GameManager.Instance.GoBackGameState();
 
+        Debug.Log(string.Format("등록된 이벤트 발동"));
         OnDialogueEnd?.Invoke();
         OnDialogueEnd.RemoveAllListeners();
 
         inConversation = false;
-        CameraController.Instance.SetCamToTopDownView();
+        //CameraController.Instance.SetCamToTopDownView(); //유니티 이벤트에 영구적 콜백으로 등록
     }
 
     private void DeleteParticipations()
