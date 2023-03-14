@@ -59,6 +59,7 @@ public class Piece : LifeUnit, ITargetable
 
     protected virtual void Awake()
     {
+        base.Awake();
         render = GetComponentInChildren<Renderer>();
 
         recognized = new DecidedStateLists();
@@ -231,13 +232,13 @@ public class Piece : LifeUnit, ITargetable
     }
     public void ChangeColor()
     {
-        Debug.Log("팀 색상으로 변경");
+        //Debug.Log("팀 색상으로 변경");
         CurNormal = team.normal;
         render.material.color = CurNormal;
     }
     public void ChangeColor(Color color)
     {
-        Debug.Log(color + " 색상으로 변경");
+        //Debug.Log(color + " 색상으로 변경");
         CurNormal = color;
         render.material.color = CurNormal;
 
