@@ -10,7 +10,7 @@ public class EightWayMove : MoveRecognizer, IPieceMovable
     public EightWayMove(Piece controlled, int level) : base(controlled)
     {
         straight = new StraightMove(controlled, level);
-        diagonal = new DiagonalMove(controlled, level); ;
+        diagonal = new DiagonalMove(controlled, level);
 
     }
     public void RecognizeRange(Vector2Int location, StateLists recognized)

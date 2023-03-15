@@ -24,12 +24,12 @@ MonoBehaviour:
     calledDialogue: []
   - isCoreUnit: 0
     piecePrefab: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
-    character: {fileID: 11400000, guid: 14f5e314656adae47b96e4b84bc5ce07, type: 2}
+    character: {fileID: 11400000, guid: ffbb944bf91b54b419a6254e14572399, type: 2}
     location: {x: 5, y: 7}
     calledDialogue: []
   - isCoreUnit: 0
     piecePrefab: {fileID: 8815173425037999921, guid: 0a020da768c0b324994acd0939968828, type: 3}
-    character: {fileID: 11400000, guid: 8d02293c5205d8f40b96fd9ffc2eb617, type: 2}
+    character: {fileID: 11400000, guid: b2a4e4f33020cec49b804458d9971753, type: 2}
     location: {x: 1, y: 7}
     calledDialogue: []
   - isCoreUnit: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   players:
   - isCoreUnit: 0
     piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
-    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    character: {fileID: 11400000, guid: 48b6ca04a7bd82b4383edd53723c6405, type: 2}
     location: {x: 1, y: 0}
     calledDialogue: []
   - isCoreUnit: 0
@@ -72,6 +72,11 @@ MonoBehaviour:
     calledDialogue: []
   - isCoreUnit: 0
     piecePrefab: {fileID: 78764828, guid: d39ef90ee41d9ec4b9588522c56f39c6, type: 3}
-    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    character: {fileID: 11400000, guid: 8d02293c5205d8f40b96fd9ffc2eb617, type: 2}
     location: {x: 3, y: 0}
+    calledDialogue: []
+  - isCoreUnit: 1
+    piecePrefab: {fileID: 3108192685022573290, guid: aeb6f511538b5ad4ca9423144d59a21a, type: 3}
+    character: {fileID: 11400000, guid: 14f5e314656adae47b96e4b84bc5ce07, type: 2}
+    location: {x: 4, y: 0}
     calledDialogue: []

@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
 
     public bool CheckCoreOnGame()
     {
+        if (coreUnit == null)
+            return true;
         return coreUnit.IsOnGame;
     }
 

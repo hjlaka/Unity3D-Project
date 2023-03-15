@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ChessEvent : GameEvent
 {
     public enum EventType { ATTACK, THREAT, DEFENCE, RETURN, CHECK, CHECKMATE, GAME_END }

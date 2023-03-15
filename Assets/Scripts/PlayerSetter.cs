@@ -11,6 +11,7 @@ public class PlayerSetter : MonoBehaviour
     private Vector2Int placeableMin;
     [SerializeField]
     private Vector2Int placeableMax;
+
     public void GetBoard()
     {
         mainBoard = GameObject.Find("MainBoard").GetComponent<Board>();
@@ -63,6 +64,18 @@ public class PlayerSetter : MonoBehaviour
                 mainBoard.places[i, j].ChangeColor();
             }
         }
+    }
+
+    public bool CheckSettingDone()
+    {
+        Player player = GameManager.Instance.Player;
+
+        //if (!player.CheckCoreOnGame())
+        //  return false;
+        if (!player.CheckActionable()) 
+            return false;
+
+        return true;
     }
 
 

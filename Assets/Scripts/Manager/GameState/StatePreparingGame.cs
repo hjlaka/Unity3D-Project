@@ -20,6 +20,8 @@ public class StatePreparingGame : StateBehaviour<GameManager>
     }
     public override void StateEnter()
     {
+        machine.playerValidToSelectPlace = true;
+
         machine.gameSetter.SetBottomTeam(0);
         PlayerDataManager.Instance.EnablePlayerListUI();
         machine.playerSetter.GetBoard();
@@ -30,5 +32,7 @@ public class StatePreparingGame : StateBehaviour<GameManager>
     {
         machine.playerSetter.MakeBoardSetableNot();
         PlayerDataManager.Instance.DisablePlayerListUI();
+        ChessEventManager.Instance.GetEvent();
+        DialogueManager.Instance.CheckDialogueEvent();
     }
 }

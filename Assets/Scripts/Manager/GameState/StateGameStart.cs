@@ -6,9 +6,17 @@ using UnityEngine;
 public class StateGameStart : StateBehaviour<GameManager>
 {
     private string debug1 = "StateEnter 작업 완료";
+    private GameSetter gameSetter;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        gameSetter = FindObjectOfType<GameSetter>();
+    }
 
     public override StateBehaviour<GameManager> Handle()
     {
+        Debug.Log(string.Format("머신 {0} : {1}", machine, machine?.NextStateType));
         switch(machine.NextStateType)
         {
             case GameManager.GameState.SETTING_GAME:
@@ -27,6 +35,7 @@ public class StateGameStart : StateBehaviour<GameManager>
         ApplyOpponentType();
         ApplyBothPlayerDirection();
         machine.curPlayer = machine.bottomPlayer;
+        machine.nextPlayer = machine.topPlayer;
 
         machine.SetNextState(GameManager.GameState.SETTING_GAME);
 

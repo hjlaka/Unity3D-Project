@@ -26,12 +26,12 @@ public class Board : MonoBehaviour
         return places[index.x, index.y];
     }
 
-    public void ApplyMovable(Piece piece, bool applying)
+    public void ApplyMovable(Piece piece, bool value)
     {
         List<Place> movablePlaces = piece.Recognized.movable;
         for(int i = 0; i < movablePlaces.Count; i++)
         {
-            movablePlaces[i].IsMovableToCurPiece = applying;
+            movablePlaces[i].IsMovableToCurPiece = value;
         }
     }
 }

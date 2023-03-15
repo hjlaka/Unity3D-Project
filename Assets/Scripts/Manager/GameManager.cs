@@ -44,6 +44,14 @@ public class GameManager : SingleTon<GameManager>
         AI
     }
 
+    public enum Result
+    {
+        NONE,
+        WIN,
+        LOSE,
+        DRAW
+    }
+
     public UnityEvent OnTest;
 
     // =========================== StateMachine ================================
@@ -112,6 +120,7 @@ public class GameManager : SingleTon<GameManager>
     public TurnState turnState;
 
     public Player curPlayer;
+    public Player nextPlayer;
 
     [SerializeField]
     private int trunRemain;
@@ -125,6 +134,8 @@ public class GameManager : SingleTon<GameManager>
                 turnRemainUI.text = trunRemain.ToString();
         }
     }
+
+
 
 
     // 사용 예정 변수
@@ -198,10 +209,12 @@ public class GameManager : SingleTon<GameManager>
         {
             case TurnState.BOTTOM_TURN:
                 turnState = TurnState.TOP_TURN;
+                nextPlayer = curPlayer;
                 curPlayer = topPlayer;
                 break;
             case TurnState.TOP_TURN:
                 turnState = TurnState.BOTTOM_TURN;
+                nextPlayer = curPlayer;
                 curPlayer = bottomPlayer;
                 break;
             case TurnState.RETURN:
@@ -216,20 +229,31 @@ public class GameManager : SingleTon<GameManager>
     }
 
 
-    private void JudgeGame()
+    public Result JudgeGame()
     {
         // 현재 플레이어가 포기 신호를 보내면 게임 종료.
 
         // 상대편 왕이 없거나 체크메이트 상태면 게임 종료.
 
         // 상대편 이동할 기물이 없으면 무승부.
+
+        if(!nextPlayer.CheckCoreOnGame())
+        {
+            // 승리
+            return Result.WIN;
+
+        }
+        else if(!nextPlayer.CheckActionable())
+        {
+            // 무승부
+            return Result.DRAW;
+        }
+
+        return Result.NONE;
     }
 
     private bool IsEnded()
     {
-
-
-
         if (player.CoreUnit != null && !player.CoreUnit.IsOnGame)
             return true;
         else if (opponentPlayer.CoreUnit != null && !opponentPlayer.CoreUnit.IsOnGame)

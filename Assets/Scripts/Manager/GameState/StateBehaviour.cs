@@ -6,7 +6,7 @@ public abstract class StateBehaviour<T> : MonoBehaviour
 {
     protected T machine;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         // 임시 추가. 일일이 할당하는 방법도 있음.
         machine = GetComponentInParent<T>();

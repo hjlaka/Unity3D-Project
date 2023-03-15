@@ -64,12 +64,15 @@ public class AI : Player
         switch (type)
         {
             case AIStrategy.AIStrategyType.AGGRESIVE:
+                Debug.Log("공격 타입 설정");
                 aiStrategy = gameObject.AddComponent<AggresiveStrategy>();
                 break;
             case AIStrategy.AIStrategyType.RANDOM:
+                Debug.Log("랜덤 타입 설정");
                 aiStrategy = gameObject.AddComponent<RandomAIStrategy>();
                 break;
             case AIStrategy.AIStrategyType.WILLFIRST:
+                Debug.Log("의지 타입 설정");
                 aiStrategy = gameObject.AddComponent<WillFirstStrategy>();
                 break;
             default:

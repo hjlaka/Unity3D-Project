@@ -1,9 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class StateTurnFinished : StateBehaviour<GameManager>
 {
+
+    private GameManager.GameState nextState;
+    [SerializeField]
+    private GameEndUI gameEndUI;
+    private string resultText;
+
     //TODO: 수정
     public override StateBehaviour<GameManager> Handle()
     {
@@ -20,33 +27,31 @@ public class StateTurnFinished : StateBehaviour<GameManager>
     }
     public override void StateEnter()
     {
-
-
-
-        /*if (machine.IsEnded())
+        switch(machine.JudgeGame())
         {
-            Debug.Log("게임 종료 인식");
-            ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.GAME_END, null, null));
-            ChangeGameState(GameState.GAME_END);
-        
-        }*/
-
-        // 게임 종료 체크도 여기에서 해야 하나?
-        
-        if(false/* 게임 종료 조건 충족 */)
-        {
-            // 게임 종료로 넘어가도록 하기
+            case GameManager.Result.WIN:
+                ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.GAME_END, null, null));
+                nextState = GameManager.GameState.ON_PEACE;
+                string winName = machine.curPlayer == machine.player ? "플레이어" : "상대편";
+                resultText = string.Format("{0} 승리!", winName);
+                break;
+            case GameManager.Result.DRAW:
+                ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.GAME_END, null, null));
+                nextState = GameManager.GameState.ON_PEACE;
+                resultText = string.Format("무승부!");
+                break;
+            case GameManager.Result.NONE:
+                nextState = GameManager.GameState.ON_TURN;
+                break;
+            default:
+                break;
         }
-        else
-        {
-            //여기에서 이벤트 체크
-            // 이벤트 실행
-            // 체스 이벤트
-            ChessEventManager.Instance.GetEvent();
 
-            // 대화 이벤트
-            DialogueManager.Instance.CheckDialogueEvent(NextStep);
-        }
+        Debug.Log("이벤트 실행");
+        ChessEventManager.Instance.GetEvent();
+
+        // 대화 이벤트
+        DialogueManager.Instance.CheckDialogueEvent(NextStep);
     }
 
     public override void StateExit()
@@ -58,6 +63,10 @@ public class StateTurnFinished : StateBehaviour<GameManager>
     // 임시 추가
     private void NextStep()
     {
-        machine.SetNextState(GameManager.GameState.ON_TURN);
+        if(nextState == GameManager.GameState.ON_PEACE)
+        {
+            gameEndUI.UpdateUI(resultText);
+        }
+        machine.SetNextState(nextState);
     }
 }

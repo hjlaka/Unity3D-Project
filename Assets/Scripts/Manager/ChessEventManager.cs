@@ -6,6 +6,10 @@ using UnityEngine.Events;
 public class ChessEventManager : SingleTon<ChessEventManager>
 {
     private Heap<ChessEvent> eventList;
+    //========디버그용===========
+    [SerializeField]
+    private List<ChessEvent> eventsDebug;
+    //==========================
 
     private Dictionary<string, ChessEvent> relationDictionary;
 
@@ -15,6 +19,8 @@ public class ChessEventManager : SingleTon<ChessEventManager>
     {
         eventList = new Heap<ChessEvent>(new Greater());
         relationDictionary = new Dictionary<string, ChessEvent>();
+
+        eventsDebug = new List<ChessEvent>();
     }
 
     private void AddEvent(float importance, ChessEvent chessEvent)
@@ -22,6 +28,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         // 주체가 되는 기물
         Node<ChessEvent> node = new Node<ChessEvent>(importance, chessEvent);
         eventList.Push(node);
+        eventsDebug.Add(chessEvent);
         Debug.Log("----------------- 이벤트 추가 ------------------- : " + eventList.Count + chessEvent.Subject + chessEvent.Target);
 
         eventList.PrintHeap();
@@ -30,7 +37,8 @@ public class ChessEventManager : SingleTon<ChessEventManager>
 
     public void SubmitEvent(ChessEvent chessEvent)
     {
-        switch(chessEvent.Type)
+        Debug.Log(string.Format("게임 이벤트 제출: {0}", chessEvent));
+        switch (chessEvent.Type)
         {
             case ChessEvent.EventType.GAME_END:
                 Debug.Log("게임 종료 이벤트 제출");
@@ -114,7 +122,8 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         // 참가자로 등록 시키기.
         // 혹은 후속 대사로 등록 시키기.
 
-        eventList.Clear();     
+        eventList.Clear();
+        eventsDebug.Clear();
     }
 
     private void FindEvent()
@@ -158,7 +167,8 @@ public class ChessEventManager : SingleTon<ChessEventManager>
             case ChessEvent.EventType.RETURN:
                 return "Return";
             case ChessEvent.EventType.CHECK:
-                return "Check";
+                return "왕을 공격하겠다!";
+                //return "Check";
             default:
                 return "Default";
         }
@@ -177,7 +187,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
             case ChessEvent.EventType.RETURN:
                 return "Return";
             case ChessEvent.EventType.CHECK:
-                return "Check";
+                return "감히!";
             default:
                 return "Default";
         }

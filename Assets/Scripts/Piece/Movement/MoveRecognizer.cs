@@ -161,7 +161,9 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
                 
                 IChessEventable chessEventable = recognizedLists as IChessEventable;
                 chessEventable?.Check(targetPiece);
-                
+                //임시 추가
+                //chessEventable?.Threat(controlled, targetPiece);
+
             }
             else
             {

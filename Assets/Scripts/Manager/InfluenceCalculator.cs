@@ -6,6 +6,7 @@ public class InfluenceCalculator : MonoBehaviour
 {
     public void CalculateInfluence(Piece piece)
     {
+        Debug.Log(string.Format("{0} 영향력 계산", piece));
         Place newPlace = piece.place;
         Board curBoard = newPlace.board;
 

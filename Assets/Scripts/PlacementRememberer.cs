@@ -34,6 +34,12 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
             return;
         }
 
+        if(GameManager.Instance.curPlayer is AI)
+        {
+            Debug.Log("AI턴에 무르기 불가");
+            return;
+        }
+
         originalTurn = GameManager.Instance.turnState;
         GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
 

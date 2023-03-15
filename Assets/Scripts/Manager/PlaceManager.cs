@@ -52,6 +52,13 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public void SelectPiece(Piece piece)
     {
+        // 수정 예정
+        if (!GameManager.Instance.playerValidToSelectPlace)
+        {
+            Debug.Log("선택 허용 안됨");
+            return; 
+        }
+
         SelectedPiece = piece;
         SelectedPiece.ChangeColor(selectingColor);
 /*        if (GameManager.Instance.state == GameManager.GameState.SELECTING_PIECE)
@@ -101,9 +108,15 @@ public class PlaceManager : SingleTon<PlaceManager>
     {
         Debug.Log("의지 수신");
         // 유효성 검사
-        if(!GameManager.Instance.playerValidToSelectPlace)
+
+        if (!GameManager.Instance.playerValidToSelectPlace)
         {
             Debug.Log("유효하지 않은 선택");
+            return;
+        }
+        if (!CheckTargetValidity(target))
+        {
+            Debug.Log("이동 불가한 위치");
             return;
         }
         GameManager.Instance.playerValidToSelectPlace = false;
@@ -126,6 +139,24 @@ public class PlaceManager : SingleTon<PlaceManager>
                 turnEventAttack.DoTurn();
                 break;
         }
+    }
+
+    private bool CheckTargetValidity(ITargetable targetable)
+    {
+        Debug.Log(string.Format("{0}가 {1}에게 의지 발산", selectedPiece, targetable));
+        if (targetable is Place)
+        {
+
+            return (targetable as Place).IsMovableToCurPiece;
+ 
+        }
+        else if (targetable is Piece)
+        {
+            return (targetable as Piece).place.IsMovableToCurPiece;
+
+        }
+        Debug.Log("이동 불가한 위치");
+        return false;
     }
 
 
@@ -266,6 +297,8 @@ public class PlaceManager : SingleTon<PlaceManager>
     private IEnumerator EndTurnCoroutine()
     {
         Piece endedPiece = selectedPiece;
+
+        OnFinishAction?.Invoke();
         // 기본 대기 시간
         yield return new WaitForSeconds(1.5f);
 
