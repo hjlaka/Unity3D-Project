@@ -24,8 +24,12 @@ public class StateOnTurn : StateBehaviour<GameManager>
         //움직일 수 있는 경우의 수가 있는지 확인 (없으면 무승부)
 
         machine.playerValidToSelectPlace = true;
-        ChessEventManager.Instance.GetEvent();
-        DialogueManager.Instance.CheckDialogueEvent();
+        Debug.Log("턴 결정 가능 상태로 변경");
+
+        if (machine.curPlayer is AI)
+        {
+            ((AI)machine.curPlayer).DoTurn();
+        }
     }
 
     public override void StateExit()

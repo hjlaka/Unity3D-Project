@@ -7,21 +7,20 @@ using UnityEngine.Events;
 
 public class GameManager : SingleTon<GameManager>
 {
-    public UnityEvent OnTest;
-    public enum GameState 
-    { 
+    public enum GameState
+    {
         NONE,
         START_GAME,
         SELECTING_AI,
         SETTING_GAME,
         PREPARING_GAME,
-        SELECTING_PIECE, 
-        SELECTING_PLACE, 
+        SELECTING_PIECE,
+        SELECTING_PLACE,
         DOING_PLAYER_TURN_START,
         DOING_PLAYER_TURN,
         ACTION,
         TURN_FINISHED,
-        TURN_CHANGE, 
+        TURN_CHANGE,
         IN_CONVERSATION,
         OPPONENT_TURN_START,
         OPPONENT_TURN,
@@ -45,9 +44,9 @@ public class GameManager : SingleTon<GameManager>
         AI
     }
 
+    public UnityEvent OnTest;
 
     // =========================== StateMachine ================================
-
     public StateBehaviour<GameManager> curState { get; private set; }
     [SerializeField]
     private GameState curStateType;
@@ -74,13 +73,10 @@ public class GameManager : SingleTon<GameManager>
     [Header("EngineSetting")]
     [SerializeField]
     public GameSetter gameSetter;
-
     [SerializeField]
     public AI aiManager;
-
     [SerializeField]
     public PlayerSetter playerSetter;
-
     [SerializeField]
     private TextMeshProUGUI turnRemainUI;
 
@@ -136,6 +132,7 @@ public class GameManager : SingleTon<GameManager>
     public bool playerValidToSelectPlace { get; set; }
 
 
+
     [Header("DebugMode")]
     public bool scoreDebugMode;
 
@@ -146,6 +143,7 @@ public class GameManager : SingleTon<GameManager>
 
     private void Awake()
     {
+        // 게임 상태 머신 ============================================================
         stateDic = new Dictionary<GameState, StateBehaviour<GameManager>>();
 
         statePeace = GetComponentInChildren<StatePeace>();
@@ -168,6 +166,8 @@ public class GameManager : SingleTon<GameManager>
         curStateType = GameState.NONE;
         nextStateType = GameState.ON_PEACE;
         UpdateGameStateMachine();
+
+        //===========================================================================
     }
 
     private void Start()
@@ -193,24 +193,16 @@ public class GameManager : SingleTon<GameManager>
     public void ChangeTurn()
     {
         //AI와 플레이어 턴은 한번씩만 진행되는가?
-
+        Debug.Log("턴 변경");
         switch(turnState)
         {
             case TurnState.BOTTOM_TURN:
                 turnState = TurnState.TOP_TURN;
                 curPlayer = topPlayer;
-                if (curPlayer is AI)
-                {
-                    ((AI)opponentPlayer).DoTurn();
-                }
                 break;
             case TurnState.TOP_TURN:
                 turnState = TurnState.BOTTOM_TURN;
                 curPlayer = bottomPlayer;
-                if (curPlayer is AI)
-                {
-                    ((AI)player).DoTurn();
-                }
                 break;
             case TurnState.RETURN:
                 turnState = TurnState.BOTTOM_TURN;
