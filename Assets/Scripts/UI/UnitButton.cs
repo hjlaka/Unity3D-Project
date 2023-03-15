@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ChangeLayerFunc))]
 [RequireComponent(typeof(Button))]
 public class UnitButton : MonoBehaviour
 {
@@ -52,11 +51,7 @@ public class UnitButton : MonoBehaviour
             Debug.Log("준비 상태가 아니다");
             return;
         }
-            
-
-
         PlaceManager.Instance.SelectPiece(piece);
-
     }
 
     public void FinishSetting()
