@@ -62,15 +62,15 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
     private bool DiagonalLT(Vector2Int curLocation, int boardHeight)
     {
         // 허용된 위치인지 탐색
-        if (curMoveCount >= validMoveCount) return false;
         if (curLocation.x < 0) return false;
         if (curLocation.y > boardHeight - 1) return false;
 
         // 이동 가능 범위 등록
         if (RecognizePiece(curLocation)) return true;
 
-
         curMoveCount++;
+
+        if (curMoveCount >= validMoveCount) return false;
 
         DiagonalLT(curLocation + new Vector2Int(-1, 1), boardHeight);
 
