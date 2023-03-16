@@ -28,6 +28,7 @@ public class TurnEventPeace : TurnEvent
         // 목적지 도착과 그 후 연산
 
         PlaceManager.Instance.MovePiece(subject, targetPlace);
+        PlaceManager.Instance.NotifyObservers();
 
         yield return null;
 
@@ -37,7 +38,8 @@ public class TurnEventPeace : TurnEvent
     {
         Debug.Log("결과");
         yield return null;
-        ChessEventManager.Instance.GetEvent();
-        DialogueManager.Instance.CheckDialogueEvent(NextStep);
+        /*        ChessEventManager.Instance.GetEvent();
+                DialogueManager.Instance.CheckDialogueEvent(NextStep);*/
+        NextStep();
     }
 }

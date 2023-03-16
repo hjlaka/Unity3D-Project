@@ -55,7 +55,7 @@ public class TurnEventAttack : TurnEvent
         OnTargetAttack?.Invoke();
         PlaceManager.Instance.MovePiece(subject, target.place);
         Debug.Log(string.Format("======={0}이가 {1}을 공격======", subject, target));
-
+        PlaceManager.Instance.NotifyObservers();
         yield return new WaitForSeconds(2f);
 
         NextStep();
@@ -67,10 +67,11 @@ public class TurnEventAttack : TurnEvent
         yield return null;
         // 후처리 대화 이벤트 발동. (옵저버 계산 후에 이루어져야 할 일이다.)
         Debug.Log("결과들");
-        ChessEventManager.Instance.GetEvent();
-        DialogueManager.Instance.CheckDialogueEvent(NextStep);
+/*        ChessEventManager.Instance.GetEvent();
+        DialogueManager.Instance.CheckDialogueEvent(NextStep);*/
         
         yield return new WaitForSeconds(1f);
+        NextStep();
     }
 
 
