@@ -38,7 +38,7 @@ public class ChessEvent : GameEvent
         target = piece;
     }
 
-    public string GetTypeAsString()
+    public override string ToString()
     {
         switch(type)
         {
