@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Place : MonoBehaviour, ISubject, ITargetable
+public class Place : MonoBehaviour, ISubject, IOnBoardTargetable
 {
     public enum PlaceType { A, B, V };
     private Piece piece;
@@ -164,6 +164,7 @@ public class Place : MonoBehaviour, ISubject, ITargetable
             if(IsMovableToCurPiece)
             {
                 PlaceManager.Instance.MovePiece(PlaceManager.Instance.SelectedPiece, this);
+                PlaceManager.Instance.NotifyObservers();
                 PlaceManager.Instance.SelectedPieceInit();
                 return;
             }
@@ -171,7 +172,7 @@ public class Place : MonoBehaviour, ISubject, ITargetable
         else if(GameManager.Instance.curState is StateOnTurn)
         {
             StateOnTurn stateOnTurn = GameManager.Instance.curState as StateOnTurn;
-            if(!GameManager.Instance.playerValidToSelectPlace)
+            if(!GameManager.Instance.TurnActionDecided)
             //if (stateOnTurn.DecideFinished)
             {
                 Debug.Log("이미 움직임 결정됨");
@@ -269,17 +270,22 @@ public class Place : MonoBehaviour, ISubject, ITargetable
         return this;
     }
 
-    public ITargetable.Type React()
+    public IOnBoardTargetable.Type React()
     {
         // 예외처리: 위에 기물이 있는 경우
         if (piece != null)
-            return ITargetable.Type.Attack;
+            return IOnBoardTargetable.Type.Attack;
         else
-            return ITargetable.Type.Peace;
+            return IOnBoardTargetable.Type.Peace;
     }
 
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+
+    public Place GetPlace()
+    {
+        return this;
     }
 }

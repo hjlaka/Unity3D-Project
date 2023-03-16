@@ -6,7 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(PlaceObserver))]
 [RequireComponent (typeof(UnitObserver))]
 [RequireComponent(typeof(Subject))]
-public class Piece : LifeUnit, ITargetable
+public class Piece : LifeUnit, IOnBoardTargetable
 {
     [Header("InGame")]
     public Place place;
@@ -46,7 +46,7 @@ public class Piece : LifeUnit, ITargetable
     private Renderer render;
 
     private Color curNormal;
-    public Color CurNormal { get { return curNormal; }  private set { curNormal = value;  Debug.Log("색 변경"); } }
+    public Color CurNormal { get { return curNormal; }  private set { curNormal = value;  /*Debug.Log("색 변경");*/ } }
 
     private IDecidePlaceStrategy decideDesireStrategy;
 
@@ -224,13 +224,13 @@ public class Piece : LifeUnit, ITargetable
 
     private void AttackTo(Place place)
     {
-        PlaceManager.Instance.Attack(this, place.Piece);
+        /*PlaceManager.Instance.Attack(this, place.Piece);*/
     }
     protected void BeAttackedBy(Piece piece)
     {
-        Place attackPlace = this.place;
+        /*Place attackPlace = this.place;
         PlaceManager.Instance.ExpelPiece(this);
-        PlaceManager.Instance.MoveProcess(piece, attackPlace);
+        PlaceManager.Instance.MoveProcess(piece, attackPlace);*/
     }
     public void ChangeColor()
     {
@@ -261,14 +261,19 @@ public class Piece : LifeUnit, ITargetable
         return character.name;
     }
 
-    public ITargetable.Type React()
+    public IOnBoardTargetable.Type React()
     {
-        return ITargetable.Type.Attack;
+        return IOnBoardTargetable.Type.Attack;
     }
 
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+
+    public Place GetPlace()
+    {
+        return place;
     }
 }
 
