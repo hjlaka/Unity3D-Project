@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
     public bool CheckActionable()
     {
-        for(int i = 0; i <= pieceList.Count; i++)
+        for(int i = 0; i < pieceList.Count; i++)
         {
             if (pieceList[i].Recognized.movable.Count > 0)
                 return true;
