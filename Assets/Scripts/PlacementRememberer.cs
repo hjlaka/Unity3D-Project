@@ -28,7 +28,7 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
             return;
         }
 
-        if (!GameManager.Instance.playerValidToSelectPlace)
+        if (!GameManager.Instance.TurnActionDecided)
         {
             Debug.Log("기물 이동이 결정된 상태에서 메멘토 불가능");
             return;
@@ -39,6 +39,8 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
             Debug.Log("AI턴에 무르기 불가");
             return;
         }
+
+        GameManager.Instance.TurnActionDecided = false;
 
         originalTurn = GameManager.Instance.turnState;
         GameManager.Instance.ChangeTurn(GameManager.TurnState.RETURN);
@@ -90,7 +92,9 @@ public class PlacementRememberer : MonoBehaviour, IOriginator<Placement>
             }
         }
 
+        PlaceManager.Instance.NotifyObservers();
         GameManager.Instance.ChangeTurn(originalTurn);
+        GameManager.Instance.TurnActionDecided = true;
         //GameManager.Instance.ChangeGameState(GameManager.GameState.TURN_FINISHED);
         // 이벤트 확인 동작 게임 매니저에서 처리
     }

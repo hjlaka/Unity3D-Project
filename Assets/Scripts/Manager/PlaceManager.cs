@@ -41,6 +41,10 @@ public class PlaceManager : SingleTon<PlaceManager>
     private TurnEvent turnEventAttack;
     //=================================
 
+    //========== Observer =============
+    private List<ISubject> changedSubjects;
+    //=================================
+
     private void Awake()
     {
         influenceCalculator = GetComponentInChildren<InfluenceCalculator>();
@@ -48,12 +52,14 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         turnEventPeace = GetComponentInChildren<TurnEventPeace>();
         turnEventAttack = GetComponentInChildren<TurnEventAttack>();
+
+        changedSubjects = new List<ISubject>();
     }
 
     public void SelectPiece(Piece piece)
     {
         // 수정 예정
-        if (!GameManager.Instance.playerValidToSelectPlace)
+        if (!GameManager.Instance.TurnActionDecided)
         {
             Debug.Log("선택 허용 안됨");
             return; 
@@ -87,7 +93,6 @@ public class PlaceManager : SingleTon<PlaceManager>
             markable.PreShowEnd(selectedPiece);
 
         SelectedPieceInit();
-        //GameManager.Instance.ChangeGameState(GameManager.GameState.SELECTING_PIECE);
     }
 
     public void SelectedPieceInit()
@@ -104,12 +109,12 @@ public class PlaceManager : SingleTon<PlaceManager>
         SelectedPiece = null;
     }
 
-    public void GetWill(Piece subject, ITargetable target)
+    public void GetWill(Piece subject, IOnBoardTargetable target)
     {
         Debug.Log("의지 수신");
         // 유효성 검사
 
-        if (!GameManager.Instance.playerValidToSelectPlace)
+        if (!GameManager.Instance.TurnActionDecided)
         {
             Debug.Log("유효하지 않은 선택");
             return;
@@ -119,29 +124,29 @@ public class PlaceManager : SingleTon<PlaceManager>
             Debug.Log("이동 불가한 위치");
             return;
         }
-        GameManager.Instance.playerValidToSelectPlace = false;
+        GameManager.Instance.TurnActionDecided = false;
         OnStartAction?.Invoke(selectedPiece);
 
         // 턴 이벤트 생성
 
-        ITargetable.Type turnType = target.React();
+        IOnBoardTargetable.Type turnType = target.React();
 
         
 
         switch(turnType)
         {
-            case ITargetable.Type.Peace:
+            case IOnBoardTargetable.Type.Peace:
                 turnEventPeace.SetTurnEvent(subject, target);
                 turnEventPeace.DoTurn();
                 break;
-            case ITargetable.Type.Attack:
+            case IOnBoardTargetable.Type.Attack:
                 turnEventAttack.SetTurnEvent(subject, target);
                 turnEventAttack.DoTurn();
                 break;
         }
     }
 
-    private bool CheckTargetValidity(ITargetable targetable)
+    private bool CheckTargetValidity(IOnBoardTargetable targetable)
     {
         Debug.Log(string.Format("{0}가 {1}에게 의지 발산", selectedPiece, targetable));
         if (targetable is Place)
@@ -201,13 +206,12 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
 
 
-    public void MoveProcess(Piece piece, Place place)
+    /*public void MoveProcess(Piece piece, Place place)
     {
         Place oldPlace = piece.place;
         IMarkable oldBoard = oldPlace?.board as IMarkable;
         IMarkable newBoard = place.board as IMarkable;
         Placement subsequent = null;
-
 
         // 유효성 검사 --------------------------------------
         if (!IsPlaceable(place, piece))
@@ -216,7 +220,7 @@ public class PlaceManager : SingleTon<PlaceManager>
             return;
         }
 
-        GameManager.Instance.playerValidToSelectPlace = false;
+        GameManager.Instance.TurnActionDecided = false;
 
         // 연출 - 리스트 의존적.
         if (oldBoard != null)
@@ -237,7 +241,6 @@ public class PlaceManager : SingleTon<PlaceManager>
             newBoard.PostShow(piece);
         }
         
-
         // 연출
         OnFinishAction?.Invoke();
 
@@ -246,14 +249,12 @@ public class PlaceManager : SingleTon<PlaceManager>
 
         // 이벤트 종료 확인 후 턴 종료
 
-
-
         // 메멘토 등록
         if(oldBoard != null && oldBoard == newBoard)
         {
             SaveMemento(piece, oldPlace, place, attackedPiece, subsequent);
         }
-    }
+    }*/
 
     public void SaveMemento(Piece piece, Place prevPlace, Place nextPlace, Piece attackedPiece, Placement subsequent)
     {
@@ -265,14 +266,17 @@ public class PlaceManager : SingleTon<PlaceManager>
 
     public Piece MovePiece(Piece piece, Place place)
     {
-        if(piece == null || place == null) 
+        if(piece == null || place == null)
+        {
+            Debug.LogError(string.Format("null 객체가 들어옴 {0}, {1}", piece, place));
             return null;
-
+        }
+         
         Place oldPlace = piece.place;
-        if(oldPlace != null)
-            influenceCalculator.InitInfluence(piece);
 
-        // 연산
+
+        influenceCalculator.InitInfluence(piece);
+
         Piece attackedPiece = piece.SetInPlace(place);    // 기물이 밟는 위치 변경됨
 
         if (attackedPiece != null)
@@ -283,11 +287,43 @@ public class PlaceManager : SingleTon<PlaceManager>
         influenceCalculator.CalculateInfluence(piece);
         influenceCalculator.ApplyInfluence(piece);
 
-        // 기물을 옮겼을 때, 변화된 자리들 알림 발송
-        oldPlace?.notifyObserver();
-        place.notifyObserver();
+        // 기물을 옮겼을 때, 변화된 자리들 알림 발송 (기물을 보드 위에서 움직일 때 항상 적용)
+
+        // 변화된 주체로 등록
+        AddChangedSubject(oldPlace);
+        AddChangedSubject(place);
+
+        //NotifyToObservers(oldPlace);
+        //NotifyToObservers(place);
 
         return attackedPiece;
+    }
+
+    private void AddChangedSubject(ISubject subject)
+    {
+        if (null == subject)
+            return;
+
+        //중복 검사
+        for (int i = 0; i < changedSubjects.Count; i++)
+        {
+            if(changedSubjects[i] != subject)
+            {
+                continue;
+            }
+        }
+
+        changedSubjects.Add(subject);
+    }
+
+    public void NotifyObservers()
+    {
+        for(int i = 0; i < changedSubjects.Count; i++)
+        {
+            changedSubjects[i].notifyObserver();
+        }
+
+        changedSubjects.Clear();
     }
 
     public void EndTurn()
