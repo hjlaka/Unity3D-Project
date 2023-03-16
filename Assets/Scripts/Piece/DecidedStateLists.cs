@@ -29,10 +29,12 @@ public class DecidedStateLists : StateLists, IChessEventable
         Debug.Log("공격 이벤트");
     }
 
-    public void Check(Piece targetPiece)
+    public void Check(Piece subject, Piece target)
     {
         Debug.Log("체크 이벤트");
-        ChessEventManager.Instance.CheckEvent(targetPiece);
+        //ChessEventManager.Instance.CheckEvent(target);
+        ChessEvent chessEvent = new ChessEvent(ChessEvent.EventType.CHECK, subject, target);
+        ChessEventManager.Instance.SubmitEvent(chessEvent);
     }
 
     public void CheckMate(Piece subject, Piece target)
@@ -50,12 +52,14 @@ public class DecidedStateLists : StateLists, IChessEventable
         // 예외처리
         if (target.team.direction == TeamData.Direction.UpToDown)
         {
-            if (deltaTopBottomHeat > 0)
+            if (targetPlace.HeatPointTopTeam > targetPlace.HeatPointBottomTeam)
+                //위팀 과열도가 더 높은 상태라면
                 return;
         }
         else
         {
-            if (deltaTopBottomHeat <= 0)
+            if (targetPlace.HeatPointTopTeam < targetPlace.HeatPointBottomTeam)
+                //아래팀 과열도가 더 높은 상태라면
                 return;
         }
 
