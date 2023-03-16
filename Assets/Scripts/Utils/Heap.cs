@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Heap<T>
@@ -11,6 +12,7 @@ public class Heap<T>
     private Compare comp;
 
     public int Count { get { return heapList.Count; } }
+    private StringBuilder debug = new StringBuilder();
 
     public Heap()
     {
@@ -162,17 +164,22 @@ public class Heap<T>
     public void PrintHeap()
     {
         int floorNum = 0;
-        string debug = "내용물 순서";
+        
+        debug.Append("내용물 순서");
 
         for(int i = 0; i < Count; i++)
         {
             if (i == floorNum)
             {
                 Debug.Log(debug);
-                debug = "";
+                debug.Clear();
                 floorNum = floorNum * 2 + 1;
             }
-            debug += "(" + heapList[i].value + "/" + heapList[i].obj + ") ";
+            debug.Append("(");
+            debug.Append(heapList[i].value);
+            debug.Append("/");
+            debug.Append(heapList[i].obj);
+            debug.Append(") ");
 
         }
 
