@@ -135,12 +135,8 @@ public class GameManager : SingleTon<GameManager>
         }
     }
 
-
-
-
-    // 사용 예정 변수
-    public bool playerValidToSelectPiece { get; set; }
-    public bool playerValidToSelectPlace { get; set; }
+    public bool TurnActionDecided { get; set; }
+    public bool IsPaused { get; private set; }
 
 
 
@@ -293,17 +289,20 @@ public class GameManager : SingleTon<GameManager>
         {
             Debug.Log("해당 상태 클래스 없음");
         }
-
     }
 
-    private void GetGameStateInstance(GameState gameState)
+    public void PauseGame()
     {
-        switch(gameState)
+        if(IsPaused)
         {
-            case GameState.START_GAME:
-                return;
-            default:
-                return;
+            Time.timeScale = 1;
+            IsPaused = false;
         }
+        else
+        {
+            Time.timeScale = 0;
+            IsPaused = true;
+        }
+        
     }
 }
