@@ -47,7 +47,7 @@ public class StateTurnFinished : StateBehaviour<GameManager>
                 break;
         }
 
-        Debug.Log("이벤트 실행");
+        //Debug.Log(string.Format"이벤트 실행 : 이벤트 개수 {0}", );
         ChessEventManager.Instance.GetEvent();
 
         // 대화 이벤트

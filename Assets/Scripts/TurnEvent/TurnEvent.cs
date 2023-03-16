@@ -21,14 +21,14 @@ public abstract class TurnEvent : MonoBehaviour
 
     //=============================
     protected Piece subject;
-    protected ITargetable targetable;
+    protected IOnBoardTargetable targetable;
     //========= Record ============
     protected Place prevPlace;
     //=============================
 
     
 
-    public void SetTurnEvent(Piece subject, ITargetable targetable)
+    public void SetTurnEvent(Piece subject, IOnBoardTargetable targetable)
     {
         this.subject = subject;
         this.targetable = targetable;
@@ -55,29 +55,29 @@ public abstract class TurnEvent : MonoBehaviour
             case Step.Declare:
 
                 curStepCoroutine = StartCoroutine(HandleDeclare());
-                Debug.Log("선언");
+                //Debug.Log("선언");
                 //한명만? 아니면 연관된 아이들 모두가 다?
                 break;
 
             case Step.ReactToDeclare:
                 StartCoroutine(HandleReactToDeclare());
-                Debug.Log("선언에 반응");
+                //Debug.Log("선언에 반응");
                 break;
 
             case Step.Move:
                 StartCoroutine(HandleMove());
-                Debug.Log("움직임");
+                //Debug.Log("움직임");
                 break;
 
             case Step.Engage:
                 StartCoroutine(HandleEngage());
-                Debug.Log("엮임");
+                //Debug.Log("엮임");
                 // 대사, 공격, 다시 대사 (더 세분화 될 수 있음)
                 break;
 
             case Step.Result:
                 StartCoroutine(HandleResult());
-                Debug.Log("결과");
+                //Debug.Log("결과");
                 // 퇴장
                 break;
 
@@ -130,7 +130,7 @@ public abstract class TurnEvent : MonoBehaviour
         PlaceManager.Instance.EndTurn();
         // 공통. 메멘토 기록
         yield return null;
-        
+        NextStep();
     }
 
     protected virtual void NextStep()

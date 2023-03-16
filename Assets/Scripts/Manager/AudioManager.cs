@@ -59,9 +59,15 @@ public class AudioManager : SingleTon<AudioManager>
 
         if (null == bgmClip)
         {
-            Debug.LogError(string.Format("요청한 BGM 없음 : ", bgmName));
+            Debug.LogError(string.Format("요청한 BGM 없음 : {0}", bgmName));
             return;
         }
+
+/*        if (bgmPlayer.clip == bgmClip)
+        {
+            Debug.LogError(string.Format("현재와 동일한 BGM : {0}", bgmName));
+            return;
+        }*/
 
         bgmPlayer.clip = bgmClip;
         bgmPlayer.Play();
@@ -88,7 +94,7 @@ public class AudioManager : SingleTon<AudioManager>
         {
             idlePlayer.clip = sfxClip;
             idlePlayer.Play();
-            Debug.Log(string.Format("SFX 플레이: {0}", idlePlayer));
+            //Debug.Log(string.Format("SFX 플레이: {0}", idlePlayer));
         }
     }
 
@@ -101,7 +107,7 @@ public class AudioManager : SingleTon<AudioManager>
             if (sfxPlayer[i].isPlaying)
                 continue;
 
-            Debug.Log(string.Format("빈 SFX 플레이어 발견: {0}번째 플레이어", i));
+            //Debug.Log(string.Format("빈 SFX 플레이어 발견: {0}번째 플레이어", i));
             return sfxPlayer[i];
         }
 

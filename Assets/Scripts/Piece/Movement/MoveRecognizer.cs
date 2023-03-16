@@ -102,7 +102,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
         }
         else
         {
-            Debug.Log("앞에 장애물 없다");
+            //Debug.Log("앞에 장애물 없다");
 
             recognizedLists.AddMovable(targetPlace);
             recognizedLists.AddSpecial(targetPlace);
@@ -160,7 +160,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
                 // 왕에 대한 공격
                 
                 IChessEventable chessEventable = recognizedLists as IChessEventable;
-                chessEventable?.Check(targetPiece);
+                chessEventable?.Check(controlled, targetPiece);
                 //임시 추가
                 //chessEventable?.Threat(controlled, targetPiece);
 

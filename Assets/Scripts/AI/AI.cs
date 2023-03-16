@@ -121,10 +121,12 @@ public class AI : Player
 
         // 기물 움직임
 
-        Debug.Log("고려하는 기물 수: " + pieceList.Count);
+        if (GameManager.Instance.scoreDebugMode) 
+            Debug.Log(string.Format("고려하는 기물 수: {0}", pieceList.Count));
         for(int i = 0; i < pieceList.Count; i++)
         {
-            Debug.Log(string.Format("==============={0}의 의지를 계산합니다.===============", pieceList[i]));
+            if(GameManager.Instance.scoreDebugMode) 
+                Debug.Log(string.Format("==============={0}의 의지를 계산합니다.===============", pieceList[i]));
             Piece piece = pieceList[i];
             float will = 0f;
             ScoreNode scoreSet;
@@ -132,7 +134,8 @@ public class AI : Player
             
             if (placement != null)
             {
-                Debug.Log(string.Format("기물 {0} 자리 {1}, 자리 전 {2} 자리 후 {3}", piece, placement, placement.PrevPosition, placement.NextPosition));
+                if (GameManager.Instance.scoreDebugMode) 
+                    Debug.Log(string.Format("기물 {0} 자리 {1}, 자리 전 {2} 자리 후 {3}", piece, placement, placement.PrevPosition, placement.NextPosition));
                 aiStrategy.AddPossibility(scoreSet, piece, placement.NextPosition);
             }
         }

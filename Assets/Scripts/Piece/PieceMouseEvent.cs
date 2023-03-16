@@ -22,7 +22,7 @@ public class PieceMouseEvent : MonoBehaviour
 
     private void OnMouseExit()
     {
-        Debug.Log("¸¶¿ì½º ¶À");
+        //Debug.Log("¸¶¿ì½º ¶À");
         piece.ChangeColorTempBack();
     }
 

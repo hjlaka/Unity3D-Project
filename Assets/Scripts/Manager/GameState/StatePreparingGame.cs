@@ -20,7 +20,7 @@ public class StatePreparingGame : StateBehaviour<GameManager>
     }
     public override void StateEnter()
     {
-        machine.playerValidToSelectPlace = true;
+        machine.TurnActionDecided = true;
 
         machine.gameSetter.SetBottomTeam(0);
         PlayerDataManager.Instance.EnablePlayerListUI();

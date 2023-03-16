@@ -57,8 +57,8 @@ public class DialogueManager : SingleTon<DialogueManager>
         dialogueQueue = new Queue<DialogueUnit>();
 
         
-        dialogueQueue.Enqueue(new DialogueUnit("샘플", "테스트"));
-        dialogueQueue.Enqueue(new DialogueUnit("샘플2", "테스트2"));
+        //dialogueQueue.Enqueue(new DialogueUnit("샘플", "테스트"));
+        //dialogueQueue.Enqueue(new DialogueUnit("샘플2", "테스트2"));
 
         participations = new List<Unit>();
     }

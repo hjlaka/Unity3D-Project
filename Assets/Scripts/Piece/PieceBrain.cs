@@ -14,7 +14,7 @@ public class PieceBrain : MonoBehaviour
     public void PlaceToDesire(Place targetPlace, DecidedStateLists recognized)
     {
 
-        if (recognized.movable.Count <= 0)
+        /*if (recognized.movable.Count <= 0)
         {
             Debug.Log("이동할 수 있는 곳이 없다");
             PlaceManager.Instance.CancleSelectPiece();
@@ -41,6 +41,6 @@ public class PieceBrain : MonoBehaviour
         {
             Debug.Log("움직이고 싶은 곳이 없다");
             PlaceManager.Instance.CancleSelectPiece();
-        }
+        }*/
     }
 }

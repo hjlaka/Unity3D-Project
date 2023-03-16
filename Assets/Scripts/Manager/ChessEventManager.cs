@@ -29,7 +29,8 @@ public class ChessEventManager : SingleTon<ChessEventManager>
         Node<ChessEvent> node = new Node<ChessEvent>(importance, chessEvent);
         eventList.Push(node);
         eventsDebug.Add(chessEvent);
-        Debug.Log("----------------- 이벤트 추가 ------------------- : " + eventList.Count + chessEvent.Subject + chessEvent.Target);
+        Debug.Log(string.Format("----------------- 이벤트 추가 ------------------- : {0} ({1}가 {2}에게 이벤트 발동)", 
+            eventList.Count, chessEvent.Subject, chessEvent.Target));
 
         eventList.PrintHeap();
 
@@ -48,7 +49,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 Piece subject = chessEvent.Subject;
                 Piece target = chessEvent.Target;
                 string key = subject.GetInstanceID() + "/" + target.GetInstanceID();
-                Debug.Log("키: " + key);
+                Debug.Log(string.Format("키: {0}", key));
                 bool relationExist = relationDictionary.ContainsKey(key);
                 if (relationExist)
                 {
@@ -67,7 +68,7 @@ public class ChessEventManager : SingleTon<ChessEventManager>
                 }
                 else
                 {
-                    Debug.Log("새로운 이벤트 " + subject + " " + target + " " + chessEvent.GetTypeAsString());
+                    Debug.Log("새로운 이벤트 " + subject + " " + target + " " + chessEvent.ToString());
                     Debug.Log("키: [" + key + "]");
                     relationDictionary.Add(key, chessEvent);
                     float importance = subject.PieceScore + target.PieceScore + target.place.HeatPoint + chessEvent.GetEventTypeScore();

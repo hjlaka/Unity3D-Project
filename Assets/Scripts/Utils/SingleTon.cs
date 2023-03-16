@@ -23,7 +23,7 @@ public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
 
                 instance = gameObject.GetComponent<T>();
 
-                DontDestroyOnLoad(gameObject);
+                //DontDestroyOnLoad(gameObject);
             }
 
             return instance;

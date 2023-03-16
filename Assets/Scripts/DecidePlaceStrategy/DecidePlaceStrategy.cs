@@ -227,7 +227,7 @@ public abstract class DecidePlaceStrategy : IDecidePlaceStrategy
         for (int i = 0; i < assumeStateLists.defending.Count; i++)
         {
             Piece defendablePiece = assumeStateLists.defending[i];
-            Debug.Log("방어 대상 기물: " + defendablePiece);
+            //Debug.Log("방어 대상 기물: " + defendablePiece);
             // 가정된 상황에서 자신을 방어하는 경우를 빼야 한다. - 기물을 임시 이동 시켰다.
 
             int targetDeltaHeat = piece.returnHeat.ReturnTeamHeat(defendablePiece.place) - piece.returnHeat.ReturnOpponentHeat(defendablePiece.place);
