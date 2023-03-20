@@ -19,8 +19,8 @@ public class PawnMove : MoveRecognizer, IPieceMovable
 
         MoveForward(location + new Vector2Int(0, controlled.forwardY), boardSize.y);
 
-        AttackDiagonalLT(location + new Vector2Int(-1, controlled.forwardY), boardSize.y);
-        AttackDiagonalRT(location + new Vector2Int(1, controlled.forwardY), boardSize.y, boardSize.x);
+        AttackDiagonalLD(location + new Vector2Int(-1, controlled.forwardY), boardSize.y);
+        AttackDiagonalRD(location + new Vector2Int(1, controlled.forwardY), boardSize.y, boardSize.x);
     }
 
     public void RecognizeSpecialMove(Place newPlace)
@@ -46,7 +46,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         MoveDoubleForward(curLocation + new Vector2Int(0, controlled.forwardY), boardHeight);
     }
 
-    private void AttackDiagonalLT(Vector2Int curLocation, int boardHeight)
+    private void AttackDiagonalLD(Vector2Int curLocation, int boardHeight)
     {
         if (IsLeftOutLocation(curLocation) ||
             IsTopOutLocation(curLocation, boardHeight) ||
@@ -56,7 +56,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         RecognizePieceOnlyInfluence(curLocation);
     }
 
-    private void AttackDiagonalRT(Vector2Int curLocation, int boardHeight, int boardWidth)
+    private void AttackDiagonalRD(Vector2Int curLocation, int boardHeight, int boardWidth)
     {
         if (IsRightOutLocation(curLocation, boardWidth) ||
             IsTopOutLocation(curLocation, boardHeight) ||

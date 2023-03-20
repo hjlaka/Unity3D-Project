@@ -240,17 +240,17 @@ public class Place : MonoBehaviour, ISubject, IOnBoardTargetable
     }
 
 
-    public void registerObserver(IObserver observer)
+    public void RegisterObserver(IObserver observer)
     {
         influencingUnit.Add(observer as PlaceObserver);
     }
 
-    public void removeObserver(IObserver observer)
+    public void RemoveObserver(IObserver observer)
     {
         influencingUnit.Remove(observer as PlaceObserver);
     }
 
-    public ISubject notifyObserver()
+    public ISubject NotifyObserver()
     {
         // 옵저버에게 알리는 과정에서, 옵저버 목록이 바뀔 수 있다.
         // 현재 목록대로 옵저버에게 알려야하므로, 복사본을 만들어야 한다.

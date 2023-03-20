@@ -87,7 +87,7 @@ public class Piece : LifeUnit, IOnBoardTargetable
             PlaceManager.Instance.influenceCalculator.CalculateInfluence(this);
             PlaceManager.Instance.influenceCalculator.ApplyInfluence(this);
 
-            place.notifyObserver();
+            place.NotifyObserver();
         }
     }
     public void BelongTo(Player player)

@@ -62,7 +62,7 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
             return false;
     }
 
-    public bool RecognizePiece(Vector2Int curLocation)
+    protected bool RecognizePiece(Vector2Int curLocation)
     {
         Piece targetPiece = controlled.place.board.places[curLocation.x, curLocation.y].Piece;
         Place targetPlace = controlled.place.board.places[curLocation.x, curLocation.y];
