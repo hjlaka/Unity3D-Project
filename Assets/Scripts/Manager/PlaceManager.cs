@@ -320,7 +320,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     {
         for(int i = 0; i < changedSubjects.Count; i++)
         {
-            changedSubjects[i].notifyObserver();
+            changedSubjects[i].NotifyObserver();
         }
 
         changedSubjects.Clear();

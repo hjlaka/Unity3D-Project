@@ -6,7 +6,7 @@ using UnityEngine;
 public class Subject : MonoBehaviour, ISubject
 {
     private List<UnitObserver> observers = new List<UnitObserver>();
-    public ISubject notifyObserver()
+    public ISubject NotifyObserver()
     {
         for(int i = 0; i < observers.Count; i++)
         {
@@ -15,7 +15,7 @@ public class Subject : MonoBehaviour, ISubject
         return this;
     }
 
-    public void registerObserver(IObserver observer)
+    public void RegisterObserver(IObserver observer)
     {
         if (observers.Contains(observer as UnitObserver)) return;
 
@@ -26,7 +26,7 @@ public class Subject : MonoBehaviour, ISubject
         // 아군 / 적 / 오브젝트
     }
 
-    public void removeObserver(IObserver observer)
+    public void RemoveObserver(IObserver observer)
     {
         observers.Add(observer as UnitObserver);
     }

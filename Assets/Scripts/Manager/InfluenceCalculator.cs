@@ -29,14 +29,14 @@ public class InfluenceCalculator : MonoBehaviour
         for (int i = 0; i < iterPlaces.Count; i++)
         {
             iterPlaces[i].AddInfluence(piece.team.direction);
-            iterPlaces[i].registerObserver(piece.PlaceObserver);
+            iterPlaces[i].RegisterObserver(piece.PlaceObserver);
         }
 
         for (int i = 0; i < piece.Recognized.special.Count; i++)
         {
             Place iterPlace = piece.Recognized.special[i];
 
-            iterPlace.registerObserver(piece.PlaceObserver);
+            iterPlace.RegisterObserver(piece.PlaceObserver);
         }
     }
 
@@ -60,14 +60,14 @@ public class InfluenceCalculator : MonoBehaviour
         for (int i = 0; i < influencable.Count; i++)
         {
             influencable[i].SubInfluence(leftPiece.team.direction);
-            influencable[i].removeObserver(leftPiece.PlaceObserver);
+            influencable[i].RemoveObserver(leftPiece.PlaceObserver);
         }
 
         for (int i = 0; i < leftPiece.Recognized.special.Count; i++)
         {
             Place curPlace = leftPiece.Recognized.special[i];
 
-            curPlace.removeObserver(leftPiece.PlaceObserver);
+            curPlace.RemoveObserver(leftPiece.PlaceObserver);
         }
     }
 
