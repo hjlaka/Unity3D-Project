@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveRecognizer //부모에 인터페이스 붙이기?
+public abstract class MoveRecognizer //부모에 인터페이스 붙이기?
 {
     protected readonly Piece controlled;
 
@@ -29,6 +29,10 @@ public class MoveRecognizer //부모에 인터페이스 붙이기?
     {
         this.controlled = controlled;
     }
+
+    public abstract void RecognizeRange(Vector2Int location, StateLists recognized);
+
+    public abstract void RecognizeSpecialMove(Place newPlace);
 
     protected bool IsTopOutLocation(Vector2Int curLocation, int boardHeight)
     {

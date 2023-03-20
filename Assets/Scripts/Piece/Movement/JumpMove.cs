@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpMove : MoveRecognizer, IPieceMovable
+public class JumpMove : MoveRecognizer
 {
     public JumpMove(Piece controlled) : base(controlled)
     {
         // Do Nothing
     }
 
-    public void RecognizeRange(Vector2Int location, StateLists recognized)
+    public override void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
         recognizedLists = recognized;
@@ -31,7 +31,7 @@ public class JumpMove : MoveRecognizer, IPieceMovable
 
         if (RecognizePiece(curLocation)) return;
     }
-    public void RecognizeSpecialMove(Place newPlace)
+    public override void RecognizeSpecialMove(Place newPlace)
     {
         // Do Nothing
     }

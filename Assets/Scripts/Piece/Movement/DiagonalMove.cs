@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
+public class DiagonalMove : MoveRecognizer, IGradable
 {
     private int level;
     private int validMoveCount;
@@ -46,7 +46,7 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
                 break;
         }
     }
-    public void RecognizeRange(Vector2Int location, StateLists recognized)
+    public override void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
         recognizedLists = recognized;
@@ -124,7 +124,7 @@ public class DiagonalMove : MoveRecognizer, IPieceMovable, IGradable
         DiagonalRB(curLocation + new Vector2Int(1, -1), boardWidth);
     }
 
-    public void RecognizeSpecialMove(Place newPlace)
+    public override void RecognizeSpecialMove(Place newPlace)
     {
         // Do Nothing
     }

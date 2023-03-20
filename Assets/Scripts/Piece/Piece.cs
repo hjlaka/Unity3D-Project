@@ -50,8 +50,8 @@ public class Piece : LifeUnit, IOnBoardTargetable
 
     private IDecidePlaceStrategy decideDesireStrategy;
 
-    protected IPieceMovable movePattern;
-    public IPieceMovable MovePattern { get { return movePattern; } private set { movePattern = value; } }
+    protected MoveRecognizer movePattern;
+    public MoveRecognizer MovePattern { get { return movePattern; } private set { movePattern = value; } }
 
 
     public UnityAction OnPlaced;

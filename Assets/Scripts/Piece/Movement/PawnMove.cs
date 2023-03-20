@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PawnMove : MoveRecognizer, IPieceMovable
+public class PawnMove : MoveRecognizer
 {
 
     private bool canDoubleMove;
@@ -12,7 +12,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         this.canDoubleMove = canDoubleMove;
     }
 
-    public void RecognizeRange(Vector2Int location, StateLists recognized)
+    public override void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;
         recognizedLists = recognized;
@@ -23,7 +23,7 @@ public class PawnMove : MoveRecognizer, IPieceMovable
         AttackDiagonalRD(location + new Vector2Int(1, controlled.forwardY), boardSize.y, boardSize.x);
     }
 
-    public void RecognizeSpecialMove(Place newPlace)
+    public override void RecognizeSpecialMove(Place newPlace)
     {
         Place oldPlace = controlled.place;
         if (oldPlace?.board != newPlace.board)

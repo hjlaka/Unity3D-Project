@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StraightMove : MoveRecognizer, IPieceMovable
+public class StraightMove : MoveRecognizer
 {
     private int level;
     private int validMoveCount;
@@ -32,7 +32,7 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         }
     }
 
-    public void RecognizeRange(Vector2Int location, StateLists recognized)
+    public override void RecognizeRange(Vector2Int location, StateLists recognized)
     {
         Vector2Int boardSize = controlled.place.board.Size;     // 기물이 있는 보드에서 판단을 한다고 가정함.
         recognizedLists = recognized;
@@ -102,7 +102,7 @@ public class StraightMove : MoveRecognizer, IPieceMovable
         StraightR(curLocation + new Vector2Int(1, 0), boardWidth);
     }
 
-    public void RecognizeSpecialMove(Place newPlace)
+    public override void RecognizeSpecialMove(Place newPlace)
     {
         // Do Nothing
     }
