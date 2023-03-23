@@ -18,21 +18,19 @@ public class PlaceManager : SingleTon<PlaceManager>
     public UnityEvent OnAttack;
     //================================
 
-    public Place selectedPlace;
-    public Place expelZone;
-
+    //======== Color Setting =========
     [Header("Piece")]
     [SerializeField]
     private Color selectingColor;
-
     [Header("Place")]
     [SerializeField]
     public Color highlight;
     [SerializeField]
     private Color attackable;
+    //================================
 
     //============ Facade =============
-    public InfluenceCalculator influenceCalculator { get; private set; }
+    private InfluenceCalculator influenceCalculator;
     private PlacementRememberer placementRememberer;
     //=================================
 
@@ -42,7 +40,7 @@ public class PlaceManager : SingleTon<PlaceManager>
     //=================================
 
     //========== Observer =============
-    private List<ISubject> changedSubjects;
+    private List<ISubject> changedSubjects { get; set; }
     //=================================
 
     private void Awake()
@@ -332,8 +330,6 @@ public class PlaceManager : SingleTon<PlaceManager>
     }
     private IEnumerator EndTurnCoroutine()
     {
-        Piece endedPiece = selectedPiece;
-
         OnFinishAction?.Invoke();
         // 기본 대기 시간
         yield return new WaitForSeconds(1.5f);

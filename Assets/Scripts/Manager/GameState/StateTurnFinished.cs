@@ -34,11 +34,14 @@ public class StateTurnFinished : StateBehaviour<GameManager>
                 nextState = GameManager.GameState.ON_PEACE;
                 string winName = machine.curPlayer == machine.player ? "플레이어" : "상대편";
                 resultText = string.Format("{0} 승리!", winName);
+                machine.nextPlayer.GoToHome();
                 break;
             case GameManager.Result.DRAW:
                 ChessEventManager.Instance.SubmitEvent(new ChessEvent(ChessEvent.EventType.GAME_END, null, null));
                 nextState = GameManager.GameState.ON_PEACE;
                 resultText = string.Format("무승부!");
+                machine.curPlayer.GoToHome();
+                machine.nextPlayer.GoToHome();
                 break;
             case GameManager.Result.NONE:
                 nextState = GameManager.GameState.ON_TURN;

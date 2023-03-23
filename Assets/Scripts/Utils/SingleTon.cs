@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
 {
+    public const string managerObjectName = "Manager";
     private static T instance;
     public static T Instance
     {
@@ -11,11 +12,11 @@ public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
         {
             if(null == instance)
             {
-                GameObject gameObject = GameObject.Find("Manager");
+                GameObject gameObject = GameObject.Find(managerObjectName);
                 if(null == gameObject)
                 {
                     gameObject = new GameObject();
-                    gameObject.name = "Manager";
+                    gameObject.name = managerObjectName;
                 }
                 
                 if(gameObject.GetComponent<T>() == null)

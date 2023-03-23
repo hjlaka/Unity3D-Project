@@ -13,6 +13,16 @@ public class GameSetter : MonoBehaviour
 
     public UnityEvent OnOpponentSet;
 
+    private Board mainBoard;
+    private ListBoard initBoard;
+
+    private void Start()
+    {
+        mainBoard = GameObject.Find("MainBoard").GetComponent<Board>();
+        Debug.Log(string.Format("찾아낸 보드: {0}", mainBoard));
+
+        initBoard = GameObject.Find("HandMadeBoard").GetComponent<ListBoard>();
+    }
 
     public void SetTopTeam(int index = 0)
     {
@@ -20,15 +30,11 @@ public class GameSetter : MonoBehaviour
 
         Debug.Log("세팅 시작");
 
-        Board mainBoard = GameObject.Find("MainBoard").GetComponent<Board>();
-
-        Debug.Log("찾아낸 보드: " + mainBoard);
-
         GameData setting = gameSettings[index];
         List<GameData.CallingPiece> callings = setting.opponents;
         Player teamPlayer = GameManager.Instance.OpponentPlayer;
 
-        Debug.Log("배치할 기물 수: " + callings.Count);
+        Debug.Log(string.Format("배치할 기물 수: {0}", callings.Count));
         for (int i = 0; i < callings.Count; i++)
         {
             GameData.CallingPiece calling = callings[i];
@@ -54,7 +60,7 @@ public class GameSetter : MonoBehaviour
 
         Debug.Log("세팅 시작");
 
-        ListBoard initBoard = GameObject.Find("HandMadeBoard").GetComponent<ListBoard>();
+
 
         GameData setting = gameSettings[index];
         List<GameData.CallingPiece> callings = setting.players;
@@ -67,6 +73,11 @@ public class GameSetter : MonoBehaviour
 
             instance.team = setting.playerTeam;
             Place targetPlace = initBoard.AutoAddPiece(instance);
+            if (null == targetPlace)
+            {
+                Debug.LogError("소환할 수 있는 기물보다 더 많은 기물 소환");
+                return;
+            }
             instance.place = targetPlace;
             instance.IsOnGame = true;
 

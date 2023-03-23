@@ -8,53 +8,66 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Subject))]
 public class Piece : LifeUnit, IOnBoardTargetable
 {
+    //============= 게임 상황 =============
     [Header("InGame")]
     public Place place;
-    public TeamData team;
-    [SerializeField]
-    private Player belong;
-    public Player Belong { get { return belong; } set { belong = value; } }
-
-
-    public int forwardY;
-    [SerializeField]
-    protected float pieceScore;
-    public float PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
-
-    [SerializeField]
-    private DecidedStateLists recognized;
-    public DecidedStateLists Recognized { get { return recognized; } private set { recognized = value; } }
 
     [SerializeField]
     private uint moveCount;
     public uint MoveCount { get { return moveCount; } set { moveCount = value; } }
 
+    [SerializeField]
+    private DecidedStateLists recognized;
+    public DecidedStateLists Recognized { get { return recognized; } private set { recognized = value; } }
 
     public PlaceObserver PlaceObserver { get; private set; }
     public UnitObserver UnitObserver { get; private set; }
+    //====================================
 
-    public Subject ChessSubject { get; private set; }
-    // TODO: king 클래스에 subjectAsKing 추가
+    //========== 상속 및 다형성 ===========
+    [Header("Inheritance")]
+    [SerializeField]
+    protected float pieceScore;
+    public float PieceScore { get { return pieceScore; } private set { pieceScore = value; } }
 
+    protected MoveRecognizer movePattern;
+    public MoveRecognizer MovePattern { get { return movePattern; } private set { movePattern = value; } }
+    //====================================
 
-    public IReturnHeat returnHeat;
-
+    //=========== 기물 개성 정보 ==========
     [Header("Charecter")]
     [SerializeField]
     public CharacterData character;
 
-    private Renderer render;
+    private IDecidePlaceStrategy decideDesireStrategy;
+    //====================================
+
+    //============ 팀, 방향 값 ============
+    [Header("Team")]
+    public TeamData team;
+
+    [SerializeField]
+    private Player belong;
+    public Player Belong { get { return belong; } set { belong = value; } }
+
+    public int forwardY;
+
+    public IReturnHeat returnHeat;
 
     private Color curNormal;
-    public Color CurNormal { get { return curNormal; }  private set { curNormal = value;  /*Debug.Log("색 변경");*/ } }
+    public Color CurNormal { get { return curNormal; } private set { curNormal = value;  /*Debug.Log("색 변경");*/ } }
+    //=====================================
 
-    private IDecidePlaceStrategy decideDesireStrategy;
+    //============== Facade ===============
+    public Subject ChessSubject { get; private set; }
+    // TODO: king 클래스에 subjectAsKing 추가
 
-    protected MoveRecognizer movePattern;
-    public MoveRecognizer MovePattern { get { return movePattern; } private set { movePattern = value; } }
+    private Renderer render;
+    //=====================================
 
-
+    // ============= Event ================
     public UnityAction OnPlaced;
+    //=====================================
 
 
     protected override void Awake()
@@ -84,8 +97,8 @@ public class Piece : LifeUnit, IOnBoardTargetable
             place.BeFilled(this);
             Move();
 
-            PlaceManager.Instance.influenceCalculator.CalculateInfluence(this);
-            PlaceManager.Instance.influenceCalculator.ApplyInfluence(this);
+            PlaceManager.Instance.CalculateInfluence(this);
+            PlaceManager.Instance.ApplyInfluence(this);
 
             place.NotifyObserver();
         }

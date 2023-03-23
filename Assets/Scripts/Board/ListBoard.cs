@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class ListBoard : Board
 {
-    [SerializeField]
     private List<Place> placeList = new List<Place>();
+
+    private void Awake()
+    {
+        Place[] childPlace = GetComponentsInChildren<Place>();
+        for(int i = 0; i < childPlace.Length; i++)
+        {
+            placeList.Add(childPlace[i]);
+        }
+    }
 
     public Place AutoAddPiece(Piece piece)
     {
