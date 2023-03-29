@@ -55,6 +55,8 @@ public class AudioManager : SingleTon<AudioManager>
 
     public void PlayeBGM(string bgmName)
     {
+        Debug.Log(string.Format("ø‰√ª«— BGM: {0}", bgmName));
+
         AudioClip bgmClip = bgmDictionary.GetValueOrDefault(bgmName);
 
         if (null == bgmClip)
