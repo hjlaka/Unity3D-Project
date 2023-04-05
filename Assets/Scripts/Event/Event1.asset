@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c37b57c8ef323d44d809d029d575f3f0, type: 3}
+  m_Name: Event1
+  m_EditorClassIdentifier: 
+  eventID: 0
+  eventDialogues:
+  - unitID: 0
+    unitName: "\uC801\uAD70"
+    dialogue: "\uC548\uB155!!!!!"
+  - unitID: 0
+    unitName: "\uC801\uAD70"
+    dialogue: "\uC6B0\uB9AC\uAC00 \uC654\uC5B4!!!!"
+  - unitID: 0
+    unitName: "\uC801\uAD70"
+    dialogue: "\uC640\uC11C \uC6B0\uB9AC\uB791 \uC2F8\uC6CC!!!!!"

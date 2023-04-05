@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe225e3e2b77234fa0507a00c8e55ae, type: 3}
+  m_Name: GameSetting2
+  m_EditorClassIdentifier: 
+  dataID: 2
+  playerTeam: {fileID: 11400000, guid: 68781b80634d1584198878bd5363e703, type: 2}
+  opponentTeam: {fileID: 11400000, guid: 4da831a05a6774f419a040d06db90c54, type: 2}
+  opponents:
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
+    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    location: {x: 2, y: 2}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
+    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    location: {x: 3, y: 3}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
+    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    location: {x: 4, y: 4}
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
+    character: {fileID: 11400000, guid: db20f8da8ba4ee8449f2d84430cc8d5a, type: 2}
+    location: {x: 5, y: 5}
+  players:
+  - piecePrefab: {fileID: 7284184315646996697, guid: 96f8aae02467d4044bf1832c4b77efd1, type: 3}
+    character: {fileID: 11400000, guid: 14f5e314656adae47b96e4b84bc5ce07, type: 2}
+    location: {x: 1, y: 1}
